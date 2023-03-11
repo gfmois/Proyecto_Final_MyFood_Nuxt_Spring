@@ -1,0 +1,32 @@
+version: '3'
+services:
+  database:
+    image: mysql:5.7
+    container_name: mysql_container
+    restart: always
+    command: --init-file /data/application/init.sql
+    volumes:
+      - ./conf/db/init.sql:/data/application/init.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - DB_NAME = MyFood_PF
+    ports:
+      - 3307:3306
+    networks:
+      - pf_nsl_network
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    container_name: phpmyadmin_container
+    ports:
+      - 81:80
+    environment:
+      - PMA_PORT=3306
+      - PMA_HOST=mysql_container
+    depends_on:
+      - database
+    networks:
+      - pf_nsl_network
+
+networks:
+  pf_nsl_network:
