@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "bmewburn.vscode-intelephense-client",
+        "vmware.vscode-spring-boot",
+        "vmware.vscode-boot-dev-pack",
+        "vscjava.vscode-spring-boot-dashboard",
+        "octref.vetur",
+        "Vue.volar"
+    ],
+}

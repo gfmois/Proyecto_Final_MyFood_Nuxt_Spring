@@ -1,0 +1,34 @@
+<template>
+    <nav class="bg-custom_blue-400 w-full h-[7vh] p-4 shadow-md flex items-center justify-between">
+        <!-- Logo and Site Name -->
+        <div class="p-4 w-full flex flex-row gap-8 items-center justify-between">
+            <NuxtLink to="/" class="h-fit w-fit p-2 flex items-center justify-center gap-3">
+                <img src="/images/logo.png" alt="Site Logo" class="cursor-pointer w-12 h-12">
+                <h1 class="text-white text-lg">MyFood</h1>
+            </NuxtLink>
+            <!-- Search Bar -->
+            <div class="bg-custom_orange flex items-center justify-center">
+
+            </div>
+            <!-- Items -->
+            <div>
+                <ul class="flex flex-row gap-5 p-3">
+                    <li>
+                        <NuxtLink to="/restaurants">
+                            <Icon name="ri:calendar-check-fill" size="2rem" style="color: rgb(228 228 231 / 1);"
+                                class="cursor-pointer" />
+                        </NuxtLink>
+                    </li>
+                    <li>
+                        <Icon name="ri:article-fill" size="2rem" style="color: rgb(228 228 231 / 1);"
+                            class="cursor-pointer" />
+                    </li>
+                    <li>
+                        <Icon name="ri:account-box-fill" size="2rem" style="color: rgb(228 228 231 / 1);"
+                            class="cursor-pointer" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</template>
