@@ -1,5 +1,5 @@
 <template>
-    <nav class="bg-custom_blue-400 w-full h-[7vh] p-4 shadow-md flex items-center justify-between">
+    <nav class="bg-crimson-600 w-full h-[7vh] p-4 shadow-md flex items-center justify-between">
         <!-- Logo and Site Name -->
         <div class="p-4 w-full flex flex-row gap-8 items-center justify-between">
             <NuxtLink to="/" class="h-fit w-fit p-2 flex items-center justify-center gap-3">
