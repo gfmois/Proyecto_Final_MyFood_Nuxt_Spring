@@ -14,6 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class RestaurantDto implements Serializable {
     @NotNull
@@ -27,6 +28,9 @@ public class RestaurantDto implements Serializable {
 
     @NotNull
     private String quality;
+
+    @NotNull
+    private String logo;
 
     @Getter
     @Setter
@@ -44,5 +48,5 @@ public class RestaurantDto implements Serializable {
     @NoArgsConstructor
     public static class MultipleRestaurants {
         private List<RestaurantDto> restaurants;
-    }
+    }    
 }

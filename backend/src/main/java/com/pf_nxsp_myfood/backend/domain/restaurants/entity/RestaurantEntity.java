@@ -1,11 +1,15 @@
 package com.pf_nxsp_myfood.backend.domain.restaurants.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.Table;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
 
 @Getter
 @Setter
@@ -25,12 +29,16 @@ public class RestaurantEntity {
 
     @Column(name = "quality")
     private String quality;
+    
+    @Column(name = "logo")
+    private String logo;
 
     @Builder
-    public RestaurantEntity(String id_restaurant, String name, Integer capacity, String quality) {
+    public RestaurantEntity(String id_restaurant, String name, Integer capacity, String quality, String logo) {
         this.id_restaurant = id_restaurant;
         this.name = name;
         this.capacity = capacity;
         this.quality = quality;
+        this.logo = logo;
     }
 }
