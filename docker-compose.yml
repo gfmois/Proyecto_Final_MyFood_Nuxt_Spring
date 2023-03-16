@@ -14,6 +14,7 @@ services:
       - 3307:3306
     networks:
       - pf_nsl_network
+
   phpmyadmin:
     image: phpmyadmin
     restart: always
@@ -27,6 +28,18 @@ services:
       - database
     networks:
       - pf_nsl_network
+
+  redis:
+    image: redis:7.0.9-alpine3.17
+    restart: always
+    container_name: redis_container
+    ports:
+       - 6379:6379
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    depends_on:
+      - database
+    volumes: 
+      - ./conf/cache:/data
 
 networks:
   pf_nsl_network:

@@ -32,7 +32,7 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 	@Transactional
 	@Override
 	public List<RestaurantDto> getRestaurants() {
-		return this.rRepository.findAll()
+		return rRepository.findAll()
 				.stream()
 				.map(this::convertEntityToDto)
 				.collect(Collectors.toList());

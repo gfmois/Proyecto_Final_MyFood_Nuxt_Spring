@@ -1,4 +1,4 @@
-package com.pf_nxsp_myfood.backend.domain.common.utils;
+package com.pf_nxsp_myfood.backend.configuration.flyway;
 
 import org.flywaydb.core.Flyway;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;

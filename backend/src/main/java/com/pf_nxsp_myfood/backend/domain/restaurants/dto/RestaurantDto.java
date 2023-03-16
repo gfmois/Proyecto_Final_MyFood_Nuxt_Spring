@@ -1,5 +1,6 @@
 package com.pf_nxsp_myfood.backend.domain.restaurants.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -14,7 +15,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @Builder
-public class RestaurantDto {
+public class RestaurantDto implements Serializable {
     @NotNull
     private String id_restaurant;
 
