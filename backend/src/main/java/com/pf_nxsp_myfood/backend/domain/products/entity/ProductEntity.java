@@ -10,6 +10,7 @@ import javax.persistence.Table;
 
 import com.pf_nxsp_myfood.backend.domain.restaurants.entity.RestaurantEntity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "products")
 @NamedEntityGraph(name = "fetch-products")

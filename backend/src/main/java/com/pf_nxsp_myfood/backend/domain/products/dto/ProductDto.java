@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.pf_nxsp_myfood.backend.domain.common.utils.BaseUtils;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductDto implements Serializable {
+public class ProductDto extends BaseUtils implements Serializable {
     @NotNull
     private String id_product;
 

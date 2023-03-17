@@ -30,6 +30,18 @@ public class ProductServiceImpl implements ProductService {
 				.build();
 	}
 
+    private ProductEntity convertDtoToEntity(ProductDto pDto) {
+        // FIXME: Restaurant not getting value
+        return ProductEntity.builder()
+                .id_product(pDto.getId_product())
+                .name(pDto.getName())
+                .image(pDto.getImage())
+                .price(pDto.getPrice())
+                .slug(pDto.getSlug())
+                .build();
+                // .restaurant(pDto.getRestaurant())
+    }
+
     @Override
     public List<ProductDto> getProducts() {
         return pRepository.findAll()
@@ -40,8 +52,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public MessageResponse saveProduct(ProductDto pDto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'saveProduct'");
+        if (pRepository.save(convertDtoToEntity(pDto)) != null) {
+            return new MessageResponse("Product Created Correctly", "201");
+        }
+
+        return new MessageResponse("There was an problem creating the product", "401");
     }
 
     @Override

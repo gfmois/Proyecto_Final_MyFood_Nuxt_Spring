@@ -1,12 +1,9 @@
 package com.pf_nxsp_myfood.backend.domain.restaurants.entity;
 
-import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
@@ -44,7 +41,6 @@ public class RestaurantEntity {
     @OneToMany(mappedBy = "restaurant")
     private Set<ProductEntity> products;
 
-    // TODO : Add Products to Entity Constructor and DTO
     @Builder
     public RestaurantEntity(String id_restaurant, String name, Integer capacity, String quality, String logo) {
         this.id_restaurant = id_restaurant;
