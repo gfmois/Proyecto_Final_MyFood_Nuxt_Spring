@@ -58,7 +58,7 @@ public class FileUpload {
             file.transferTo(dest.toPath());
             
             returnObj.put("statusCode", 200);
-            returnObj.put("path", dest.toPath());
+            returnObj.put("path", String.format("images/%s/%s", folderName, newFileName));
             
             return returnObj;
         } catch (Exception e) {

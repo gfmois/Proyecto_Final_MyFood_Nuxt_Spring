@@ -31,15 +31,14 @@ public class ProductServiceImpl implements ProductService {
 	}
 
     private ProductEntity convertDtoToEntity(ProductDto pDto) {
-        // FIXME: Restaurant not getting value
         return ProductEntity.builder()
                 .id_product(pDto.getId_product())
                 .name(pDto.getName())
                 .image(pDto.getImage())
                 .price(pDto.getPrice())
                 .slug(pDto.getSlug())
+                .id__restaurant(pDto.getRestaurant())
                 .build();
-                // .restaurant(pDto.getRestaurant())
     }
 
     @Override

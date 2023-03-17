@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +39,8 @@ public class ProductController {
 	@Autowired
     private FileUpload fileUpload;
 
+	// GET Method returns all Products
+	@Cacheable(value = "products")
 	@GetMapping
 	public List<ProductDto> getProducts() {
 		return pService.getProducts();
@@ -64,6 +67,11 @@ public class ProductController {
 				return new MessageResponse("Error trying to uploading the image", String.valueOf((Integer) fileObj.get("status")));
 			}
 
+			// Checks if price is greater than 0
+			if (Integer.valueOf(price) <= 0) {
+				return new MessageResponse("Price myst be grater than 0", "400");
+			}
+
 			// Transform FormData to ProductDto
 			pDto.setId_product(IdGenerator.generateWithLength(20));
 			pDto.setName(name);
@@ -72,7 +80,6 @@ public class ProductController {
 			pDto.setPrice(price);
 			pDto.setRestaurant(restaurant);
 
-			System.out.println(pDto.toString());
 			return pService.saveProduct(pDto);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
