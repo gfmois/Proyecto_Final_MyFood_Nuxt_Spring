@@ -32,6 +32,9 @@ public class ProductDto implements Serializable {
     @NotNull
     private String image;
 
+    @NotNull
+    private String restaurant;
+
     @Getter
     @Setter
     @AllArgsConstructor

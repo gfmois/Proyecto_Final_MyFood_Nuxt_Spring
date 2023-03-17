@@ -102,6 +102,8 @@ CREATE TABLE `holidays` (
 CREATE TABLE `employees` (
   `id_employee` VARCHAR(20) PRIMARY KEY,
   `id_restaurant` varchar(20),
+  `username` VARCHAR(30),
+  `password` VARCHAR(255),
   `name` varchar(255),
   `email` varchar(255),
   `phone` varchar(255),

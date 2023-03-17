@@ -3,13 +3,21 @@ package com.pf_nxsp_myfood.backend.domain.products.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
 import com.pf_nxsp_myfood.backend.domain.payload.response.MessageResponse;
 import com.pf_nxsp_myfood.backend.domain.products.dto.ProductDto;
 import com.pf_nxsp_myfood.backend.domain.products.entity.ProductEntity;
 import com.pf_nxsp_myfood.backend.domain.products.repository.ProductRepository;
 
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+@Component
 public class ProductServiceImpl implements ProductService {
-    private ProductRepository pRepository;
+    private final ProductRepository pRepository;
 
     private ProductDto convertEntityToDto(ProductEntity pEntity) {
 		return ProductDto.builder()
@@ -18,6 +26,7 @@ public class ProductServiceImpl implements ProductService {
 				.slug(pEntity.getSlug())
 				.image(pEntity.getImage())
                 .price(pEntity.getPrice())
+                .restaurant(pEntity.getRestaurant().getId_restaurant())
 				.build();
 	}
 
@@ -37,14 +46,33 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public MessageResponse updateProduct(ProductDto pDto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateProduct'");
+        try {
+            if (!pRepository.existsById(pDto.getId_product())) {
+                return new MessageResponse("No Product with that ID", "401");
+            }
+
+            ProductEntity pEntity = pRepository.findById(pDto.getId_product()).get();
+            pEntity.setImage(pDto.getImage());
+            pEntity.setName(pDto.getName());
+            pEntity.setPrice(pDto.getPrice());
+            pEntity.setSlug(pDto.getSlug());
+
+            pRepository.save(pEntity);
+
+            return new MessageResponse("Product Updated Correctly", "200");
+        } catch (Exception e) {
+            return new MessageResponse(String.format("Error updating: %s", e.getMessage()), "400");
+        }
     }
 
     @Override
     public MessageResponse deleteProduct(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteProduct'");
+        try {
+            pRepository.deleteById(id);
+            return new MessageResponse(String.format("Restaurant with ID '%s' deleted", id), "200");
+        } catch (Exception e) {
+            return new MessageResponse(String.format("Error: %s", e.getMessage()), "400");
+        }
     }
 
 }
