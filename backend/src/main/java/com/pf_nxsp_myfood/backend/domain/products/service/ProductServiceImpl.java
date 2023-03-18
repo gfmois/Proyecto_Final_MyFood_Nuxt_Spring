@@ -61,16 +61,21 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public MessageResponse updateProduct(ProductDto pDto) {
         try {
+            // Checks if Product exists
             if (!pRepository.existsById(pDto.getId_product())) {
                 return new MessageResponse("No Product with that ID", "401");
             }
 
+            // Get the Product from DB to Update it
             ProductEntity pEntity = pRepository.findById(pDto.getId_product()).get();
+
+            // Update the Product
             pEntity.setImage(pDto.getImage());
             pEntity.setName(pDto.getName());
             pEntity.setPrice(pDto.getPrice());
             pEntity.setSlug(pDto.getSlug());
 
+            // Save Product updated
             pRepository.save(pEntity);
 
             return new MessageResponse("Product Updated Correctly", "200");
@@ -83,7 +88,7 @@ public class ProductServiceImpl implements ProductService {
     public MessageResponse deleteProduct(String id) {
         try {
             pRepository.deleteById(id);
-            return new MessageResponse(String.format("Restaurant with ID '%s' deleted", id), "200");
+            return new MessageResponse(String.format("Product with ID '%s' deleted", id), "200");
         } catch (Exception e) {
             return new MessageResponse(String.format("Error: %s", e.getMessage()), "400");
         }

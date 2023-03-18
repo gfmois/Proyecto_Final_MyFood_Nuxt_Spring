@@ -28,7 +28,11 @@ public class AllergenEntity {
     @Column(name = "icon")
     private String icon;
 
-    @ManyToMany(mappedBy = "allergens", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(
+        mappedBy = "allergens",
+        fetch = FetchType.LAZY, 
+        cascade = CascadeType.ALL
+    )
     private List<ProductEntity> products = new ArrayList<>();
 
     @Builder

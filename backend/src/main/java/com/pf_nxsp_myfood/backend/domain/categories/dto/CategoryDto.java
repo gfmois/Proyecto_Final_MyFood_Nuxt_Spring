@@ -1,4 +1,4 @@
-package com.pf_nxsp_myfood.backend.domain.allergens.dto;
+package com.pf_nxsp_myfood.backend.domain.categories.dto;
 
 import java.util.List;
 
@@ -15,9 +15,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AllergenDto {
+public class CategoryDto {
     @NotNull
-    private String id_allergen;
+    private String id_category;
+    
+    private String slug;
 
     @NotNull
     private String name;
@@ -32,8 +34,8 @@ public class AllergenDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class SingleAllergen<T> {
-        private T allergen;
+    public static class SingleCategory<T> {
+        private T category;
     }
 
     @Getter
@@ -41,7 +43,7 @@ public class AllergenDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class MultipleAllergens {
-        private List<AllergenDto> allergens;
+    public static class MultipleCategories {
+        private List<CategoryDto> categories;
     }
 }

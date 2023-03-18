@@ -67,5 +67,8 @@ public class FileUpload {
             returnObj.put("message", e.getMessage());
             return returnObj;
         }
-    }   
+    }
+
+    // NOTE: If finally need updateFile it will make an petitio to BD to gets the path of file and delete it to create new one;
+    // public Map<String, Object> updateFile(String folderName, MultipartFile file) throws IOException { }
 }
