@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 // import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.pf_nxsp_myfood.backend.domain.payload.request.restaurant.RestaurantRequest;
 import com.pf_nxsp_myfood.backend.domain.payload.response.MessageResponse;
 import com.pf_nxsp_myfood.backend.domain.restaurants.dto.RestaurantDto;
@@ -40,35 +40,45 @@ public class RestaurantController {
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.create();
 
+    // @CachePut(value = "restaurants")
     @Cacheable(value = "restaurants")
     @GetMapping
     public List<RestaurantDto> getRestaurants() {
         return rService.getRestaurants();
     }
 
+    @CacheEvict(value = "restaurants", allEntries = true)
     @PostMapping
     public MessageResponse addRestaurant(@RequestBody @Valid RestaurantRequest body) {
-        RestaurantDto rDto = new RestaurantDto();
-        JsonObject json = gson.fromJson(gson.toJson(body), JsonObject.class);
-        
-        if (json.get("capacity").getAsInt() <= 0) {
-            return new MessageResponse("Capacity must be greater than 0", "400");
+        try {
+            // RestaurantDto new Instance
+            RestaurantDto rDto = new RestaurantDto();
+
+            // Check for Capacity
+            if (body.getCapacity() <= 0) {
+                return new MessageResponse("Capacity must be greater than 0", "400");
+            }
+
+            // Transform RestaurantRequest to RestaurantDto
+            rDto.setId_restaurant(IdGenerator.generateWithLength(20));
+            rDto.setName(body.getName());
+            rDto.setCapacity(body.getCapacity());
+            rDto.setQuality(body.getQuality());
+            rDto.setLogo(body.getLogo());
+            
+            return rService.saveRestaurant(rDto);
+        } catch (Exception e) {
+            return new MessageResponse(String.format("Error: %s", e.getMessage()), "400");
         }
-
-        rDto.setId_restaurant(IdGenerator.generateWithLength(20));
-        rDto.setName(json.get("name").getAsString());
-        rDto.setCapacity(json.get("capacity").getAsInt());
-        rDto.setQuality(json.get("quality").getAsString());
-        rDto.setLogo(json.get("logo").getAsString());
-
-        return rService.saveRestaurant(rDto);
     }
 
+    @CacheEvict(value = "restaurants", allEntries = true)
     @PutMapping
     public MessageResponse updateRestaurant(@RequestBody RestaurantDto body) {
         return rService.updateRestaurant(body);
     }
 
+    @CacheEvict(value = "restaurants", allEntries = true)
     @DeleteMapping("/{id_restaurant}")
     public MessageResponse deleteRestaurant(@PathVariable String id_restaurant) {
         return rService.deleteRestaurant(id_restaurant);

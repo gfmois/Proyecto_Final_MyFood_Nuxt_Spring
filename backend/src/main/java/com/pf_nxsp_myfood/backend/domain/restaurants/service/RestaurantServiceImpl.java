@@ -26,6 +26,7 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 				.name(rEntity.getName())
 				.quality(rEntity.getQuality())
 				.capacity(rEntity.getCapacity())
+				.logo(rEntity.getLogo())
 				.build();
 	}
 
@@ -35,6 +36,7 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 				.name(rDto.getName())
 				.capacity(rDto.getCapacity())
 				.quality(rDto.getQuality())
+				.logo(rDto.getLogo())
 				.build();
 	}
 

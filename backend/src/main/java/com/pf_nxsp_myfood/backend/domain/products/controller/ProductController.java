@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,6 +52,7 @@ public class ProductController {
 
 	// POST method to save new product into restaurant and save and image to
 	// identify it in the frontend
+	@CacheEvict(value = "products", allEntries = true)
 	@PostMapping(consumes = { "multipart/form-data" })
 	public MessageResponse createProducts(
 			@RequestParam("file") MultipartFile file,
@@ -92,6 +94,7 @@ public class ProductController {
 		}
 	}
 
+	@CacheEvict(value = "products", allEntries = true)
 	@PutMapping(consumes = { "multipart/form-data" })
 	public MessageResponse updateProduct(
 			@RequestParam("id_product") String id_product,
@@ -133,6 +136,7 @@ public class ProductController {
 		}
 	}
 
+	@CacheEvict(value = "products", allEntries = true)
 	@DeleteMapping("/{id_product}")
 	public MessageResponse deleteProduct(@PathVariable String id_product) {
 		return pService.deleteProduct(id_product);

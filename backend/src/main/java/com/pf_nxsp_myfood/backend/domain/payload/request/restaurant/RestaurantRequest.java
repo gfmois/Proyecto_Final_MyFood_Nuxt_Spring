@@ -5,10 +5,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.pf_nxsp_myfood.backend.domain.common.utils.BaseUtils;
+
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor
-public class RestaurantRequest {
+@Getter
+public class RestaurantRequest extends BaseUtils {
     @NotBlank
     @NotNull
     @NotEmpty
