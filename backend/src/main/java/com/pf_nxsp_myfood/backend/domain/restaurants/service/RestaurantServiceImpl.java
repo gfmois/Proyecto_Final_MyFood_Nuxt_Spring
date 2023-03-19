@@ -24,9 +24,9 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 		return RestaurantDto.builder()
 				.id_restaurant(rEntity.getId_restaurant())
 				.name(rEntity.getName())
-				.quality(rEntity.getQuality())
 				.capacity(rEntity.getCapacity())
 				.logo(rEntity.getLogo())
+				.category(rEntity.getCategory())
 				.build();
 	}
 
@@ -35,8 +35,8 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 				.id_restaurant(rDto.getId_restaurant())
 				.name(rDto.getName())
 				.capacity(rDto.getCapacity())
-				.quality(rDto.getQuality())
 				.logo(rDto.getLogo())
+				.category(rDto.getCategory())
 				.build();
 	}
 
@@ -66,9 +66,9 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 
 			RestaurantEntity rEntity = rRepository.findById(rDto.getId_restaurant()).get();
 			rEntity.setName(rDto.getName());
-			rEntity.setQuality(rDto.getQuality());
 			rEntity.setCapacity(rDto.getCapacity());
 			rEntity.setLogo(rDto.getLogo());
+			rEntity.setCategory(rDto.getCategory());
 
 			rRepository.save(rEntity);
 

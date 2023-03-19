@@ -27,10 +27,10 @@ public class RestaurantDto implements Serializable {
     private Integer capacity;
 
     @NotNull
-    private String quality;
+    private String logo;
 
     @NotNull
-    private String logo;
+    private String category;
 
     @Getter
     @Setter

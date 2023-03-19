@@ -25,11 +25,11 @@ public class RestaurantRequest extends BaseUtils {
     @NotBlank
     @NotNull
     @NotEmpty
-    private String quality;
-
+    private String logo;
+    
     @NotBlank
     @NotNull
     @NotEmpty
-    private String logo;
+    private String category;
 }
 

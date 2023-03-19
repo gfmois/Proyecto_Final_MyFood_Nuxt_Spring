@@ -45,7 +45,7 @@ public class FileUpload {
             Path path = Paths.get(uploadDir + folderName + "/" + newFileName);
             File dest = path.toFile();
     
-            // Checks if directory exists, if not create its
+            // Checks if directory exists, if not create it
             if (!directory.exists()) {
                 if (!directory.mkdir()) {
                     returnObj.put("statusCode", 400);

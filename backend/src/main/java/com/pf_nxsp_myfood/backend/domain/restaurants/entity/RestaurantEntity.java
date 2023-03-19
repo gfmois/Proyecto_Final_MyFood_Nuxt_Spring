@@ -31,23 +31,23 @@ public class RestaurantEntity {
 
     @Column(name = "capacity")
     private Integer capacity;
-
-    @Column(name = "quality")
-    private String quality;
     
     @Column(name = "logo")
     private String logo;
+
+    @Column(name = "category")
+    private String category;
 
     @OneToMany(mappedBy = "restaurant")
     private Set<ProductEntity> products;
 
     @Builder
-    public RestaurantEntity(String id_restaurant, String name, Integer capacity, String quality, String logo) {
+    public RestaurantEntity(String id_restaurant, String name, Integer capacity, String logo, String category) {
         this.id_restaurant = id_restaurant;
         this.name = name;
         this.capacity = capacity;
-        this.quality = quality;
         this.logo = logo;
+        this.category = category;
     }
 
 }

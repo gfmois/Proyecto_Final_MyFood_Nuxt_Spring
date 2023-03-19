@@ -63,8 +63,8 @@ public class RestaurantController {
             rDto.setId_restaurant(IdGenerator.generateWithLength(20));
             rDto.setName(body.getName());
             rDto.setCapacity(body.getCapacity());
-            rDto.setQuality(body.getQuality());
             rDto.setLogo(body.getLogo());
+            rDto.setCategory(body.getCategory());
             
             return rService.saveRestaurant(rDto);
         } catch (Exception e) {

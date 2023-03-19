@@ -3,7 +3,7 @@ CREATE TABLE restaurants (
     id_restaurant VARCHAR(20) PRIMARY KEY,
     name VARCHAR(255),
     capacity INTEGER,
-    quality VARCHAR(255)
+    category VARCHAR(60)
 );
 
 CREATE TABLE `products` (
@@ -110,6 +110,15 @@ CREATE TABLE `employees` (
   `type` varchar(255)
 );
 
+CREATE TABLE `comments` (
+  `id_comment` VARCHAR(20) PRIMARY KEY,
+  `id_restaurant` varchar(20),
+  `id_client` varchar(20),
+  `title` varchar(60),
+  `description` varchar(255),
+  `stars` int
+);
+
 ALTER TABLE `products` ADD FOREIGN KEY (`id_restaurant`) REFERENCES `restaurants` (`id_restaurant`);
 
 ALTER TABLE `orders` ADD FOREIGN KEY (`id_client`) REFERENCES `clients` (`id_client`);
@@ -145,3 +154,7 @@ ALTER TABLE `products` ADD FOREIGN KEY (`id_restaurant`) REFERENCES `restaurants
 ALTER TABLE `holidays` ADD FOREIGN KEY (`id_restaurant`) REFERENCES `restaurants` (`id_restaurant`);
 
 ALTER TABLE `employees` ADD FOREIGN KEY (`id_restaurant`) REFERENCES `restaurants` (`id_restaurant`);
+
+ALTER TABLE `comments` ADD FOREIGN KEY (`id_restaurant`) REFERENCES `restaurants` (`id_restaurant`);
+
+ALTER TABLE `comments` ADD FOREIGN KEY (`id_client`) REFERENCES `clients` (`id_client`);
