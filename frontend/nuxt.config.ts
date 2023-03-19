@@ -7,6 +7,10 @@ export default defineNuxtConfig({
                     rel: "stylesheet",
                     href: "/css/global.css"
                 },
+                // {
+                //     rel: "stylesheet",
+                //     href: "'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300&display=swap"
+                // }
             ],
         }
     },

@@ -26,7 +26,11 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 				.name(rEntity.getName())
 				.capacity(rEntity.getCapacity())
 				.logo(rEntity.getLogo())
+				.image(rEntity.getImage())
 				.category(rEntity.getCategory())
+				.lat(rEntity.getLat())
+				.lng(rEntity.getLng())
+				.city(rEntity.getCity())
 				.build();
 	}
 
@@ -36,7 +40,11 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 				.name(rDto.getName())
 				.capacity(rDto.getCapacity())
 				.logo(rDto.getLogo())
+				.image(rDto.getImage())
 				.category(rDto.getCategory())
+				.lat(rDto.getLat())
+				.lng(rDto.getLng())
+				.city(rDto.getCity())
 				.build();
 	}
 
@@ -49,12 +57,18 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 	}
 
 	@Override
-	public MessageResponse saveRestaurant(RestaurantDto rDto) {
-		if (rRepository.save(convertDtoToEntity(rDto)) != null) {
-			return new MessageResponse("Restaurant Created Correctly", "201");
-		}
+	public RestaurantDto getRestaurantById(String id) {
+		return convertEntityToDto(rRepository.findById(id).get());
+	}
 
-		return new MessageResponse("There was an problem creating the restaurant", "401");
+	@Override
+	public MessageResponse saveRestaurant(RestaurantDto rDto) {
+		try {
+			rRepository.save(convertDtoToEntity(rDto));
+			return new MessageResponse("Restaurant Created Correctly", "201");
+		} catch (Exception e) {
+			return new MessageResponse("There was an problem creating the restaurant", "401");
+		}
 	}
 
 	@Override
@@ -65,10 +79,15 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 			}
 
 			RestaurantEntity rEntity = rRepository.findById(rDto.getId_restaurant()).get();
+			
 			rEntity.setName(rDto.getName());
 			rEntity.setCapacity(rDto.getCapacity());
 			rEntity.setLogo(rDto.getLogo());
 			rEntity.setCategory(rDto.getCategory());
+			rEntity.setLat(rDto.getLat());
+			rEntity.setLng(rDto.getLng());
+			rEntity.setCity(rDto.getCity());
+			rEntity.setImage(rDto.getImage());
 
 			rRepository.save(rEntity);
 
@@ -87,5 +106,4 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 			return new MessageResponse(String.format("Error: %s", e.getMessage()), "400");
 		}
 	}
-
 }

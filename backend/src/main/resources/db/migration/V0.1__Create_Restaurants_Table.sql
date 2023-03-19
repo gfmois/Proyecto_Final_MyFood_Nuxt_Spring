@@ -1,9 +1,11 @@
 -- Active: 1678995675730@@127.0.0.1@3307@MyFood_PF
 CREATE TABLE restaurants (
-    id_restaurant VARCHAR(20) PRIMARY KEY,
-    name VARCHAR(255),
-    capacity INTEGER,
-    category VARCHAR(60)
+    `id_restaurant` VARCHAR(20) PRIMARY KEY,
+    `name` VARCHAR(255),
+    `capacity` INTEGER,
+    `category` VARCHAR(60),
+    `lat` VARCHAR(255),
+    `long` VARCHAR(255)
 );
 
 CREATE TABLE `products` (

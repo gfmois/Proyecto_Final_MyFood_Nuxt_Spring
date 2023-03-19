@@ -93,6 +93,9 @@ module.exports = {
           900: "#2d0d0f"
         },
       },
+      // fontFamily: {
+      //   'cormorant': ['Cormorant Garamond', 'sans-serif']
+      // }
     },
   },
   plugins: [],

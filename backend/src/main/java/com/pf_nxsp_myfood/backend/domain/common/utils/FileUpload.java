@@ -47,7 +47,7 @@ public class FileUpload {
     
             // Checks if directory exists, if not create it
             if (!directory.exists()) {
-                if (!directory.mkdir()) {
+                if (!directory.mkdirs()) {
                     returnObj.put("statusCode", 400);
                     returnObj.put("message", "Error while trying create the directory");
                     return returnObj;

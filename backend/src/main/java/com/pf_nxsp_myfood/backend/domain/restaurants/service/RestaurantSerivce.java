@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface RestaurantSerivce {
     List<RestaurantDto> getRestaurants();
+    RestaurantDto getRestaurantById(String id);
     MessageResponse saveRestaurant(RestaurantDto rDto);
     MessageResponse updateRestaurant(RestaurantDto rDto);
     MessageResponse deleteRestaurant(String id);

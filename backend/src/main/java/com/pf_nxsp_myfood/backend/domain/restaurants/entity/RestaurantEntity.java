@@ -9,6 +9,7 @@ import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.pf_nxsp_myfood.backend.domain.common.utils.BaseUtils;
 import com.pf_nxsp_myfood.backend.domain.products.entity.ProductEntity;
 
 import lombok.Builder;
@@ -22,7 +23,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "restaurants")
 @NamedEntityGraph(name = "fetch-restaurants")
-public class RestaurantEntity {
+public class RestaurantEntity extends BaseUtils {
     @Id
     private String id_restaurant;
 
@@ -35,19 +36,35 @@ public class RestaurantEntity {
     @Column(name = "logo")
     private String logo;
 
+    @Column(name = "image")
+    private String image;
+
     @Column(name = "category")
     private String category;
+
+    @Column(name = "lat")
+    private String lat;
+
+    @Column(name = "lng")
+    private String lng;
+
+    @Column(name = "city")
+    private String city;
 
     @OneToMany(mappedBy = "restaurant")
     private Set<ProductEntity> products;
 
     @Builder
-    public RestaurantEntity(String id_restaurant, String name, Integer capacity, String logo, String category) {
+    public RestaurantEntity(String id_restaurant, String name, Integer capacity, String logo, String image, String category, String lat, String lng, String city) {
         this.id_restaurant = id_restaurant;
         this.name = name;
         this.capacity = capacity;
         this.logo = logo;
+        this.image = image;
         this.category = category;
+        this.lat = lat;
+        this.lng = lng;
+        this.city = city;
     }
 
 }

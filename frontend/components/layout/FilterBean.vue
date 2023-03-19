@@ -20,14 +20,14 @@ const { filterName } = defineProps({
             </svg>
         </button>
 
-        <div class="absolute left-0 mt-2 w-56 bg-white border border-gray-300 rounded-lg shadow-md divide-y divide-gray-100"
+        <div class="absolute left-0 mt-2 w-56 bg-white border border-gray-300 rounded-lg shadow-md divide-y divide-gray-100 z-50"
             v-if="seeDropdown"
             aria-labelledby="filter-menu" role="menu">
             <div class="py-1" role="none">
-                <a href="#" 
+                <div
                     v-for="option in filterOptions"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                    role="menuitem">{{ option }}</a>
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
+                    role="menuitem">{{ option }}</div>
             </div>
         </div>
     </div>
