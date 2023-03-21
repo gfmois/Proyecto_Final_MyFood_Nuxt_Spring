@@ -1,11 +1,23 @@
-import Api from "../Api";
+import s from "../secret"
 
 export default {
-    getRestaurants() {
-        // TODO: Secret.js with the URL
-        return Api('http://localhost:8080/api').get("/restaurants")
+    async getRestaurants() {
+      try {
+        const response = await fetch(`${s.DEFAULT_URL}restaurants`)
+        return await response.json()
+      } catch (error) {
+        console.log(error)
+        return null
+      }
     },
-    getRestaurantById(id) {
-        return Api('http://localhost:8080/api').get(`/restaurants/${id}`)
+  
+    async getRestaurantById(id) {
+      try {
+        const response = await fetch(`${s.DEFAULT_URL}restaurants/${id}`)
+        return await response.json()
+      } catch (error) {
+        console.log(error)
+        return null
+      }
     }
-}
+  }

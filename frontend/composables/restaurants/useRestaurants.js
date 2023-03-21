@@ -1,24 +1,24 @@
-import RestaurantService from "~~/services/restaurants/RestaurantService";
+import { ref } from 'vue'
+import RestaurantService from '~/services/restaurants/RestaurantService'
 
-export const useGetRestaurants = () => {
-    const restaurants = ref()
-    RestaurantService.getRestaurants()
-        .then(({ data }) => {
-            restaurants.value = data
-        })
-
-    return restaurants
+export const useGetRestaurants = async () => {
+  const restaurants = ref([])
+  try {
+    const data = await RestaurantService.getRestaurants()
+    restaurants.value = data
+  } catch (error) {
+    console.log(error)
+  }
+  return restaurants
 }
 
-export const useGetRestaurantById = (id) => {
-    const restaurant = ref()
-    RestaurantService.getRestaurantById(id)
-        .then(({ data }) => {
-            restaurant.value = data
-        })
-        .catch((e) => {
-            console.log(e);
-        })
-
-    return restaurant
+export const useGetRestaurantsById = async (id) => {
+  const restaurants = ref([])
+  try {
+    const data = await RestaurantService.getRestaurantById(id)
+    restaurants.value = data
+  } catch (error) {
+    console.log(error)
+  }
+  return restaurants
 }

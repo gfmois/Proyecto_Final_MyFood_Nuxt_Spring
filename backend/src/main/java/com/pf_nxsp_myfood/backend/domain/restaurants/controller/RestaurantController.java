@@ -52,7 +52,7 @@ public class RestaurantController {
     }
 
     @GetMapping("/{id_restaurant}")
-    public RestaurantDto getRestaurantById(@PathVariable String id_restaurant) {
+    public Map<String, Object> getRestaurantById(@PathVariable String id_restaurant) {
         return rService.getRestaurantById(id_restaurant);
     }
 

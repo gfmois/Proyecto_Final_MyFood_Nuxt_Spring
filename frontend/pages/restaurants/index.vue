@@ -2,8 +2,9 @@
 import { useGetRestaurants } from '~~/composables/restaurants/useRestaurants';
 import { Suspense } from 'vue';
 
-const restaurants = ref(useGetRestaurants())
+const restaurants = await useGetRestaurants()
 const seeFilters = ref(true)
+
 </script>
 
 <template>

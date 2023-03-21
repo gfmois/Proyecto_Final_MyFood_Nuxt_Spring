@@ -1,12 +1,17 @@
 package com.pf_nxsp_myfood.backend.domain.restaurants.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.pf_nxsp_myfood.backend.domain.payload.response.MessageResponse;
+import com.pf_nxsp_myfood.backend.domain.products.dto.ProductDto;
+import com.pf_nxsp_myfood.backend.domain.products.service.ProductService;
 import com.pf_nxsp_myfood.backend.domain.restaurants.dto.RestaurantDto;
 import com.pf_nxsp_myfood.backend.domain.restaurants.entity.RestaurantEntity;
 import com.pf_nxsp_myfood.backend.domain.restaurants.repository.RestaurantRepository;
@@ -31,6 +36,12 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 				.lat(rEntity.getLat())
 				.lng(rEntity.getLng())
 				.city(rEntity.getCity())
+				.products(rEntity
+					.getProducts()
+					.stream()
+					.map(e -> e.getId_product())
+					.collect(Collectors.toList())
+				)
 				.build();
 	}
 
@@ -57,8 +68,21 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 	}
 
 	@Override
-	public RestaurantDto getRestaurantById(String id) {
-		return convertEntityToDto(rRepository.findById(id).get());
+	public Map<String, Object> getRestaurantById(String id) {
+		Map<String, Object> obj = new HashMap<String, Object>();
+		RestaurantDto rDto = convertEntityToDto(rRepository.findById(id).get());
+		List<ProductDto> productList = new ArrayList<ProductDto>();
+		final ProductService pService;
+
+		obj.put("restaurant", rDto);
+		
+		// TODO: Implement getProductByRestaurantId in ProductService to get All products of an restaurant
+		for (String pdId : rDto.getProducts()) {
+			// productList.add(pService.getProductByRestaurantId());
+		}
+		
+		obj.put("products", productList);
+		return obj;
 	}
 
 	@Override
@@ -79,7 +103,7 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 			}
 
 			RestaurantEntity rEntity = rRepository.findById(rDto.getId_restaurant()).get();
-			
+
 			rEntity.setName(rDto.getName());
 			rEntity.setCapacity(rDto.getCapacity());
 			rEntity.setLogo(rDto.getLogo());

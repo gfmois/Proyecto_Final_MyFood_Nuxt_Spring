@@ -46,6 +46,9 @@ public class RestaurantDto extends BaseUtils implements Serializable {
     @NotNull
     private String city;
 
+    @NotNull
+    private List<String> products;
+
     @Getter
     @Setter
     @AllArgsConstructor

@@ -1,6 +1,7 @@
 package com.pf_nxsp_myfood.backend.domain.restaurants.entity;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,7 +53,7 @@ public class RestaurantEntity extends BaseUtils {
     private String city;
 
     @OneToMany(mappedBy = "restaurant")
-    private Set<ProductEntity> products;
+    private List<ProductEntity> products;
 
     @Builder
     public RestaurantEntity(String id_restaurant, String name, Integer capacity, String logo, String image, String category, String lat, String lng, String city) {
@@ -65,6 +66,15 @@ public class RestaurantEntity extends BaseUtils {
         this.lat = lat;
         this.lng = lng;
         this.city = city;
+        this.products = new ArrayList<>();
+    }
+
+    public List<ProductEntity> getProducts() {
+        return this.products;
+    }
+
+    public void addProduct(ProductEntity pEntity) {
+        this.products.add(pEntity);
     }
 
 }
