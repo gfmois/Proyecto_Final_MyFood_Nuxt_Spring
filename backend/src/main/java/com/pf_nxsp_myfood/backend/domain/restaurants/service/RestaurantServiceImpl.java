@@ -1,6 +1,5 @@
 package com.pf_nxsp_myfood.backend.domain.restaurants.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.pf_nxsp_myfood.backend.domain.payload.response.MessageResponse;
-import com.pf_nxsp_myfood.backend.domain.products.dto.ProductDto;
 import com.pf_nxsp_myfood.backend.domain.products.service.ProductService;
 import com.pf_nxsp_myfood.backend.domain.restaurants.dto.RestaurantDto;
 import com.pf_nxsp_myfood.backend.domain.restaurants.entity.RestaurantEntity;
@@ -24,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 public class RestaurantServiceImpl implements RestaurantSerivce {
 	private final RestaurantRepository rRepository;
+	private final ProductService pService;
 
 	private RestaurantDto convertEntityToDto(RestaurantEntity rEntity) {
 		return RestaurantDto.builder()
@@ -71,17 +70,9 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 	public Map<String, Object> getRestaurantById(String id) {
 		Map<String, Object> obj = new HashMap<String, Object>();
 		RestaurantDto rDto = convertEntityToDto(rRepository.findById(id).get());
-		List<ProductDto> productList = new ArrayList<ProductDto>();
-		final ProductService pService;
 
 		obj.put("restaurant", rDto);
-		
-		// TODO: Implement getProductByRestaurantId in ProductService to get All products of an restaurant
-		for (String pdId : rDto.getProducts()) {
-			// productList.add(pService.getProductByRestaurantId());
-		}
-		
-		obj.put("products", productList);
+		obj.put("products", pService.getProductByRestaurantId(id));
 		return obj;
 	}
 

@@ -20,15 +20,15 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository pRepository;
 
     private ProductDto convertEntityToDto(ProductEntity pEntity) {
-		return ProductDto.builder()
-				.id_product(pEntity.getId_product())
-				.name(pEntity.getName())
-				.slug(pEntity.getSlug())
-				.image(pEntity.getImage())
+        return ProductDto.builder()
+                .id_product(pEntity.getId_product())
+                .name(pEntity.getName())
+                .slug(pEntity.getSlug())
+                .image(pEntity.getImage())
                 .price(pEntity.getPrice())
                 .restaurant(pEntity.getRestaurant().getId_restaurant())
-				.build();
-	}
+                .build();
+    }
 
     private ProductEntity convertDtoToEntity(ProductDto pDto) {
         return ProductEntity.builder()
@@ -44,9 +44,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> getProducts() {
         return pRepository.findAll()
-            .stream()
-            .map(this::convertEntityToDto)
-            .collect(Collectors.toList());
+                .stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -92,6 +92,14 @@ public class ProductServiceImpl implements ProductService {
         } catch (Exception e) {
             return new MessageResponse(String.format("Error: %s", e.getMessage()), "400");
         }
+    }
+
+    @Override
+    public List<ProductDto> getProductByRestaurantId(String id_restaurant) {
+        return pRepository.findAllProductByRestaurant(id_restaurant)
+            .stream()
+            .map(this::convertEntityToDto)
+            .collect(Collectors.toList());
     }
 
 }

@@ -10,4 +10,5 @@ public interface ProductService {
     MessageResponse saveProduct(ProductDto pDto);
     MessageResponse updateProduct(ProductDto pDto);
     MessageResponse deleteProduct(String id);
+    List<ProductDto> getProductByRestaurantId(String id_restaurant);
 }
