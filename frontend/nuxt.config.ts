@@ -1,5 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import i18n from "./config/i18n/i18n"
+
 export default defineNuxtConfig({
+    i18n,
     app: {
         head: {
             link: [
@@ -14,5 +17,5 @@ export default defineNuxtConfig({
             ],
         }
     },
-    modules: [ "@nuxtjs/tailwindcss", "nuxt-icon" ],
+    modules: [ "@nuxtjs/tailwindcss", "nuxt-icon", '@nuxtjs/i18n'],
 })

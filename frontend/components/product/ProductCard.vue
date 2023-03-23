@@ -15,7 +15,7 @@ const isModalVisible = ref(false)
                 <p class="font-bold">Precio: {{ Number.parseFloat(product.price) || '--,--' }}€</p>
             </div>
         </div>
-        <!-- <div v-if="isModalVisible">
-            <BasicModal class="z-[51]" />
-        </div> -->
+        <div v-if="isModalVisible" class="fixed">
+            <BasicModal :item="product" class="z-[51]" @cancelAction="$e => isModalVisible = $e" />
+        </div>
 </template>

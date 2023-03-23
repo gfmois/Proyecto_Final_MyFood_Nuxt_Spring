@@ -5,6 +5,8 @@ const route = useRoute()
 const { id } = route.params
 
 const data = await useGetRestaurantsById(id);
+
+// FIXME: 
 const { data: locationRes } = await useFetch("https://trueway-geocoding.p.rapidapi.com/ReverseGeocode", {
     query: { location: `${data.value.restaurant.lat},${data.value.restaurant.lng}`, lenguage: 'en' },
     headers: {
@@ -26,19 +28,19 @@ const { data: locationRes } = await useFetch("https://trueway-geocoding.p.rapida
             <div class="p-5">
                 <h2 class="text-3xl font-bold mb-4">{{ data.restaurant.name }}</h2>
                 <div class="mb-4 flex flex-row gap-1">
-                    <p class="font-bold">Dirección:</p>
+                    <p class="font-bold">{{ $t('direction') }}:</p>
                     <p>{{ locationRes.results[0].address.split(',')[0] }}</p>
                 </div>
                 <div class="mb-4 flex flex-row gap-1">
-                    <p class="font-bold">Teléfono: </p>
+                    <p class="font-bold">{{ $t('phone') }}: </p>
                     <p> 123-456-7890</p>
                 </div>
-                <p class="mb-4 font-bold">Horario de atención:</p>
+                <p class="mb-4 font-bold">{{ $t('schedule') }}:</p>
                 <ul class="list-disc list-inside mb-4">
                     <li>Lunes a Viernes: 12pm - 9pm</li>
                     <li>Sábados y Domingos: 10am - 10pm</li>
                 </ul>
-                <p class="mb-4 font-bold">Descripción:</p>
+                <p class="mb-4 font-bold">{{ $t('description') }}:</p>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam convallis eget arcu eu aliquet. In ac
                     nibh a
                     ante finibus eleifend vel vitae velit. Pellentesque habitant morbi tristique senectus et netus et
@@ -51,10 +53,10 @@ const { data: locationRes } = await useFetch("https://trueway-geocoding.p.rapida
                 <div class="mt-8 flex items-center justify-start p-2 flex-row gap-1">
                     <LayoutButton button-type="custom"
                         custom-style="rounded-none dark:bg-crimson-500 dark:text-black ring-crimson-600"
-                        title="Empezar la Reserva" />
+                        :title="$t('reserve')" />
                     <LayoutButton button-type="custom"
                         custom-style="rounded-none dark:bg-crimson-500 dark:text-black ring-crimson-600"
-                        title="Realizar un pedido" />
+                        :title="$t('make_order')" />
                 </div>
             </div>
         </section>
