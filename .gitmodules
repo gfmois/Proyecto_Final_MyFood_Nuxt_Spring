@@ -1,0 +1,3 @@
+[submodule "mobile"]
+	path = mobile
+	url = https://github.com/gfmois/MyFood_Flutter_Proyecto_Final.git
