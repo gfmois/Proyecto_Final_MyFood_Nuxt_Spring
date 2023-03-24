@@ -57,7 +57,7 @@ public class ProductController {
 	public MessageResponse createProducts(
 			@RequestParam("file") MultipartFile file,
 			@RequestParam("name") String name,
-			@RequestParam("slug") String slug,
+			@RequestParam("description") String description,
 			@RequestParam("price") String price,
 			@RequestParam("id_restaurant") String restaurant) {
 		try {
@@ -81,7 +81,8 @@ public class ProductController {
 			// Transform FormData to ProductDto
 			pDto.setId_product(IdGenerator.generateWithLength(20));
 			pDto.setName(name);
-			pDto.setSlug(slug);
+			pDto.setSlug(name.toLowerCase().replaceAll(" ", "_"));
+			pDto.setDescription(description);
 			pDto.setImage((String) fileObj.get("path").toString());
 			pDto.setPrice(price);
 			pDto.setRestaurant(restaurant);
@@ -100,7 +101,7 @@ public class ProductController {
 			@RequestParam("id_product") String id_product,
 			@RequestParam("file") MultipartFile file,
 			@RequestParam("name") String name,
-			@RequestParam("slug") String slug,
+			@RequestParam("desciption") String desciption,
 			@RequestParam("price") String price) {
 		try {
 			// New Instance of ProductDto
@@ -123,7 +124,8 @@ public class ProductController {
 			// Transform FormData to ProductDto
 			pDto.setId_product(id_product);
 			pDto.setName(name);
-			pDto.setSlug(slug);
+			pDto.setSlug(name.toLowerCase().replaceAll(" ", "_"));
+			pDto.setDescription(desciption);
 			pDto.setImage((String) filePathObj.get("path").toString());
 			pDto.setPrice(price);
 

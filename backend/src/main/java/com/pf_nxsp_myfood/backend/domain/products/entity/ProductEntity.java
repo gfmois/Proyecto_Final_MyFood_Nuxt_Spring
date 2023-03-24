@@ -42,6 +42,9 @@ public class ProductEntity {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "price")
     private String price;
 
@@ -75,12 +78,13 @@ public class ProductEntity {
     private RestaurantEntity restaurant;
 
     @Builder
-    public ProductEntity(String id_product, String slug, String name, String price, String image, String id__restaurant) {
+    public ProductEntity(String id_product, String slug, String name, String price, String image, String id__restaurant, String description) {
         this.id_product = id_product;
         this.slug = slug;
         this.name = name;
         this.price = price;
         this.image = image;
+        this.description = description;
         this.restaurant = new RestaurantEntity();
         this.categories = new ArrayList<>();
         this.allergens = new ArrayList<>();

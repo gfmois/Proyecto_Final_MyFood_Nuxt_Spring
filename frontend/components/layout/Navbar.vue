@@ -36,13 +36,9 @@ const { locale } = useI18n()
                     <li>
                         <select v-model="locale">
                             <option value="es">
-                                <img src="https://www.banderasphonline.com/wp-content/uploads/2020/03/bandera-espa%C3%B1a-con-escudo-para-exterior-interior-1200x675.png" alt="Español" width="20px"
-                                    height="auto">
                                 Español
                             </option>
                             <option value="en">
-                                <img src="/ruta/a/la/imagen/de/la/bandera/reino-unido.png" alt="Inglés" width="20px"
-                                    height="auto">
                                 Inglés
                             </option>
                         </select>

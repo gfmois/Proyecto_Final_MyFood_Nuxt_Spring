@@ -12,10 +12,10 @@ const isModalVisible = ref(false)
             <div>
                 <h4 class="text-xl font-bold mb-2">{{ product.name }}</h4>
                 <p class="mb-2">{{ product.description || 'None' }}</p>
-                <p class="font-bold">Precio: {{ Number.parseFloat(product.price) || '--,--' }}€</p>
+                <p class="font-bold">{{ $t('price') }}: {{ Number.parseFloat(product.price) || '--,--' }}€</p>
             </div>
         </div>
         <div v-if="isModalVisible" class="fixed">
-            <BasicModal :item="product" class="z-[51]" @cancelAction="$e => isModalVisible = $e" />
+            <BasicModal actionBtnName="Añadir al carrito" showActionBtn="true" :item="product" class="z-[51]" @cancelAction="$e => isModalVisible = $e" />
         </div>
 </template>

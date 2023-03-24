@@ -29,6 +29,9 @@ public class ProductDto extends BaseUtils implements Serializable {
     private String slug;
 
     @NotNull
+    private String description;
+
+    @NotNull
     private String price;
 
     @NotNull

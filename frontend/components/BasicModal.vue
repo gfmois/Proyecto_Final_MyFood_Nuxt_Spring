@@ -1,13 +1,15 @@
 <script setup>
 const { product } = defineProps({
-    item: Object
+    item: Object,
+    showActionBtn: false,
+    actionBtnName: String
 })
 </script>
 
 <template>
     <div id="defaultModal" tabindex="-1" aria-hidden="true"
-    class="z-60 fixed top-0 left-0 right-0 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 flex items-center justify-center">
-    <div class="relative w-full h-full max-w-2xl md:h-auto">
+        class="z-60 fixed top-0 left-0 right-0 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 flex items-center justify-center">
+        <div class="relative w-full h-full max-w-2xl md:h-auto z-50">
             <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                 <!-- Modal header -->
@@ -15,8 +17,7 @@ const { product } = defineProps({
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                         {{ item.name || $t('not_found') }}
                     </h3>
-                    <button type="button" 
-                        v-on:click="$emit('cancelAction', false)"
+                    <button type="button" v-on:click="$emit('cancelAction', false)"
                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                         data-modal-hide="defaultModal">
                         <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
@@ -31,25 +32,19 @@ const { product } = defineProps({
                 <!-- Modal body -->
                 <div class="p-6 space-y-6">
                     <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                        With less than a month to go before the European Union enacts new consumer privacy laws for its
-                        citizens, companies around the world are updating their terms of service agreements to comply.
-                    </p>
-                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                        The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is
-                        meant to ensure a common set of data rights in the European Union. It requires organizations to
-                        notify users as soon as possible of high-risk data breaches that could personally affect them.
+                        {{ item.description || item.body }}
                     </p>
                 </div>
                 <!-- Modal footer -->
-                <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    <button data-modal-hide="defaultModal" type="button"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I
-                        accept</button>
-                    <button data-modal-hide="defaultModal" type="button"
-                        class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-                        v-on:click="$emit('cancelAction', false)">Cancelar</button>
+                <div class="flex items-center p-6 space-x-2 border-t justify-end border-gray-200 rounded-b dark:border-gray-600">
+                    <LayoutButton v-if="showActionBtn" :title="actionBtnName" button-type="custom_empty"
+                        custom-style="text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm text-center dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800" />
+                    <LayoutButton :title="$t('close')" button-type="custom_empty"
+                        @click="$emit('cancelAction', false)"
+                        custom-style="text-white bg-crimson-700 hover:bg-crimson-800 focus:ring-4 focus:outline-none focus:ring-crimson-300 font-medium rounded-lg text-sm text-center dark:bg-crimson-600 dark:hover:bg-crimson-700 dark:focus:ring-crimson-800" />
                 </div>
             </div>
         </div>
+        <div class="h-screen w-screen bg-black/50 z-40 fixed left-0 top-0"></div>
     </div>
 </template>

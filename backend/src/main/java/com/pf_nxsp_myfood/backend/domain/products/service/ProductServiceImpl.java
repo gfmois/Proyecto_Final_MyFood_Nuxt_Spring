@@ -26,6 +26,7 @@ public class ProductServiceImpl implements ProductService {
                 .slug(pEntity.getSlug())
                 .image(pEntity.getImage())
                 .price(pEntity.getPrice())
+                .description(pEntity.getDescription())
                 .restaurant(pEntity.getRestaurant().getId_restaurant())
                 .build();
     }
@@ -37,6 +38,7 @@ public class ProductServiceImpl implements ProductService {
                 .image(pDto.getImage())
                 .price(pDto.getPrice())
                 .slug(pDto.getSlug())
+                .description(pDto.getDescription())
                 .id__restaurant(pDto.getRestaurant())
                 .build();
     }
@@ -74,6 +76,7 @@ public class ProductServiceImpl implements ProductService {
             pEntity.setName(pDto.getName());
             pEntity.setPrice(pDto.getPrice());
             pEntity.setSlug(pDto.getSlug());
+            pEntity.setDescription(pDto.getDescription());
 
             // Save Product updated
             pRepository.save(pEntity);
