@@ -61,9 +61,8 @@ const locationRes = await $fetch("https://trueway-geocoding.p.rapidapi.com/Rever
                         custom-style="rounded-none dark:bg-crimson-500 dark:text-black ring-crimson-600"
                         :title="$t('make_event')" />
                     <LayoutButton button-type="custom"
-                        custom-style="rounded-none dark:bg-crimson-500 dark:text-black ring-crimson-600">
-                        <Icon name="ph:dots-three-outline-fill" />
-                    </LayoutButton>
+                        showOptionsButton="true"
+                        custom-style="rounded-none dark:bg-crimson-500 dark:text-black ring-crimson-600" />
                 </div>
             </div>
         </section>

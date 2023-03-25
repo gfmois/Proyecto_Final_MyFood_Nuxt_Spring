@@ -3,7 +3,8 @@ const { title, buttonType, customStyle } = defineProps({
     title: String,
     buttonType: String,
     customStyle: String,
-    action: Promise
+    action: Promise,
+    showOptionsButton: false
 })
 
 const styles = {
@@ -22,9 +23,9 @@ if (customStyle && buttonType == 'custom' || buttonType == 'custom_empty') {
 <template>
     <!-- FIXME: Slot can't be centered -->
     <div class="flex items-center justify-center relative">
-        <button type="button"
-            @click="action"
-            :class="`${styles[buttonType] || styles['default']} !p-4`">{{ title }}</button>
-            <slot />
+        <button type="button" @click="action" :class="`${styles[buttonType] || styles['default']} !p-4`" v-if="!showOptionsButton">{{ title }}</button>
+        <button type="button" @click="action" :class="`${styles[buttonType] || styles['default']} !p-4`" v-if="showOptionsButton">
+            <Icon name="ph:dots-three-outline-fill" />
+        </button>
     </div>
 </template>
