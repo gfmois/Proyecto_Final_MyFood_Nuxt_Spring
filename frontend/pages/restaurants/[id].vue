@@ -2,6 +2,8 @@
 import { useGetRestaurantsById } from '~~/composables/restaurants/useRestaurants';
 
 const route = useRoute()
+const isModalVisible = ref(false)
+
 const { id } = route.params
 
 const data = await useGetRestaurantsById(id);
@@ -20,7 +22,7 @@ const locationRes = await $fetch("https://trueway-geocoding.p.rapidapi.com/Rever
     <Header>
         <Title>{{ data.restaurant.name || 'Restaurante' }}</Title>
     </Header>
-    <div class="flex items-start flex-col justify-center">
+    <div class="flex items-start flex-col justify-center relative">
         <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="md:col-span-2">
                 <img :src="`/${data.restaurant.image}`" alt="Imagen del Restaurante" class="w-full h-full object-cover">
@@ -53,7 +55,7 @@ const locationRes = await $fetch("https://trueway-geocoding.p.rapidapi.com/Rever
                 <div class="mt-8 flex items-center justify-start p-2 flex-row gap-1">
                     <LayoutButton button-type="custom"
                         custom-style="rounded-none dark:bg-crimson-500 dark:text-black ring-crimson-600"
-                        :title="$t('reserve')" />
+                        :title="$t('reserve')" :action="() => isModalVisible = true" />
                     <LayoutButton button-type="custom"
                         custom-style="rounded-none dark:bg-crimson-500 dark:text-black ring-crimson-600"
                         :title="$t('make_order')" />
@@ -71,9 +73,10 @@ const locationRes = await $fetch("https://trueway-geocoding.p.rapidapi.com/Rever
                 <h3 class="text-2xl font-bold mb-4 text-center p-2">Productos</h3>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-2">
-                <ProductCard :product="product" v-for="product in data.products" v-if="data.products.length > 0" />
+                <ProductCard :hasActionModal="true" :product="product" v-for="product in data.products" v-if="data.products.length > 0" />
                 <div v-if="data.products.length == 0" class="text-center w-full bg-red-400">Sin productos todavía</div>
             </div>
         </section>
+        <ActionModal :isModalVisible="isModalVisible" @closeModal="$e => isModalVisible = $e" />
     </div>
 </template>

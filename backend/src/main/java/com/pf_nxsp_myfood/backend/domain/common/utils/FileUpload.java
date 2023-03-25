@@ -31,11 +31,16 @@ public class FileUpload {
     public Map<String, Object> saveFile(String folderName, MultipartFile file) throws IOException {
         Map<String, Object> returnObj = new HashMap<>();
         try {
+            //* Crear carpeta local para tener los arvchivos en los dos sitios, public/web y backend, */
+            //* Imágenes se podrán acceder desde movil a través de endpoint y por web a través de public sin petición */
+
             // Folder Default Route
             String uploadDir = env.getProperty("file.upload-dir");
+            String localeDir = env.getProperty("file.upload-locale-dir");
 
             // Create Folder with the name where image will be save
             File directory = new File(uploadDir + folderName);
+            File localDirectory = new File(localeDir + folderName);
 
             // Change file names
             String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
@@ -43,7 +48,10 @@ public class FileUpload {
             String newFileName = String.format("%s_%s.%s", IdGenerator.generateWithLength(10), System.currentTimeMillis(), extension.toLowerCase());
 
             Path path = Paths.get(uploadDir + folderName + "/" + newFileName);
+            Path localPath = Paths.get(localDirectory + "/" + newFileName);
+
             File dest = path.toFile();
+            File localDest = localPath.toFile();
     
             // Checks if directory exists, if not create it
             if (!directory.exists()) {
@@ -53,16 +61,25 @@ public class FileUpload {
                     return returnObj;
                 }
             }
+
+            if (!localDirectory.exists()) {
+                if (!localDirectory.mkdirs()) {
+                    returnObj.put("statusCode", 400);
+                    returnObj.put("message", "Error while trying create the directory");
+                    return returnObj;
+                }
+            }
             
             // Transfers file info to file on the folder
             file.transferTo(dest.toPath());
+            file.transferTo(localDest.toPath());
             
             returnObj.put("statusCode", 200);
             returnObj.put("path", String.format("images/%s/%s", folderName, newFileName));
             
             return returnObj;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println(String.format("Error -> %s", e.getMessage()));
             returnObj.put("statusCode", 400);
             returnObj.put("message", e.getMessage());
             return returnObj;

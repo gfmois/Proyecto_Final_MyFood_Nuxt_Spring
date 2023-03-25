@@ -1,11 +1,21 @@
 package com.pf_nxsp_myfood.backend.domain.restaurants.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 // import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +26,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -54,6 +65,26 @@ public class RestaurantController {
     @GetMapping("/{id_restaurant}")
     public Map<String, Object> getRestaurantById(@PathVariable String id_restaurant) {
         return rService.getRestaurantById(id_restaurant);
+    }
+
+    @GetMapping(
+        value = "/{id_restaurant}/image", 
+        produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    public @ResponseBody ResponseEntity<byte[]> getRestaurantImage(@PathVariable String id_restaurant) throws IOException {
+        Map<String, Object> pDto = rService.getRestaurantById(id_restaurant);
+        String str_imagePath = ((RestaurantDto) pDto.get("restaurant")).getImage();
+        String[] imageSplitted = str_imagePath.split("/");
+        String image = imageSplitted[imageSplitted.length - 1];
+
+        Path imagePath = Paths.get("./assets/images/restaurants", image);
+        byte[] imageBytes = Files.readAllBytes(imagePath);
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        headers.setContentLength(imageBytes.length);
+
+        return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
     }
 
     @CacheEvict(value = "restaurants", allEntries = true)

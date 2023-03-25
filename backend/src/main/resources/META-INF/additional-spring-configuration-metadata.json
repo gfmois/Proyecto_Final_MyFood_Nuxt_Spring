@@ -1,5 +1,12 @@
-{"properties": [{
-  "name": "file.upload-dir",
-  "type": "java.lang.String",
-  "description": "Direction where Files from FileUpload will be save"
-}]}
+{"properties": [
+  {
+    "name": "file.upload-dir",
+    "type": "java.lang.String",
+    "description": "Direction where Files from FileUpload will be save"
+  },
+  {
+    "name": "file.upload-locale-dir",
+    "type": "java.lang.String",
+    "description": "'Where Images Will be save locally'"
+  }
+]}

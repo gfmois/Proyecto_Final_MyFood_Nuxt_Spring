@@ -1,6 +1,7 @@
 <script setup>
-const { product } = defineProps({
-    product: Object
+const { product, hasActionModal } = defineProps({
+    product: Object,
+    hasActionModal: Boolean
 })
 
 const isModalVisible = ref(false)
@@ -15,7 +16,7 @@ const isModalVisible = ref(false)
                 <p class="font-bold">{{ $t('price') }}: {{ Number.parseFloat(product.price) || '--,--' }}€</p>
             </div>
         </div>
-        <div v-if="isModalVisible" class="fixed">
-            <BasicModal actionBtnName="Añadir al carrito" showActionBtn="true" :item="product" class="z-[51]" @cancelAction="$e => isModalVisible = $e" />
+        <div v-if="hasActionModal" class="fixed">
+            <BasicModal v-if="isModalVisible" actionBtnName="Añadir al carrito" showActionBtn="true" :item="product" class="z-[51]" @cancelAction="$e => isModalVisible = $e" />
         </div>
 </template>
