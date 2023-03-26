@@ -22,3 +22,14 @@ export const useGetRestaurantsById = async (id) => {
   }
   return restaurants
 }
+
+export const useGetNRestaurants = async () => {
+  const restaurants = ref([])
+  try {
+    const data = await RestaurantService.getNRestaurants()
+    restaurants.value = data
+  } catch (error) {
+    console.log(error)
+  }
+  return restaurants
+}

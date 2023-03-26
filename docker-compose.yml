@@ -34,12 +34,30 @@ services:
     restart: always
     container_name: redis_container
     ports:
-       - 6379:6379
+      - 6379:6379
     command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
     depends_on:
       - database
-    volumes: 
-      - ./conf/cache:/data
+    volumes:
+      - ./conf/redis/cache:/data
+
+  # dragonfly:
+  #   image: 'docker.dragonflydb.io/dragonflydb/dragonfly'
+  #   container_name: dragonfly_container
+  #   ulimits:
+  #     memlock: -1
+  #   ports:
+  #     - "6379:6379"
+  #   # For better performance, consider `host` mode instead `port` to avoid docker NAT.
+  #   # `host` mode is NOT currently supported in Swarm Mode.
+  #   # https://docs.docker.com/compose/compose-file/compose-file-v3/#network_mode
+  #   # network_mode: "host"
+  #   depends_on:
+  #     - database
+  #   networks:
+  #     - pf_nsl_network
+  #   volumes:
+  #     - ./conf/dragonfly/cache:/data
 
 networks:
   pf_nsl_network:

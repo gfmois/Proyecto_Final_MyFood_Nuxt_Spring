@@ -27,7 +27,7 @@ public class RedisConfiguration {
     @Bean
     JedisConnectionFactory jedisConnectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
-        configuration.setPassword("eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81"); // TODO: Pass to .ENV
+        configuration.setPassword("eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81");
         return new JedisConnectionFactory(configuration);
     }
 

@@ -1,14 +1,12 @@
 package com.pf_nxsp_myfood.backend.domain.restaurants.controller;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -65,6 +63,11 @@ public class RestaurantController {
     @GetMapping("/{id_restaurant}")
     public Map<String, Object> getRestaurantById(@PathVariable String id_restaurant) {
         return rService.getRestaurantById(id_restaurant);
+    }
+
+    @GetMapping("/count")
+    public Integer countRestaurants() {
+        return rService.getRestaurants().size();
     }
 
     @GetMapping(

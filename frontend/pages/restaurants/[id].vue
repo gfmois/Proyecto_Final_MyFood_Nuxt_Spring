@@ -3,19 +3,24 @@ import { useGetRestaurantsById } from '~~/composables/restaurants/useRestaurants
 
 const route = useRoute()
 const isModalVisible = ref(false)
+const productSelected = ref(null)
 
 const { id } = route.params
 
-const data = await useGetRestaurantsById(id);
+const data = reactive(await useGetRestaurantsById(id));
 
-// FIXME: 
-const locationRes = await $fetch("https://trueway-geocoding.p.rapidapi.com/ReverseGeocode", {
-    query: { location: `${data.value.restaurant.lat},${data.value.restaurant.lng}`, lenguage: 'en' },
-    headers: {
-        'X-RapidAPI-Key': import.meta.env.VITE_RAPID_API_KEY,
-        'X-RapidAPI-Host': import.meta.env.VITE_RAPID_API_HOST
-    }
+data.value.products.map((e) => {
+    e.quantity = 0;
 })
+
+// FIXME: This make an petition and delays the page
+// const locationRes = await $fetch("https://trueway-geocoding.p.rapidapi.com/ReverseGeocode", {
+//     query: { location: `${data.value.restaurant.lat},${data.value.restaurant.lng}`, lenguage: 'en' },
+//     headers: {
+//         'X-RapidAPI-Key': import.meta.env.VITE_RAPID_API_KEY,
+//         'X-RapidAPI-Host': import.meta.env.VITE_RAPID_API_HOST
+//     }
+// })
 </script>
 
 <template>
@@ -31,7 +36,7 @@ const locationRes = await $fetch("https://trueway-geocoding.p.rapidapi.com/Rever
                 <h2 class="text-3xl font-bold mb-4">{{ data.restaurant.name }}</h2>
                 <div class="mb-4 flex flex-row gap-1">
                     <p class="font-bold">{{ $t('direction') }}:</p>
-                    <p>{{ locationRes.results[0].address.split(',')[0] }}</p>
+                    <p>Not Found</p><!-- locationRes.results[0].address.split(',')[0] || -->
                 </div>
                 <div class="mb-4 flex flex-row gap-1">
                     <p class="font-bold">{{ $t('phone') }}: </p>
@@ -62,8 +67,7 @@ const locationRes = await $fetch("https://trueway-geocoding.p.rapidapi.com/Rever
                     <LayoutButton button-type="custom"
                         custom-style="rounded-none dark:bg-crimson-500 dark:text-black ring-crimson-600"
                         :title="$t('make_event')" />
-                    <LayoutButton button-type="custom"
-                        showOptionsButton="true"
+                    <LayoutButton button-type="custom" showOptionsButton="true"
                         custom-style="rounded-none dark:bg-crimson-500 dark:text-black ring-crimson-600" />
                 </div>
             </div>
@@ -73,7 +77,8 @@ const locationRes = await $fetch("https://trueway-geocoding.p.rapidapi.com/Rever
                 <h3 class="text-2xl font-bold mb-4 text-center p-2">Productos</h3>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-2">
-                <ProductCard :hasActionModal="true" :product="product" v-for="product in data.products" v-if="data.products.length > 0" />
+                <ProductCard :hasActionModal="true" :product="product" v-for="product in data.products"
+                    v-if="data.products.length > 0" @click="() => productSelected = product" />
                 <div v-if="data.products.length == 0" class="text-center w-full bg-red-400">Sin productos todavía</div>
             </div>
         </section>

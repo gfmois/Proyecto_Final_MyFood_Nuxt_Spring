@@ -1,3 +1,9 @@
+<script setup>
+import { useGetNRestaurants } from '~~/composables/restaurants/useRestaurants';
+
+const nRestaurants = await useGetNRestaurants();
+</script>
+
 <template>
     <Header>
         <Title>Inicio</Title>
@@ -17,8 +23,7 @@
                     <LayoutInput input-type="text" input-placeholder="Indio" inputLabel="Tipo de Comida" />
                 </div>
             </div>
-            <LayoutButton button-type="custom"
-                :action="() => $router.replace('/restaurants')"
+            <LayoutButton button-type="custom" :action="() => $router.replace('/restaurants')"
                 custom-style="bg-crimson-500 hover:bg-crimson-700 hover:dark:bg-crimson-600 dark:focus:ring-crimson-700"
                 title="Comienza tu Experiencia" class="text-center mt-8" />
         </div>
@@ -26,7 +31,7 @@
             <div class="bg-red-400 flex-1 h-full w-full p-4 flex items-center justify-center flex-col gap-2 rounded-md">
                 <Icon name="grommet-icons:restaurant" size="4rem" />
                 <p class="text-center text-sm">Actualmente tenemos </p>
-                <p><strong>200</strong></p>
+                <p><strong>{{ nRestaurants }}</strong></p>
                 <p class="text-sm">restaurante a tu disposición, para que los disfutes</p>
             </div>
             <div class="bg-red-400 flex-1 h-full w-full p-4 flex items-center justify-center flex-col gap-2 rounded-md">
