@@ -78,10 +78,16 @@ data.value.products.map((e) => {
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-2">
                 <ProductCard :hasActionModal="true" :product="product" v-for="product in data.products"
-                    v-if="data.products.length > 0" @click="() => productSelected = product" />
+                    v-if="data.products.length > 0" />
                 <div v-if="data.products.length == 0" class="text-center w-full bg-red-400">Sin productos todavía</div>
             </div>
         </section>
-        <ActionModal :isModalVisible="isModalVisible" @closeModal="$e => isModalVisible = $e" />
+        <ActionModal :isModalVisible="isModalVisible" @itemClicked="$e => productSelected = $e"
+            @closeModal="$e => isModalVisible = $e" title="Realizar Pedido">
+            <div v-for="product in data.products">
+                <ProductCard :hasActionModal="true" :product="product"
+                    v-if="data.products.length > 0" />
+            </div>
+        </ActionModal>
     </div>
 </template>

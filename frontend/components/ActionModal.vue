@@ -1,7 +1,8 @@
 <script setup>
-    const { isModalVisible, productSelected } = defineProps({
+    const { isModalVisible, itemSelected, title } = defineProps({
         isModalVisible: false,
-        productSelected: Object
+        itemSelected: Object,
+        title: String
     })
 </script>
 
@@ -11,16 +12,14 @@
         <div class="fixed top-0 left-0 p-8 w-screen h-screen z-[51]">
             <div class="bg-gray-100 rounded-lg p-4 w-full h-full">
                 <div class="w-full flex items-center justify-between">
-                    <h1 class="uppercase text-xl">Realizar Pedido</h1>
+                    <h1 class="uppercase text-xl">{{ title }}</h1>
                     <Icon name="ic:baseline-close" size="2rem" class="cursor-pointer hover:border border-black rounded-lg" @click="$emit('closeModal', false)"/>
                 </div>
                 <div class="border-b border-gray-300 my-4" />
-                <div class="flex flex-wrap xs:gap-2 md:gap-0 overflow-y-scroll box-border h-[90%]">
-                    <div class="w-full lg:w-1/4 px-4">
-                      <div class="h-24">
-                        <ProductCard :product="productSelected" :isModalVisible="false" />
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 overflow-y-scroll box-border h-[90%]">
+                      <div class="bg-gray-100 p-4">
+                        <slot/>
                       </div>
-                    </div>
                 </div>
             </div>
         </div>

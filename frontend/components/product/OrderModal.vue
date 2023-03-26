@@ -19,11 +19,12 @@ const { quantity, product } = defineProps({
                 </p>
             </div>
             <div class="border-b border-gray-300 my-4" />
-            <div class="flex flex-row justify-center items-center">
-                <LayoutButton button-type="red" title="-" :action="product.quantity > 0 ? () => product.quantity-- : null" />
-                <LayoutButton button-type="yellow" :title="product.quantity" /> <!-- Chane it to an span or something like that -->
-                <LayoutButton button-type="green" title="+" :action="() => product.quantity++" />
-
+            <div class="flex flex-col justify-center items-center gap-2">
+                <div class="flex flex-row items-center justify-center">
+                    <LayoutButton button-type="red" title="-" :action="product.quantity > 0 ? () => product.quantity-- : null" />
+                    <LayoutButton button-type="yellow" :title="product.quantity" /> <!-- Chane it to an span or something like that -->
+                    <LayoutButton button-type="green" title="+" :action="() => product.quantity++" />
+                </div>
             </div>
         </div>
     </div>
