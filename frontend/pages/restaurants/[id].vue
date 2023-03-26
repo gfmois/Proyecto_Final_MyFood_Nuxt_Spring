@@ -60,10 +60,10 @@ data.value.products.map((e) => {
                 <div class="mt-8 flex items-center justify-start p-2 flex-row gap-1">
                     <LayoutButton button-type="custom"
                         custom-style="rounded-none dark:bg-crimson-500 dark:text-black ring-crimson-600"
-                        :title="$t('reserve')" :action="() => isModalVisible = true" />
+                        :title="$t('reserve')" />
                     <LayoutButton button-type="custom"
                         custom-style="rounded-none dark:bg-crimson-500 dark:text-black ring-crimson-600"
-                        :title="$t('make_order')" />
+                        :title="$t('make_order')" :action="() => isModalVisible = true" />
                     <LayoutButton button-type="custom"
                         custom-style="rounded-none dark:bg-crimson-500 dark:text-black ring-crimson-600"
                         :title="$t('make_event')" />
@@ -84,7 +84,7 @@ data.value.products.map((e) => {
         </section>
         <ActionModal :isModalVisible="isModalVisible" @itemClicked="$e => productSelected = $e"
             @closeModal="$e => isModalVisible = $e" title="Realizar Pedido">
-            <div v-for="product in data.products">
+            <div class="w-fit h-fit" v-for="product in data.products">
                 <ProductCard :hasActionModal="true" :product="product"
                     v-if="data.products.length > 0" />
             </div>

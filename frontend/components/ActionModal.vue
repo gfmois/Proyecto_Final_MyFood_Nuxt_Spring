@@ -16,10 +16,8 @@
                     <Icon name="ic:baseline-close" size="2rem" class="cursor-pointer hover:border border-black rounded-lg" @click="$emit('closeModal', false)"/>
                 </div>
                 <div class="border-b border-gray-300 my-4" />
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 overflow-y-scroll box-border h-[90%]">
-                      <div class="bg-gray-100 p-4">
-                        <slot/>
-                      </div>
+                <div class="grid grid-cols- md:grid-cols-2 gap-3 overflow-y-scroll box-border h-[90%]">
+                    <slot/>
                 </div>
             </div>
         </div>
