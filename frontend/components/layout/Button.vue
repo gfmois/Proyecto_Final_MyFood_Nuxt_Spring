@@ -1,10 +1,12 @@
 <script setup>
-const { title, buttonType, customStyle, action } = defineProps({
+const { title, buttonType, customStyle, action, disabled } = defineProps({
     title: String,
     buttonType: String,
     customStyle: String,
     action: Promise,
-    showOptionsButton: false
+    showOptionsButton: false,
+    iconName: String,
+    disabled: Boolean
 })
 
 const styles = {
@@ -25,9 +27,9 @@ if (customStyle && buttonType == 'custom' || buttonType == 'custom_empty') {
 <template>
     <!-- FIXME: Slot can't be centered -->
     <div class="flex items-center justify-center relative">
-        <button type="button" @click="action" :class="`${styles[buttonType] || styles['default']} !p-4`" v-if="!showOptionsButton">{{ title }}</button>
-        <button type="button" @click="action" :class="`${styles[buttonType] || styles['default']} !p-4`" v-if="showOptionsButton" >
-            <Icon name="ph:dots-three-outline-fill" />
+        <button :disabled="disabled" type="button" @click="action" :class="`${styles[buttonType] || styles['default']} ${disabled ? '!bg-red-600/50' : ''} !p-4`" v-if="!showOptionsButton">{{ title }}</button>
+        <button :disabled="disabled" type="button" @click="action" :class="`${styles[buttonType] || styles['default']} !p-4`" v-if="showOptionsButton" >
+            <Icon :name="iconName || 'ph:dots-three-outline-fill'" />
         </button>
     </div>
 </template>

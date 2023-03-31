@@ -1,10 +1,22 @@
+<script setup>
+const { items } = defineProps({
+    items: Array
+})
+</script>
+
 <template>
     <div class="cart">
         <div class="header p-1 cursor-pointer">
-              <Icon name="material-symbols:shopping-cart" size="2rem" class="text-crimson-500" />
+            <Icon name="material-symbols:shopping-cart" size="2rem" class="text-crimson-500" />
         </div>
         <div class="body content">
-            <!-- <ProductsList :key="products" :products="cart" :isCart="true"></ProductsList> -->
+            <div v-for="item in items.value">
+                <ProductCard :has-action-modal="false" :product="item" :hasActionModal="true" />
+            </div>
+
+            <div class="w-full h-full flex items-center justify-center text-xl text-crimson-500" v-if="items.value.length == 0">
+                Sin Items Todavía
+            </div>
         </div>
         <div class="footer content">
             <button>{{ $t('open_cart') }}</button>
@@ -39,36 +51,44 @@
     justify-items: center;
     width: 100%;
 }
+
 .cart .body {
     box-sizing: border-box;
     padding-top: 10px;
     height: 80%;
     width: 100%;
+    overflow-y: scroll;
 }
+
 .cart .footer {
     box-sizing: border-box;
     height: 10%;
     width: 100%;
     display: flex;
 }
+
 .cart .footer button {
     all: unset;
     float: right;
     color: white;
     padding: 10px;
     border-radius: 20px;
-    background-color: orange;
+    background-color: #e2434b;
+    cursor: pointer;
 }
+
 .cart:hover {
     transition: all .5s ease-in-out;
     padding: 20px;
     width: 40vw;
     height: 40vh;
 }
+
 .cart .content {
     display: none;
 }
-.cart:hover .content{
+
+.cart:hover .content {
     display: block;
 }
 
@@ -77,5 +97,4 @@
         width: 90vw;
         height: 60vh;
     }
-}
-</style>
+}</style>

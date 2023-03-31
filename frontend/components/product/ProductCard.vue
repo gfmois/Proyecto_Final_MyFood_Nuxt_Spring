@@ -1,7 +1,7 @@
 <script setup>
 const props = defineProps({
     product: Object,
-    hasActionModal: Boolean
+    hasActionModal: Boolean,
 })
 
 const isModalVisible = ref(false)
