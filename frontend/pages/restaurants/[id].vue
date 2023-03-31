@@ -1,13 +1,19 @@
 <script setup>
 import { useGetRestaurantsById } from '~~/composables/restaurants/useRestaurants';
+import Constants from '~~/Constants';
+import { useStore } from 'vuex';
 
+const store = useStore()
 const route = useRoute()
-const isModalVisible = ref(false)
-const productSelected = ref(null)
 
 const { id } = route.params
 
+const isModalVisible = ref(false)
+const productSelected = ref(null)
 const data = reactive(await useGetRestaurantsById(id));
+const cartItems = reactive(computed(() => store.state.cart.items))
+
+console.log(cartItems.value);
 
 data.value.products.map((e) => {
     e.quantity = 0;
@@ -82,11 +88,13 @@ data.value.products.map((e) => {
                 <div v-if="data.products.length == 0" class="text-center w-full bg-red-400">Sin productos todavía</div>
             </div>
         </section>
+
+    <ProductCart />
+        
         <ActionModal :isModalVisible="isModalVisible" @itemClicked="$e => productSelected = $e"
             @closeModal="$e => isModalVisible = $e" title="Realizar Pedido">
             <div class="w-fit h-fit" v-for="product in data.products">
-                <ProductCard :hasActionModal="true" :product="product"
-                    v-if="data.products.length > 0" />
+                <ProductCard :hasActionModal="true" :product="product" v-if="data.products.length > 0" />
             </div>
         </ActionModal>
     </div>

@@ -14,7 +14,8 @@ export default {
                 make_order: 'Realizar un Pedido',
                 make_event: 'Realizar un Evento',
                 close: 'Cerrar',
-                price: 'Precio'
+                price: 'Precio',
+                open_cart: 'Ir al carrito',
             },
             en: {
                 welcome: 'Welcome',
@@ -28,6 +29,7 @@ export default {
                 make_event: 'Make an Event',
                 close: 'Close',
                 price: 'Price',
+                open_cart: 'Open Shopping Cart',
             }
         }
     }
