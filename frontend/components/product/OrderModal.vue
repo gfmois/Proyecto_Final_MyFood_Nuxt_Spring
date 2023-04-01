@@ -1,26 +1,42 @@
 <script setup>
 const store = useShoppingCart()
+const total = ref(0)
 
 const { quantity, product } = defineProps({
     product: Object
 })
 
+// NOTE: Ask Yolanda if this functions should be in the [id].vue which is the parent and pass it using props
+
+// Add Quantity to product and save it in the Cart Store
 const addQuantity = () => {
     product.quantity++
     store.setItem(product)
+
+    addToTotal()
 }
 
+// Check the quantity of the product in the cart and remove it from the cart store if needed
 const lessQuantity = () => {
-    if (product.quantity >= 0) {
+    if (product.quantity >= 1) {
         product.quantity--
-        if (product.quantity == 0) {
+        if (product.quantity == 0)
             store.removeItem(product)
-            return
+    }
+
+    addToTotal()
+}
+
+const addToTotal = () => {
+    let _total = 0
+    store.cart.value.map((product) => {
+        for (let i = 0; i < product.quantity; i++) {
+            console.log(parseInt(product.price));
+            _total += parseInt(product.price)
         }
+    })
 
-        return
-    }   
-
+    total.value = _total
 }
 </script>
 
@@ -43,7 +59,10 @@ const lessQuantity = () => {
             <div class="border-b border-gray-300 my-4" />
             <div class="flex flex-col justify-center items-center gap-2">
                 <div class="flex flex-row items-center justify-center">
-                    <LayoutButton :disabled="product.quantity == 0" button-type="red"  title="-" :showOptionsButton="product.quantity == 1 ? true : false" iconName="mdi-light:delete" :action="() => lessQuantity()" />
+                    <!-- Chane it to an span or something like that -->
+                    <LayoutButton :disabled="product.quantity == 0" button-type="red" title="-"
+                        :showOptionsButton="product.quantity == 1 ? true : false" iconName="mdi-light:delete"
+                        :action="() => lessQuantity()" />
                     <LayoutButton button-type="yellow" :title="product.quantity" />
                     <!-- Chane it to an span or something like that -->
                     <LayoutButton button-type="green" title="+" :action="() => addQuantity()" />
@@ -51,4 +70,5 @@ const lessQuantity = () => {
             </div>
         </div>
     </div>
-<div class="h-screen w-screen bg-black/50 z-40 fixed left-0 top-0" /></template>
+    <div class="h-screen w-screen bg-black/50 z-40 fixed left-0 top-0" />
+</template>

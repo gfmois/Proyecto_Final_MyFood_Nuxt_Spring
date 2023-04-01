@@ -4,6 +4,8 @@ export const useShoppingCart = () => {
   const cart: Ref<any[]> = useState("cart", () => []);
 
   // Actions - Mutations
+  
+  // Adds or updates the product/item in the cart store
   const setItem = (item: any) => {
     let index = cart.value.findIndex(
       (e: any) => e.id_product == item.id_product
@@ -20,6 +22,7 @@ export const useShoppingCart = () => {
     }
   };
 
+  // Removes the item / product from the cart store
   const removeItem = (item: any) => {
     let index = cart.value.findIndex((e) => e.id_product == item.id_product)
     console.log('Inside');
@@ -28,10 +31,13 @@ export const useShoppingCart = () => {
     }
   }
 
+  // Sets the cart store to empty array
   const clearStore = () => (cart.value = []);
 
+  // Before route changes the cart becomes an empty array
+  // This is because you can't make an order of diferents restaurants at the time
   onBeforeRouteLeave(() => {
-    cart.value = []; // Borramos el estado del carrito de compras
+    cart.value = [];
   });
 
   return { cart, setItem, clearStore, removeItem };

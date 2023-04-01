@@ -86,6 +86,7 @@ data.value.products.map((e) => {
         <ProductCart :items="store.cart" />
 
         <ActionModal :isModalVisible="isModalVisible" @itemClicked="$e => productSelected = $e"
+            :hasTotal="true"
             @closeModal="$e => isModalVisible = $e" title="Realizar Pedido">
             <div class="w-fit h-fit" v-for="product in data.products">
                 <ProductCard :hasActionModal="true" :product="product" v-if="data.products.length > 0" />
