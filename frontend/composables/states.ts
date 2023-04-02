@@ -36,8 +36,10 @@ export const useShoppingCart = () => {
 
   // Before route changes the cart becomes an empty array
   // This is because you can't make an order of diferents restaurants at the time
-  onBeforeRouteLeave(() => {
-    cart.value = [];
+  onBeforeRouteLeave((to) => {
+    if (!to.fullPath.includes('cart')) {
+      cart.value = [];
+    }
   });
 
   return { cart, setItem, clearStore, removeItem };

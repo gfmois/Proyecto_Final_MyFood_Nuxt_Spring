@@ -42,6 +42,11 @@ public class CategoryController {
         return cService.getCategoryById(id_category);
     }
 
+    @GetMapping("/restaurants")
+    public List<String> getRestaurantCategories() {
+        return cService.getRestaurantCategories();
+    }
+
     // Create new Category
     @PostMapping
     public MessageResponse createCategory(@RequestBody @Valid CategoryRequest cBody) {

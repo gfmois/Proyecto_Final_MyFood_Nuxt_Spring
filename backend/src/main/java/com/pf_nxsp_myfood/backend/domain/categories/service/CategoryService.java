@@ -11,4 +11,5 @@ public interface CategoryService {
     MessageResponse createCategory(CategoryDto cDto);
     MessageResponse updateCategory(CategoryDto cDto);
     MessageResponse deleteCategory(String id);
+    List<String> getRestaurantCategories();
 }

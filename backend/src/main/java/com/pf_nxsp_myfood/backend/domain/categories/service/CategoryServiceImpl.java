@@ -12,6 +12,7 @@ import com.pf_nxsp_myfood.backend.domain.categories.entity.CategoryEntity;
 import com.pf_nxsp_myfood.backend.domain.categories.repository.CategoryRespository;
 import com.pf_nxsp_myfood.backend.domain.payload.response.MessageResponse;
 import com.pf_nxsp_myfood.backend.domain.products.entity.ProductEntity;
+import com.pf_nxsp_myfood.backend.domain.restaurants.repository.RestaurantRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -21,6 +22,9 @@ import lombok.AllArgsConstructor;
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRespository cRepository;
+
+    @Autowired
+    private RestaurantRepository rRepository;
 
     private CategoryDto convertEntityToDto(CategoryEntity cEntity) {
         return CategoryDto.builder()
@@ -103,6 +107,16 @@ public class CategoryServiceImpl implements CategoryService {
             return new MessageResponse(String.format("Category with ID '%s' deleted", id), "200");
         } catch (Exception e) {
             return new MessageResponse(String.format("Error: %s", e.getMessage()), "400");
+        }
+    }
+
+    @Override
+    public List<String> getRestaurantCategories() {
+        try {
+            return rRepository.getCategories();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
         }
     }
 

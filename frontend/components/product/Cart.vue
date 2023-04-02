@@ -2,6 +2,9 @@
 const { items } = defineProps({
     items: Array
 })
+
+const route = useRoute()
+const { id } = route.params
 </script>
 
 <template>
@@ -19,7 +22,7 @@ const { items } = defineProps({
             </div>
         </div>
         <div class="footer content">
-            <button>{{ $t('open_cart') }}</button>
+            <NuxtLink class="btn" :to="`${id}/cart`">{{ $t('open_cart') }}</NuxtLink>
         </div>
     </div>
 </template>
@@ -67,7 +70,7 @@ const { items } = defineProps({
     display: flex;
 }
 
-.cart .footer button {
+.cart .footer .btn {
     all: unset;
     float: right;
     color: white;
