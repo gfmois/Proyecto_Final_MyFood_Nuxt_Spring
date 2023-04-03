@@ -16,6 +16,10 @@ export default {
                 close: 'Cerrar',
                 price: 'Precio',
                 open_cart: 'Ir al carrito',
+                auth: {
+                    login: 'Iniciar Sesión',
+                    register: 'Registrarse'
+                }
             },
             en: {
                 welcome: 'Welcome',
@@ -30,6 +34,10 @@ export default {
                 close: 'Close',
                 price: 'Price',
                 open_cart: 'Open Shopping Cart',
+                auth: {
+                    login: 'Sing In',
+                    register: 'Sign Up'
+                }
             }
         }
     }

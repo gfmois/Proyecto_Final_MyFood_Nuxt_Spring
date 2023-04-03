@@ -13,6 +13,15 @@ data.value.products.map((e) => {
     e.quantity = 0;
 })
 
+const totalToPay = reactive(computed(() => {
+    const _total = ref(0)
+    store.cart.value.map((item) => {
+        _total.value += (item.quantity * item.price)
+    })
+
+    return _total.value
+}))
+
 // FIXME: This make an petition and delays the page
 // const locationRes = await $fetch("https://trueway-geocoding.p.rapidapi.com/ReverseGeocode", {
 //     query: { location: `${data.value.restaurant.lat},${data.value.restaurant.lng}`, lenguage: 'en' },
@@ -87,6 +96,7 @@ data.value.products.map((e) => {
 
         <ActionModal :isModalVisible="isModalVisible" @itemClicked="$e => productSelected = $e"
             :hasTotal="true"
+            :total="totalToPay"
             @closeModal="$e => isModalVisible = $e" title="Realizar Pedido">
             <div class="w-fit h-fit" v-for="product in data.products">
                 <ProductCard :hasActionModal="true" :product="product" v-if="data.products.length > 0" />

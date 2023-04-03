@@ -41,6 +41,37 @@ services:
     volumes:
       - ./conf/redis/cache:/data
 
+  # spring:
+  #   image: openjdk:17.0.2-jdk-oraclelinux8
+  #   container_name: spring_container
+  #   restart: always
+  #   working_dir: /app
+  #   ports:
+  #     - 82:8080
+  #   networks:
+  #     - pf_nsl_network
+  #   volumes:
+  #     - ./backend/spring/target/spring-0.0.1-SNAPSHOT.jar:/app/server.jar
+  #   command: "java -jar server.jar"
+  #   depends_on:
+  #     - database
+
+  spring_dev:
+    container_name: spring_dev_container
+    build: backend/spring
+    restart: always
+    working_dir: /app
+    ports:
+      - 8080:8080
+    networks:
+      - pf_nsl_network
+    volumes:
+      - ./backend/spring:/app
+      - ./conf/spring:/app/src/main/resources
+    command: "mvn spring-boot:run"
+    depends_on:
+      - database
+      
   # dragonfly:
   #   image: 'docker.dragonflydb.io/dragonflydb/dragonfly'
   #   container_name: dragonfly_container

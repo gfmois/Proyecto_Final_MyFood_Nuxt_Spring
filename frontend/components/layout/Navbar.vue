@@ -30,8 +30,10 @@ const { locale } = useI18n()
                             class="cursor-pointer" />
                     </li>
                     <li>
-                        <Icon name="ri:account-box-fill" size="2rem" style="color: rgb(228 228 231 / 1);"
+                        <NuxtLink to="/auth">
+                            <Icon name="ri:account-box-fill" size="2rem" style="color: rgb(228 228 231 / 1);"
                             class="cursor-pointer" />
+                        </NuxtLink>
                     </li>
                     <li>
                         <select v-model="locale">
