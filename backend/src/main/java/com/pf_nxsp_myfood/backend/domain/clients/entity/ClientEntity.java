@@ -20,7 +20,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(
-    name = "clientes",
+    name = "clients",
     uniqueConstraints = {
             @UniqueConstraint(columnNames = "name"),
             @UniqueConstraint(columnNames = "email")

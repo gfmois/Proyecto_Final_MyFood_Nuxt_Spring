@@ -19,17 +19,17 @@ public class SignUpRequest {
     @Size(min = 3, max = 30)
     @Getter
     @Setter
-    private String nombre;
+    private String name;
 
     @NotBlank
     @Size(min = 8, max = 40)
     @Getter
     @Setter
-    private String contraseña;
+    private String password;
 
     @NotBlank
     @Size(min = 9, max = 9)
     @Getter
     @Setter
-    private String telefono;
+    private String phone;
 }

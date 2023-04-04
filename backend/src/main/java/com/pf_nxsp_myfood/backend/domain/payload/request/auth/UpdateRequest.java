@@ -9,15 +9,15 @@ public class UpdateRequest {
     @Size(min = 3, max = 30)
     @Getter
     @Setter
-    private String nombre;
+    private String name;
 
     @Size(min = 8, max = 40)
     @Getter
     @Setter
-    private String contraseña;
+    private String password;
 
     @Size(min = 9, max = 9)
     @Getter
     @Setter
-    private String telefono;
+    private String phone;
 }

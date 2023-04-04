@@ -14,5 +14,5 @@ public class LoginRequest {
     @NotBlank
     @Getter
     @Setter
-    private String contraseña;
+    private String password;
 }
