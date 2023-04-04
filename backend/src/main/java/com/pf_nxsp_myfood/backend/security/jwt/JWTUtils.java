@@ -38,6 +38,7 @@ public class JWTUtils {
 
     public boolean validateToken(String jwt) {
         try {
+            @SuppressWarnings("deprecation")
             Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(jwt).getBody();
             Instant now = Instant.now();
             Date exp = claims.getExpiration();
@@ -49,6 +50,7 @@ public class JWTUtils {
 
     public String getSub(String jwt) {
         try {
+            @SuppressWarnings("deprecation")
             Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(jwt).getBody();
             return claims.getSubject();
         } catch (JwtException e) {
