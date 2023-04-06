@@ -1,13 +1,21 @@
 package com.pf_nxsp_myfood.backend.domain.common.utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+
 import org.apache.commons.io.FilenameUtils;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.Java2DFrameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
@@ -19,6 +27,8 @@ import com.pf_nxsp_myfood.backend.plugins.IdGenerator;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.awt.image.BufferedImage;
 
 @Getter
 @Setter
@@ -84,6 +94,39 @@ public class FileUpload {
             returnObj.put("message", e.getMessage());
             return returnObj;
         }
+    }
+
+    public List<byte[]> videoToFrames(MultipartFile file) throws IOException {
+        List<byte[]> frames = new ArrayList<>();
+        try {
+            // Convert Multipart to File
+            File convFile = new File(file.getOriginalFilename());
+            file.transferTo(convFile);
+
+            try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(convFile)) {
+                // Start recording
+                grabber.start();
+                Frame frame;
+
+                // For Frame save it into List
+                while ((frame = grabber.grabImage()) != null) {
+                    BufferedImage image = Java2DFrameUtils.toBufferedImage(frame);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+                    ImageIO.write(image, "jpg", baos);
+                    frames.add(baos.toByteArray());
+                }
+
+                // Stop Recording
+                grabber.stop();
+            }
+        } catch (Exception e) {
+            throw new IOException("Error processing video", e);
+        }
+
+        // FIXME : Change it to return Array of Strings with the dir
+
+        return frames;
     }
 
     // NOTE: If finally need updateFile it will make an petitio to BD to gets the path of file and delete it to create new one;
