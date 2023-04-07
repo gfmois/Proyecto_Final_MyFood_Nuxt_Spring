@@ -2,7 +2,7 @@
     <footer aria-label="Site Footer" class="bg-gray-100">
         <div class="mx-auto max-w-xl px-2 py-8 sm:px-6 lg:px-8">
             <div class="flex items-center gap-4 justify-center text-teal-600">
-                <img src="/images/logo.png" alt="">
+                <img src="/images/logo.png" class="w-16 h-16" alt="">
                 <h3>MyFood</h3>
             </div>
 

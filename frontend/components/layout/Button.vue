@@ -3,7 +3,7 @@ const { title, buttonType, customStyle, action, disabled } = defineProps({
     title: String,
     buttonType: String,
     customStyle: String,
-    action: Promise,
+    action: Promise || Function,
     showOptionsButton: false,
     iconName: String,
     disabled: Boolean

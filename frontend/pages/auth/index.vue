@@ -1,8 +1,17 @@
 <script setup>
+import { useToast } from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
+
+import { useLogin } from '~~/composables/auth/useAuth';
+
 const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
 const emailRegex = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
 
+const toast = useToast({
+	position: 'top-right',
+	pauseOnHover: true,
+})
 const router = useRouter()
 
 const register = ref(false)
@@ -114,17 +123,15 @@ function validate_register () {
 	return validation;
 }
 
-const submit_login = () => {
+const submit_login = async () => {
 	let validation = validate_login()
 	if(validation.value) {
 		let login_info = {}
 		loginInputs.children.map(li => {
 			login_info[li.name.toLocaleLowerCase()] = li.value
 		})
-		// let response = useAuthLogin(login_info).user
-		// watch( response,(value, old) => {
-		// 	value != false ? (toast.success(validation.msg), router.push('/home')) : toast.error("Usuario o contraseña incorrectos")		
-		// })
+		let response = await useLogin(login_info)
+		response.value.status != 500 ? (toast.success(validation.msg), router.push('/')) : toast.error("Usuario o contraseña incorrectos")		
 	} else {
 		toast.error(validation.msg)
     }
@@ -139,7 +146,7 @@ const submit_register = () => {
 		})
 		// let response = useAuthRegister(register_info).user
 		// watch( response,(value, old) => {
-		// 	value != false ? (toast.success(validation.msg), router.push('/home')) : toast.error("No se ha podido registrar el usuario")		
+		// 	value != false ? (toast.success(validation.msg), router.push('/')) : toast.error("No se ha podido registrar el usuario")		
 		// })
 	} else {
 		toast.error(validation.msg)
@@ -184,7 +191,7 @@ const submit_register = () => {
                                 <h1>{{ $t('auth.register') }}</h1>
                                 <p class="slogan">Registrate hoy mismo y empieza a disfrutar de la buena comida.</p>
                             </div>
-                            <div class="inputs p-4 w-fit h-fit bg-red-400">
+                            <div class="inputs p-4 w-fit h-fit">
                                 <LayoutCustomInput :stepCollection="registerInputs" :fill="white"/>
                                 <button @click="submit_register()">{{ $t('auth.register') }}</button>
                             </div>
@@ -210,9 +217,9 @@ main {
 	background-color: transparent;
 }
 .slogan {
-	margin-top: 20px;
+	margin-top: 10px;
 	text-align: center;
-	font-size: 1.7rem;
+	font-size: 1.2rem;
 	font-weight: 600;
 }
 .book {
@@ -368,7 +375,7 @@ main {
 	align-items: center;
 }
 .register .change-login {
-	font-size: 1.5rem;
+	font-size: 1.2rem;
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;

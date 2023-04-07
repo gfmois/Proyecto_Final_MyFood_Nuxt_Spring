@@ -1,4 +1,6 @@
 <script setup>
+import { useShoppingCart } from "~~/store"
+
 const { cart, removeItem } = useShoppingCart()
 
 const shippingCost = ref(4.99) // NOTE: This will be configured by the Restaurant on the admin panel

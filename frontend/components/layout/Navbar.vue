@@ -1,7 +1,38 @@
 <script setup>
-import { isContinueStatement } from 'typescript';
+import { useAuth } from "~~/store"
+import { useGetProfile } from "~~/composables/client/useClient"
+
+const $cookie = inject('$cookies')
 
 const { locale } = useI18n()
+const { actCheckHasUser, mutCheckIsAdmin, hasUser, isAdmin } = useAuth()
+
+const userIsAdmin = reactive(computed(() => isAdmin))
+const userInfo = ref({})
+
+const getUserInfo = async () => {
+    watch(await useGetProfile().value, (userProfile) => {
+        userInfo.value = userProfile
+    })
+}
+
+if (hasUser.value) {
+    getUserInfo()
+}
+
+watch(hasUser, () => {
+    if (hasUser.value) {
+        getUserInfo()
+    }
+})
+
+const logout = () => {
+    $cookie.remove("token_client")
+    $cookie.remove("token_admin")
+
+    actCheckHasUser(false)
+    mutCheckIsAdmin(false)
+}
 </script>
 
 <template>
@@ -31,9 +62,10 @@ const { locale } = useI18n()
                     </li>
                     <li>
                         <NuxtLink to="/auth">
-                            <Icon name="ri:account-box-fill" size="2rem" style="color: rgb(228 228 231 / 1);"
+                            <Icon v-if="hasUser" name="ri:account-box-fill" size="2rem" style="color: rgb(228 228 231 / 1);"
                             class="cursor-pointer" />
                         </NuxtLink>
+                        {{ hasUser }}
                     </li>
                     <li>
                         <select v-model="locale">

@@ -14,7 +14,7 @@ import com.pf_nxsp_myfood.backend.security.AuthClientDetails;
 public interface ClientService {
     JWTResponse registration(final SignUpRequest data);
     JWTResponse login(final LoginRequest credentials);
-    ClientDto currentUser(final AuthClientDetails client);
 
+    ClientDto currentUser(final AuthClientDetails client);
     ClientDto update(UpdateRequest newData, final AuthClientDetails clientDetails);
 }

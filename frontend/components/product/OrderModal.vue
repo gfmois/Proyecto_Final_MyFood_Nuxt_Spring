@@ -1,4 +1,6 @@
 <script setup>
+import { useShoppingCart } from "~~/store"
+
 const store = useShoppingCart()
 const total = ref(0)
 

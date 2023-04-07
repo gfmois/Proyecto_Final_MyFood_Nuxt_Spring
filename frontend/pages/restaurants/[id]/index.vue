@@ -1,5 +1,7 @@
 <script setup>
 import { useGetRestaurantsById } from '~~/composables/restaurants/useRestaurants';
+import { useShoppingCart } from "~~/store"
+
 const route = useRoute()
 const store = useShoppingCart()
 

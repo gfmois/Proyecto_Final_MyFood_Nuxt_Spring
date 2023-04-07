@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.pf_nxsp_myfood.backend.domain.common.utils.BaseUtils;
+import com.pf_nxsp_myfood.backend.domain.employee.entity.EmployeeEntity;
 import com.pf_nxsp_myfood.backend.domain.products.entity.ProductEntity;
 
 import lombok.Builder;
@@ -55,6 +56,9 @@ public class RestaurantEntity extends BaseUtils {
     @OneToMany(mappedBy = "restaurant")
     private List<ProductEntity> products;
 
+    @OneToMany(mappedBy = "empl_restaurant")
+    private List<EmployeeEntity> employees;
+
     @Builder
     public RestaurantEntity(String id_restaurant, String name, Integer capacity, String logo, String image, String category, String lat, String lng, String city) {
         this.id_restaurant = id_restaurant;
@@ -67,6 +71,7 @@ public class RestaurantEntity extends BaseUtils {
         this.lng = lng;
         this.city = city;
         this.products = new ArrayList<>();
+        this.employees = new ArrayList<>();
     }
 
     public List<ProductEntity> getProducts() {
