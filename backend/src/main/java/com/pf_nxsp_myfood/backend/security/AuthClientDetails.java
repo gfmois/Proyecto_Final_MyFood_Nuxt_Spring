@@ -5,6 +5,8 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.pf_nxsp_myfood.backend.domain.common.constants.EmployeesTypes;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,13 +14,22 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AuthClientDetails implements UserDetails {
-    private String id_cliente;
+    private String id;
     private final String email;
+    private final EmployeesTypes type;
+
+    @Builder
+    public AuthClientDetails(String id, String email, EmployeesTypes type) {
+        this.id = id;
+        this.email = email;
+        this.type = type;
+    }
 
     @Builder
     public AuthClientDetails(String id_cliente, String email) {
-        this.id_cliente = id_cliente;
+        this.id = id_cliente;
         this.email = email;
+        this.type = EmployeesTypes.NONE;
     }
 
     @Override

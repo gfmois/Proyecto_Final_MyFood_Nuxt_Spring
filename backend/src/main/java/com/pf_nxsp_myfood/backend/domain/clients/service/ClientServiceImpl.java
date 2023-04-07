@@ -44,7 +44,7 @@ public class ClientServiceImpl implements ClientService {
         return JWTResponse.builder()
                 .token(jwtUtils.encode(entity.getId_client()))
                 .email(entity.getEmail())
-                .nombre(entity.getName())
+                .name(entity.getName())
                 .avatar(entity.getAvatar())
                 .build();
     }
@@ -89,7 +89,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientDto currentUser(AuthClientDetails client) {
         ClientEntity clientEntity = clientRepository.
-                findById(client.getId_cliente())
+                findById(client.getId())
                 .orElseThrow(() -> new AppException(Error.USER_NOT_FOUND));
 
         return convertEntityToDto(clientEntity);
@@ -99,7 +99,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientDto update(UpdateRequest newData, final AuthClientDetails clientDetails) {
         ClientEntity cEntity = clientRepository
-                .findById(clientDetails.getId_cliente())
+                .findById(clientDetails.getId())
                 .orElseThrow(() -> new AppException(Error.USER_NOT_FOUND));
 
         if (newData.getName() != null) {

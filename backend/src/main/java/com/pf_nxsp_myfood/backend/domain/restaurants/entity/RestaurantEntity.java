@@ -56,7 +56,7 @@ public class RestaurantEntity extends BaseUtils {
     @OneToMany(mappedBy = "restaurant")
     private List<ProductEntity> products;
 
-    @OneToMany(mappedBy = "empl_restaurant")
+    @OneToMany(mappedBy = "em_restaurant")
     private List<EmployeeEntity> employees;
 
     @Builder

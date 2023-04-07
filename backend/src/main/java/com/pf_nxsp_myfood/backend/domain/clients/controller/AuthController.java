@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pf_nxsp_myfood.backend.domain.clients.service.ClientService;
+import com.pf_nxsp_myfood.backend.domain.common.constants.EmployeesTypes;
+import com.pf_nxsp_myfood.backend.domain.employee.service.EmployeeService;
+import com.pf_nxsp_myfood.backend.domain.payload.request.auth.EmployeeSignUpRequest;
 import com.pf_nxsp_myfood.backend.domain.payload.request.auth.LoginRequest;
 import com.pf_nxsp_myfood.backend.domain.payload.request.auth.SignUpRequest;
 import com.pf_nxsp_myfood.backend.domain.payload.response.auth.JWTResponse;
@@ -21,9 +24,24 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthController {
     private final ClientService cService;
+    private final EmployeeService eService;
 
     @PostMapping(path = "/register")
     public JWTResponse register(@RequestBody @Valid SignUpRequest data) {
+        System.out.println(EmployeesTypes.NONE);
+        if (data.getType() != EmployeesTypes.NONE) {
+            EmployeeSignUpRequest request = EmployeeSignUpRequest.builder()
+                .email(data.getEmail())
+                .name(data.getName())
+                .id_restaurant(data.getId_restaurant())
+                .password(data.getPassword())
+                .phone(data.getPhone())
+                .type(data.getType())
+                .build();
+                
+            return eService.registration(request);
+        }
+
         return cService.registration(data);
     }
 

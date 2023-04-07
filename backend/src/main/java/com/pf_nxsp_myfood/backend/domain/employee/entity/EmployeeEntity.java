@@ -32,10 +32,6 @@ public class EmployeeEntity extends BaseUtils {
     @Id
     private String id_employee;
 
-    @ManyToOne
-    @JoinColumn(name = "id_restaurant", nullable = false)
-    private RestaurantEntity empl_restaurant;
-
     @Column(name = "name")
     private String name;
 
@@ -54,8 +50,12 @@ public class EmployeeEntity extends BaseUtils {
     @Column(name = "avatar")
     private String avatar;
 
+    @ManyToOne
+    @JoinColumn(name = "id_restaurant", nullable = false)
+    private RestaurantEntity em_restaurant;
+
     @Builder
-    public EmployeeEntity(String id_employee, String name, String email, String phone, String password, String avatar, String id_restaurant, EmployeesTypes type) {
+    public EmployeeEntity(String id_employee, String name, String email, String phone, String password, String avatar, String empl_restaurant, EmployeesTypes type) {
         this.id_employee = id_employee;
         this.name = name;
         this.email = email;
@@ -64,6 +64,6 @@ public class EmployeeEntity extends BaseUtils {
         this.avatar = avatar;
         this.type = type;
 
-        this.empl_restaurant.setId_restaurant(id_restaurant);
+        this.em_restaurant.setId_restaurant(empl_restaurant);
     }
 }
