@@ -7,6 +7,7 @@ import com.pf_nxsp_myfood.backend.domain.products.dto.ProductDto;
 
 public interface ProductService {
     List<ProductDto> getProducts();
+    ProductDto getProductById(String id_producto);
     MessageResponse saveProduct(ProductDto pDto);
     MessageResponse updateProduct(ProductDto pDto);
     MessageResponse deleteProduct(String id);

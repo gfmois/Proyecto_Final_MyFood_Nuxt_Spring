@@ -33,3 +33,15 @@ export const useGetNRestaurants = async () => {
   }
   return restaurants
 }
+
+export const useGetNOrders = async () => {
+  const orders = ref()
+  try {
+    const data = await RestaurantService.getNOrders()
+    orders.value = data
+  } catch (error) {
+      console.log(error);
+  }
+
+  return orders
+}

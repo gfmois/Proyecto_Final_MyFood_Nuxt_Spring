@@ -1,7 +1,7 @@
 <script setup>
 import { useGetNRestaurants } from '~~/composables/restaurants/useRestaurants';
 
-const nRestaurants = await useGetNRestaurants();
+const nInfo = await useGetNRestaurants();
 </script>
 
 <template>
@@ -31,13 +31,13 @@ const nRestaurants = await useGetNRestaurants();
             <div class="bg-red-400 flex-1 h-full w-full p-4 flex items-center justify-center flex-col gap-2 rounded-md">
                 <Icon name="grommet-icons:restaurant" size="4rem" />
                 <p class="text-center text-sm">Actualmente tenemos </p>
-                <p><strong>{{ nRestaurants }}</strong></p>
+                <p><strong>{{ nInfo.restaurants }}</strong></p>
                 <p class="text-sm">restaurante a tu disposición, para que los disfutes</p>
             </div>
             <div class="bg-red-400 flex-1 h-full w-full p-4 flex items-center justify-center flex-col gap-2 rounded-md">
                 <Icon name="grommet-icons:send" size="4rem" />
                 <p class="text-center text-sm">Contamos con exactamente</p>
-                <p><strong>200</strong></p>
+                <p><strong>{{ nInfo.orders }}</strong></p>
                 <p class="text-sm">pedidos realizados</p>
             </div>
             <div class="bg-red-400 flex-1 h-full w-full p-4 flex items-center justify-center rounded-md">

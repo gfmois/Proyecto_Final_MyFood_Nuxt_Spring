@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.pf_nxsp_myfood.backend.domain.common.utils.FileUpload;
+import com.pf_nxsp_myfood.backend.domain.orders.service.OrderService;
 import com.pf_nxsp_myfood.backend.domain.payload.response.MessageResponse;
 import com.pf_nxsp_myfood.backend.domain.restaurants.dto.RestaurantDto;
 import com.pf_nxsp_myfood.backend.domain.restaurants.service.RestaurantSerivce;
@@ -42,6 +44,9 @@ import com.pf_nxsp_myfood.backend.plugins.IdGenerator;
 public class RestaurantController {
     @Autowired
     private RestaurantSerivce rService;
+
+    @Autowired
+    private OrderService oService;
 
     // @Autowired
     // private RedisTemplate<String, Object> rTemplate;
@@ -66,8 +71,13 @@ public class RestaurantController {
     }
 
     @GetMapping("/count")
-    public Integer countRestaurants() {
-        return rService.getRestaurants().size();
+    public Map<String, Integer> countRestaurants() {
+        Map<String, Integer> rSize = new HashMap<String, Integer>();
+
+        rSize.put("restaurants", rService.getRestaurants().size());
+        rSize.put("orders", oService.getOrders().size());
+
+        return rSize;
     }
 
     @GetMapping(

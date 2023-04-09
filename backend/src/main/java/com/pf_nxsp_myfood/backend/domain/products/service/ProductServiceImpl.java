@@ -104,5 +104,10 @@ public class ProductServiceImpl implements ProductService {
             .map(this::convertEntityToDto)
             .collect(Collectors.toList());
     }
+    
+    @Override
+    public ProductDto getProductById(String product_slug) {
+        return convertEntityToDto(pRepository.findById_product(product_slug));
+    }
 
 }

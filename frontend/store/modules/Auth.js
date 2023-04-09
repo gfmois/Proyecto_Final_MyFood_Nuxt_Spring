@@ -1,9 +1,9 @@
 import AuthService from "~~/services/auth/AuthService"
 
-const clientCookie = useCookie('token_client')
-const adminCookie = useCookie('token_admin')
-
 export const useAuth = () => {
+    const clientCookie = useCookie('token_client')
+    const adminCookie = useCookie('token_admin')
+
     // State
     const hasUser = useState('hasUser', () => false)
     const isAdmin = useState('isAdmin', () => false)
@@ -17,7 +17,7 @@ export const useAuth = () => {
     }
 
     // Actions
-    const actCheckIsAdmin = (payload) => {
+    const actCheckIsAdmin = () => {
         if (clientCookie.value) {
             AuthService.checkIsAdmin().then((res) => {
                 if (res.status == "success") {
@@ -30,7 +30,7 @@ export const useAuth = () => {
         }
     }
 
-    const actCheckHasUser = (payload) => {
+    const actCheckHasUser = () => {
         clientCookie.value
             ? mutChangeHasUser(true)
             : mutChangeHasUser(false)

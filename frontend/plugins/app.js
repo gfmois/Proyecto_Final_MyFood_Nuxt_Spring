@@ -1,12 +1,13 @@
 import { useAuth } from "~~/store"
+
 export default function ({ app }) {
     const { actCheckHasUser,  actCheckIsAdmin } = useAuth()
-    // Define una función que quieres lanzar al inicio de la aplicación
+
+    // TODO: Endpoints
     function initializeUser() {
-        actCheckHasUser()
-        actCheckIsAdmin()
+        // actCheckHasUser()
+        // actCheckIsAdmin()
     }
 
-    // Lanza la función `miFuncion()` al inicio de la aplicación
     initializeUser();
 }
