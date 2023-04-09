@@ -42,7 +42,7 @@ public class ClientServiceImpl implements ClientService {
 
     public JWTResponse responseToken(ClientEntity entity) {
         return JWTResponse.builder()
-                .token(jwtUtils.encode(entity.getId_client()))
+                .token(jwtUtils.encode(entity.getId_client(), null))
                 .email(entity.getEmail())
                 .name(entity.getName())
                 .avatar(entity.getAvatar())

@@ -47,6 +47,7 @@ public class EmployeeSignUpRequest extends BaseUtils {
     @Getter
     @Setter
     @NotNull
+    @Builder.Default
     private EmployeesTypes type = EmployeesTypes.NONE;
 
     @Getter

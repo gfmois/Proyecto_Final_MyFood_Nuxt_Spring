@@ -13,10 +13,12 @@ import lombok.Setter;
 @Builder
 public class JWTResponse {
     private String token;
+    @Builder.Default
     private String type = "Bearer";
     private String name;
     private String email;
     private String avatar;
+    @Builder.Default
     private EmployeesTypes user_type = EmployeesTypes.NONE;
 
     public JWTResponse(String token, String name, String email, String avatar) {

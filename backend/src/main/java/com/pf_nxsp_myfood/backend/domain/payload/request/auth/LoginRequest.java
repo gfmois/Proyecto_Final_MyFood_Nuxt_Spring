@@ -5,6 +5,8 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
+import com.pf_nxsp_myfood.backend.domain.common.constants.EmployeesTypes;
+
 public class LoginRequest {
     @NotBlank
     @Getter
@@ -15,4 +17,9 @@ public class LoginRequest {
     @Getter
     @Setter
     private String password;
+
+    @NotBlank
+    @Getter
+    @Setter
+    private EmployeesTypes type = EmployeesTypes.NONE;
 }

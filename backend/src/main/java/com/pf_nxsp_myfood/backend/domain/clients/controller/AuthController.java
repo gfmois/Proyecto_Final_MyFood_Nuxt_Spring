@@ -47,6 +47,10 @@ public class AuthController {
 
     @PostMapping(path = "/login")
     public JWTResponse login(@RequestBody @Valid LoginRequest credentials) {
+        if (credentials.getType() != EmployeesTypes.NONE) {
+            return eService.login(credentials);
+        }
+
         return cService.login(credentials);
     }
 }

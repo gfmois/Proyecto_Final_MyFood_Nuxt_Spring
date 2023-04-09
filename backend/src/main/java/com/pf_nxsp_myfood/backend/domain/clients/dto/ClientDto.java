@@ -34,7 +34,6 @@ public class ClientDto extends BaseUtils {
 
     @NotNull
     @NotBlank
-//    @JsonIgnore
     @Size(min = 8, max = 40)
     private String password;
 

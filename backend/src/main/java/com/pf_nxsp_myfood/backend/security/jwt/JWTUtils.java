@@ -5,6 +5,8 @@ import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
 
+import com.pf_nxsp_myfood.backend.plugins.IdGenerator;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -19,14 +21,21 @@ public class JWTUtils {
         key = Keys.hmacShaKeyFor(signKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String encode(String sub) {
+    public String encode(String sub, Boolean isAdmin) {
+        if (isAdmin == null) {
+            isAdmin = false;
+        }
+
+
         if (sub == null || sub.equals("")) {
             return null;
         }
 
         Instant exp = Instant.now();
         return Jwts.builder()
-                .setSubject(sub)
+                .setSubject(isAdmin 
+                    ? String.format("%s_%s", sub, IdGenerator.generateWithLength(5)) 
+                    : sub)
                 .setIssuedAt(new Date(exp.toEpochMilli()))
                 .setExpiration(new Date(
                         exp.toEpochMilli()
