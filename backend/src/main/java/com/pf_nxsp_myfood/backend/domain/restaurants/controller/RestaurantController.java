@@ -4,9 +4,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -61,7 +67,19 @@ public class RestaurantController {
     // @CachePut(value = "restaurants")
     @Cacheable(value = "restaurants")
     @GetMapping
-    public List<RestaurantDto> getRestaurants() {
+    public List<RestaurantDto> getRestaurants(HttpServletRequest req) {
+        Set<RestaurantDto> res = new HashSet<>();
+        
+        if (req.getParameterMap().size() > 0) {
+            req.getParameterMap().entrySet().forEach(e -> {
+                if (e.getKey().equals("city")) {
+                    rService.getRestaurantsByCity(String.join(" ", e.getValue())).stream().forEach(res::add);
+                }
+            });
+
+            return res.stream().collect(Collectors.toList());
+        }
+
         return rService.getRestaurants();
     }
 

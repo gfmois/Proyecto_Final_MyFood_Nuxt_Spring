@@ -7,6 +7,7 @@ import java.util.Map;
 
 public interface RestaurantSerivce {
     List<RestaurantDto> getRestaurants();
+    List<RestaurantDto> getRestaurantsByCity(String city);
     Map<String, Object> getRestaurantById(String id);
     MessageResponse saveRestaurant(RestaurantDto rDto);
     MessageResponse updateRestaurant(RestaurantDto rDto);

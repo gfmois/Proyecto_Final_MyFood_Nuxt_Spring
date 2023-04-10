@@ -67,6 +67,14 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 	}
 
 	@Override
+	public List<RestaurantDto> getRestaurantsByCity(String city) {
+		return rRepository.getRestaurantsByCity(city)
+				.stream()
+				.map(this::convertEntityToDto)
+				.collect(Collectors.toList());
+	}
+
+	@Override
 	public Map<String, Object> getRestaurantById(String id) {
 		Map<String, Object> obj = new HashMap<String, Object>();
 		RestaurantDto rDto = convertEntityToDto(rRepository.findById(id).get());
