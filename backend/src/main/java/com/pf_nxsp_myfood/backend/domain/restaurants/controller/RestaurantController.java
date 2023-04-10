@@ -40,6 +40,8 @@ import com.google.gson.GsonBuilder;
 import com.pf_nxsp_myfood.backend.domain.common.utils.FileUpload;
 import com.pf_nxsp_myfood.backend.domain.orders.service.OrderService;
 import com.pf_nxsp_myfood.backend.domain.payload.response.MessageResponse;
+import com.pf_nxsp_myfood.backend.domain.products.dto.ProductDto;
+import com.pf_nxsp_myfood.backend.domain.products.service.ProductService;
 import com.pf_nxsp_myfood.backend.domain.restaurants.dto.RestaurantDto;
 import com.pf_nxsp_myfood.backend.domain.restaurants.service.RestaurantSerivce;
 import com.pf_nxsp_myfood.backend.plugins.IdGenerator;
@@ -50,6 +52,9 @@ import com.pf_nxsp_myfood.backend.plugins.IdGenerator;
 public class RestaurantController {
     @Autowired
     private RestaurantSerivce rService;
+
+    @Autowired
+    private ProductService pService;
 
     @Autowired
     private OrderService oService;
@@ -68,20 +73,48 @@ public class RestaurantController {
     @Cacheable(value = "restaurants")
     @GetMapping
     public List<RestaurantDto> getRestaurants(HttpServletRequest req) {
-        Set<RestaurantDto> res = new HashSet<>();
-        
+        List<RestaurantDto> res = new ArrayList<>();
+    
         if (req.getParameterMap().size() > 0) {
+            List<RestaurantDto> restaurantsByCity = new ArrayList<>();
+            List<RestaurantDto> restaurantsByPrice = new ArrayList<>();
+    
             req.getParameterMap().entrySet().forEach(e -> {
                 if (e.getKey().equals("city")) {
-                    rService.getRestaurantsByCity(String.join(" ", e.getValue())).stream().forEach(res::add);
+                    restaurantsByCity.addAll(rService.getRestaurantsByCity(String.join(" ", e.getValue())));
+                }
+    
+                if (e.getKey().equals("price")) {
+                    Set<ProductDto> products = new HashSet<>();
+                    pService.getProducts()
+                            .stream()
+                            .filter(p -> Double.parseDouble(p.getPrice()) <= Double.parseDouble((String.join(" ", e.getValue()))))
+                            .forEach(products::add);
+    
+                    products
+                            .stream()
+                            .map(product -> (RestaurantDto) rService.getRestaurantById(product.getRestaurant()).get("restaurant"))
+                            .forEach(restaurantsByPrice::add);
                 }
             });
-
-            return res.stream().collect(Collectors.toList());
+    
+            // Obtener la intersección de ambos conjuntos de restaurantes
+            if (restaurantsByCity.isEmpty()) {
+                res = restaurantsByPrice;
+            } else if (restaurantsByPrice.isEmpty()) {
+                res = restaurantsByCity;
+            } else {
+                res = restaurantsByCity.stream()
+                        .filter(restaurantsByPrice::contains)
+                        .collect(Collectors.toList());
+            }
+        } else {
+            res = rService.getRestaurants();
         }
-
-        return rService.getRestaurants();
+    
+        return res;
     }
+    
 
     @GetMapping("/{id_restaurant}")
     public Map<String, Object> getRestaurantById(@PathVariable String id_restaurant) {

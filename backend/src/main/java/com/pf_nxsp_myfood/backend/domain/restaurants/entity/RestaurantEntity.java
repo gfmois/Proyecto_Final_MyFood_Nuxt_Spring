@@ -2,6 +2,7 @@ package com.pf_nxsp_myfood.backend.domain.restaurants.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,7 +36,7 @@ public class RestaurantEntity extends BaseUtils {
 
     @Column(name = "capacity")
     private Integer capacity;
-    
+
     @Column(name = "logo")
     private String logo;
 
@@ -64,7 +65,8 @@ public class RestaurantEntity extends BaseUtils {
     private List<HollidayEntity> hollidays;
 
     @Builder
-    public RestaurantEntity(String id_restaurant, String name, Integer capacity, String logo, String image, String category, String lat, String lng, String city) {
+    public RestaurantEntity(String id_restaurant, String name, Integer capacity, String logo, String image,
+            String category, String lat, String lng, String city) {
         this.id_restaurant = id_restaurant;
         this.name = name;
         this.capacity = capacity;
@@ -85,6 +87,26 @@ public class RestaurantEntity extends BaseUtils {
 
     public void addProduct(ProductEntity pEntity) {
         this.products.add(pEntity);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof RestaurantEntity)) {
+            return false;
+        }
+
+        RestaurantEntity other = (RestaurantEntity) o;
+
+        return id_restaurant == other.id_restaurant;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id_restaurant);
     }
 
 }

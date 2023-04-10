@@ -2,6 +2,7 @@ package com.pf_nxsp_myfood.backend.domain.restaurants.dto;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 
@@ -36,7 +37,7 @@ public class RestaurantDto extends BaseUtils implements Serializable {
 
     @NotNull
     private String category;
-    
+
     @NotNull
     private String lat;
 
@@ -65,5 +66,26 @@ public class RestaurantDto extends BaseUtils implements Serializable {
     @NoArgsConstructor
     public static class MultipleRestaurants {
         private List<RestaurantDto> restaurants;
-    }    
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof RestaurantDto)) {
+            return false;
+        }
+
+        RestaurantDto other = (RestaurantDto) o;
+
+        return id_restaurant == other.id_restaurant;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id_restaurant);
+    }
+
 }
