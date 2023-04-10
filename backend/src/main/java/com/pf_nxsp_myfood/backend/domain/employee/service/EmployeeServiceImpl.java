@@ -43,7 +43,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     public JWTResponse responseToken(EmployeeEntity entity) {
         return JWTResponse.builder()
-                .token(jwtUtils.encode(entity.getId_employee(), true))
+                .token(jwtUtils.encode(entity.getId_employee(), entity.getType()))
                 .email(entity.getEmail())
                 .name(entity.getName())
                 .avatar(entity.getAvatar())
@@ -93,9 +93,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDto currentUser(AuthClientDetails client) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'currentUser'");
+    public EmployeeDto currentUser(AuthClientDetails employee) {
+        System.out.println(employee.toString());
+
+        EmployeeEntity eEntity = eRepository.
+                findById(employee.getId_employee())
+                .orElseThrow(() -> new AppException(Error.USER_NOT_FOUND));
+
+        return convertEntityToDTO(eEntity);
     }
 
     @Override

@@ -89,7 +89,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientDto currentUser(AuthClientDetails client) {
         ClientEntity clientEntity = clientRepository.
-                findById(client.getId())
+                findById(client.getId_client())
                 .orElseThrow(() -> new AppException(Error.USER_NOT_FOUND));
 
         return convertEntityToDto(clientEntity);
@@ -99,7 +99,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientDto update(UpdateRequest newData, final AuthClientDetails clientDetails) {
         ClientEntity cEntity = clientRepository
-                .findById(clientDetails.getId())
+                .findById(clientDetails.getId_client())
                 .orElseThrow(() -> new AppException(Error.USER_NOT_FOUND));
 
         if (newData.getName() != null) {

@@ -4,8 +4,10 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.pf_nxsp_myfood.backend.plugins.IdGenerator;
+import com.pf_nxsp_myfood.backend.domain.common.constants.EmployeesTypes;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -21,11 +23,10 @@ public class JWTUtils {
         key = Keys.hmacShaKeyFor(signKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String encode(String sub, Boolean isAdmin) {
-        if (isAdmin == null) {
-            isAdmin = false;
+    public String encode(String sub, EmployeesTypes type) {
+        if (type == null) {
+            type = EmployeesTypes.NONE;
         }
-
 
         if (sub == null || sub.equals("")) {
             return null;
@@ -33,9 +34,8 @@ public class JWTUtils {
 
         Instant exp = Instant.now();
         return Jwts.builder()
-                .setSubject(isAdmin 
-                    ? String.format("%s_%s", sub, IdGenerator.generateWithLength(5)) 
-                    : sub)
+                .setSubject(sub)
+                .claim("type", type)
                 .setIssuedAt(new Date(exp.toEpochMilli()))
                 .setExpiration(new Date(
                         exp.toEpochMilli()
@@ -57,11 +57,17 @@ public class JWTUtils {
         }
     }
 
-    public String getSub(String jwt) {
+    public Map<String, ?> getSub(String jwt) {
         try {
+            Map<String, Object> returnObj = new HashMap<String, Object>();
+
             @SuppressWarnings("deprecation")
             Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(jwt).getBody();
-            return claims.getSubject();
+
+            returnObj.put("sub", claims.getSubject());
+            returnObj.put("type", claims.get("type"));
+            
+            return returnObj;
         } catch (JwtException e) {
             return null;
         }

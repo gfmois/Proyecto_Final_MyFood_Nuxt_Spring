@@ -62,7 +62,7 @@ const logout = () => {
                     </li>
                     <li>
                         <NuxtLink to="/auth">
-                            <Icon v-if="hasUser" name="ri:account-box-fill" size="2rem" style="color: rgb(228 228 231 / 1);"
+                            <Icon v-if="!hasUser" name="ri:account-box-fill" size="2rem" style="color: rgb(228 228 231 / 1);"
                             class="cursor-pointer" />
                         </NuxtLink>
                     </li>
