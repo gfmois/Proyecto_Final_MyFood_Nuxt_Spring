@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pf_nxsp_myfood.backend.domain.common.constants.EmployeesTypes;
 import com.pf_nxsp_myfood.backend.domain.common.utils.BaseUtils;
 
@@ -39,7 +40,7 @@ public class EmployeeDto extends BaseUtils {
 
     @NotNull
     @NotBlank
-//    @JsonIgnore
+    @JsonIgnore
     @Size(min = 8, max = 40)
     private String password;
 

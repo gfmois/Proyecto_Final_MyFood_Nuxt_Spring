@@ -21,8 +21,6 @@ public class EmployeeController {
     
     @GetMapping("/admin")
     public EmployeeDto isAdmin(@AuthenticationPrincipal AuthClientDetails aDetails) {
-        System.out.print(aDetails);
-        // return eService.currentUser(aDetails);
-        return null;
+        return eService.currentUser(aDetails);
     }
 }

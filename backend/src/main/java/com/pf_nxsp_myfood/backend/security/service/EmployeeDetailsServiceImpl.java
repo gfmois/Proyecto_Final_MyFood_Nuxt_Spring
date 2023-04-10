@@ -16,9 +16,9 @@ public class EmployeeDetailsServiceImpl implements UserDetailsService {
     private final EmployeeRepository eRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return eRepository.findById(email)
-                .map(e -> AuthClientDetails.builder().id_employee(e.getId_employee()).email(e.getEmail()).build())
+    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+        return eRepository.findById(id)
+                .map(e -> AuthClientDetails.builder().id_employee(e.getId_employee()).email(e.getEmail()).type(e.getType()).build())
                 .orElse(null);
     }
 

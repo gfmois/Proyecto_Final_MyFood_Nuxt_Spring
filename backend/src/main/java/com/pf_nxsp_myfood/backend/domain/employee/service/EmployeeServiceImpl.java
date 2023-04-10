@@ -94,8 +94,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDto currentUser(AuthClientDetails employee) {
-        System.out.println(employee.toString());
-
         EmployeeEntity eEntity = eRepository.
                 findById(employee.getId_employee())
                 .orElseThrow(() -> new AppException(Error.USER_NOT_FOUND));

@@ -51,7 +51,7 @@ public class EmployeeEntity extends BaseUtils {
     private String avatar;
 
     @ManyToOne
-    @JoinColumn(name = "id_restaurant", nullable = true)
+    @JoinColumn(name = "id_restaurant", nullable = false)
     private RestaurantEntity employee_restaurant;
 
     @Builder

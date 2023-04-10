@@ -22,13 +22,14 @@ public class AuthClientDetails extends BaseUtils implements UserDetails {
     private final String email;
     private final EmployeesTypes type;
 
+    // FIXME: Type is always null
     public AuthClientDetails(String id_employee, String id_client, String email, EmployeesTypes type) {
         if (type == EmployeesTypes.NONE || type == null) {
             this.id_client = id_client;
         } else {
             this.id_employee = id_employee;
         }
-
+        
         this.email = email;
         this.type = type;
     }
