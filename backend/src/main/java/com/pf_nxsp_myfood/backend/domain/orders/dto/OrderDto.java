@@ -3,6 +3,9 @@ package com.pf_nxsp_myfood.backend.domain.orders.dto;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
+
+import com.pf_nxsp_myfood.backend.domain.common.constants.OrderTypes;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,7 +25,7 @@ public class OrderDto {
     private LocalDate orderDate;
 
     @NotNull
-    private String status;
+    private OrderTypes status;
 
     private List<?> product_ordered;
 

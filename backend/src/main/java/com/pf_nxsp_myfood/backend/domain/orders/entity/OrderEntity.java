@@ -12,6 +12,8 @@ import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.pf_nxsp_myfood.backend.domain.common.constants.OrderTypes;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,7 +36,7 @@ public class OrderEntity {
     private LocalDate orderDate;
 
     @Column(name = "status")
-    private String status;
+    private OrderTypes status;
 
 
     @OneToMany(
@@ -45,7 +47,7 @@ public class OrderEntity {
     private Set<OrderProductEntity> products_ordered;
 
     @Builder
-    public OrderEntity(String id_order, String id_client, LocalDate orderDate, String status) {
+    public OrderEntity(String id_order, String id_client, LocalDate orderDate, OrderTypes status) {
         this.id_order = id_order;
         this.id_client = id_client;
         this.orderDate = orderDate;

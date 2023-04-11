@@ -2,18 +2,27 @@
 import { useAuth } from "~~/store"
 import { useGetProfile } from "~~/composables/client/useClient"
 
-const $cookie = inject('$cookies')
+const client_token = useCookie('token_client')
+const admin_token = useCookie('token_admin')
 
 const { locale } = useI18n()
 const { actCheckHasUser, mutCheckIsAdmin, hasUser, isAdmin } = useAuth()
 
+const router = useRouter()
+
 const userIsAdmin = reactive(computed(() => isAdmin))
 const userInfo = ref({})
+const dropdown = ref([
+    {name: "Mi perfil", src: "/profile", icon: "fa-user"},
+    {name: "Mis pedidos", src: "/profilel/orders", icon: "bi-basket2-fill"},
+    {name: "Mis reservas", src: "/profile/reserves", icon: "md-daterange"},
+    {name: "Logout", click: "logout", icon: "md-logout", action: () => logout()}
+])
+
+const dropdownVisible = ref(false)
 
 const getUserInfo = async () => {
-    watch(await useGetProfile().value, (userProfile) => {
-        userInfo.value = userProfile
-    })
+    userInfo.value = (await useGetProfile()).value
 }
 
 if (hasUser.value) {
@@ -27,12 +36,22 @@ watch(hasUser, () => {
 })
 
 const logout = () => {
-    $cookie.remove("token_client")
-    $cookie.remove("token_admin")
+    client_token.value = null
+    admin_token.value = null
 
-    actCheckHasUser(false)
+    actCheckHasUser()
     mutCheckIsAdmin(false)
+
+    router.replace("/auth")
 }
+
+onBeforeMount(() => {
+    actCheckHasUser()
+
+    if (hasUser.value) {
+        getUserInfo()
+    }
+})
 </script>
 
 <template>
@@ -61,10 +80,23 @@ const logout = () => {
                             class="cursor-pointer" />
                     </li>
                     <li>
-                        <NuxtLink to="/auth">
-                            <Icon v-if="!hasUser" name="ri:account-box-fill" size="2rem" style="color: rgb(228 228 231 / 1);"
+                        <NuxtLink to="/auth" v-if="!hasUser">
+                            <Icon name="ri:account-box-fill" size="2rem" style="color: rgb(228 228 231 / 1);"
                             class="cursor-pointer" />
                         </NuxtLink>
+
+                        <div v-if="hasUser" class="rounded-full relative w-8 h-8 bg-yellow-500 z-50 cursor-pointer" @mouseenter="dropdownVisible = true" @mouseleave="dropdownVisible = false">
+                            <img :src="userInfo.avatar" alt="User Image">
+                            <div class="relative w-full h-full right-0 inline-block text-left z-50" v-if="dropdownVisible">
+                                <div class="absolute right-0 w-48 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                  <div class="py-1" role="none">
+                                    <NuxtLink :to="item.src" @click="item.action" v-for="item in dropdown" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                                        {{ item.name }}
+                                    </NuxtLink>
+                                  </div>
+                                </div>
+                              </div>   
+                        </div>
                     </li>
                     <li>
                         <select v-model="locale">
@@ -79,4 +111,5 @@ const logout = () => {
                 </ul>
             </div>
         </div>
-</nav></template>
+    </nav>
+</template>

@@ -2,8 +2,13 @@ import secret from "../secret";
 
 export default {
     async getProfile() {
+        const token = useCookie('token_client')
         try {
-            const response = await fetch(`${secret.DEFAULT_URL}client/profile`)
+            const response = await fetch(`${secret.DEFAULT_URL}/client/profile`, {
+                headers: {
+                    'Authorization': `Bearer ${token.value}`
+                }
+            })
 
             return await response.json()
         } catch (e) {

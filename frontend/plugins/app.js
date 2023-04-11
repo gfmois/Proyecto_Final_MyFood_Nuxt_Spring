@@ -5,7 +5,10 @@ export default function ({ app }) {
 
     // TODO: Endpoints
     function initializeUser() {
-        // actCheckHasUser()
+        actCheckHasUser()
+
+        console.log(actCheckHasUser());
+
         // actCheckIsAdmin()
     }
 

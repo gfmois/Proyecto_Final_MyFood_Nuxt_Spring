@@ -34,6 +34,8 @@ export const useAuth = () => {
         clientCookie.value
             ? mutChangeHasUser(true)
             : mutChangeHasUser(false)
+
+        return hasUser.value
     }
 
     const actChangeHasUser = (payload) => {

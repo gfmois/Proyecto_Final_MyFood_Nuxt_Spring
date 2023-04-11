@@ -5,10 +5,7 @@ export default defineNuxtConfig({
     app: {
         head: {
             link: [
-                {
-                    rel: "stylesheet",
-                    href: "/css/global.css"
-                },
+                { rel: "stylesheet", href: "/css/global.css" },
             ],
         }
     },
@@ -17,5 +14,5 @@ export default defineNuxtConfig({
         "nuxt-icon", 
         '@nuxtjs/i18n',
         '@nuxt/devtools'
-    ],
+    ]
 })

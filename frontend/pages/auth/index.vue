@@ -1,8 +1,11 @@
 <script setup>
-import { useToast } from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
 
+import { useToast } from 'vue-toast-notification';
 import { useLogin } from '~~/composables/auth/useAuth';
+import { useAuth } from "~/store"
+
+const { actCheckHasUser, hasUser } = useAuth()
 
 const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
@@ -131,7 +134,7 @@ const submit_login = async () => {
 			login_info[li.name.toLocaleLowerCase()] = li.value
 		})
 		let response = await useLogin(login_info)
-		response.value.status != 500 ? (toast.success(validation.msg), router.push('/')) : toast.error("Usuario o contraseña incorrectos")		
+		response.value.status != 500 ? (toast.success(validation.msg), router.replace('/')) : toast.error("Usuario o contraseña incorrectos")		
 	} else {
 		toast.error(validation.msg)
     }
@@ -152,6 +155,10 @@ const submit_register = () => {
 		toast.error(validation.msg)
 	}
 }
+
+onBeforeRouteLeave(() => {
+	actCheckHasUser()
+})
 
 </script>
 
