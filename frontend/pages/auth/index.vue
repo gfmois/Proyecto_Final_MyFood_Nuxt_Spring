@@ -134,7 +134,10 @@ const submit_login = async () => {
 			login_info[li.name.toLocaleLowerCase()] = li.value
 		})
 		let response = await useLogin(login_info)
-		response.value.status != 500 ? (toast.success(validation.msg), router.replace('/')) : toast.error("Usuario o contraseña incorrectos")		
+
+		response.value.status != 500 || response.value != undefined 
+			? (toast.success(validation.msg), router.replace('/')) 
+			: toast.error("Usuario o contraseña incorrectos")
 	} else {
 		toast.error(validation.msg)
     }
@@ -155,10 +158,6 @@ const submit_register = () => {
 		toast.error(validation.msg)
 	}
 }
-
-onBeforeRouteLeave(() => {
-	actCheckHasUser()
-})
 
 </script>
 

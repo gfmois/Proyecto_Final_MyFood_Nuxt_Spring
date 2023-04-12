@@ -1,12 +1,14 @@
 import secret from "../secret";
 
 export default {
-    async getProfile() {
+    async getProfile(fromToken) {
         const token = useCookie('token_client')
+        console.log(token.value, fromToken);
+
         try {
             const response = await fetch(`${secret.DEFAULT_URL}/client/profile`, {
                 headers: {
-                    'Authorization': `Bearer ${token.value}`
+                    'Authorization': `Bearer ${fromToken ? fromToken : token.value}`
                 }
             })
 

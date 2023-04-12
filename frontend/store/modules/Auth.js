@@ -5,15 +5,20 @@ export const useAuth = () => {
     const adminCookie = useCookie('token_admin')
 
     // State
+    const user = useState('user', () => {})
     const hasUser = useState('hasUser', () => false)
     const isAdmin = useState('isAdmin', () => false)
-    
+
     // Mutations
     const mutCheckIsAdmin = (valIsAdmin) => {
         isAdmin.value = valIsAdmin
     }
     const mutChangeHasUser = (valHasUser) => {
         hasUser.value = valHasUser
+    }
+
+    const mutChangeUser = (userInfo) => {
+        user.value = userInfo
     }
 
     // Actions
@@ -42,13 +47,20 @@ export const useAuth = () => {
         mutChangeHasUser(payload)
     }
 
+    const actChangeUser = (user) => {
+        mutChangeUser(user)
+    }
+
     return {
         hasUser,
         isAdmin,
+        user,
         mutChangeHasUser,
         mutCheckIsAdmin,
+        mutChangeUser,
         actChangeHasUser,
         actCheckHasUser,
-        actCheckIsAdmin
+        actCheckIsAdmin,
+        actChangeUser
     }
 }

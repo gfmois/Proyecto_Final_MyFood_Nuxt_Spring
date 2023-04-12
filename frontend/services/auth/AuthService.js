@@ -1,7 +1,10 @@
 import secret from "../secret";
+import { useAuth } from "~~/store"; 
+
 
 export default {
     async login(credentials) {
+        const { actChangeUser } = useAuth()
         try {
             const response = await fetch(`${secret.DEFAULT_URL}/auth/login`, {
                 method: "POST",
@@ -11,7 +14,11 @@ export default {
                 body: JSON.stringify(credentials)
             })
 
-            return await response.json();
+            const user = await response.json();
+
+            console.log(user);
+            actChangeUser(user)
+            return user;
         } catch (error) {
             console.log(error);
             return null
