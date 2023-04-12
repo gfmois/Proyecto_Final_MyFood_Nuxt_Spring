@@ -21,20 +21,6 @@ const dropdown = ref([
 
 const dropdownVisible = ref(false)
 
-const getUserInfo = async () => {
-    actChangeUser((await useGetProfile()).value)
-}
-
-if (hasUser.value) {
-    getUserInfo()
-}
-
-watch(hasUser, (v, pv) => {
-    if (hasUser.value) {
-        getUserInfo()
-    }
-})
-
 const logout = () => {
     client_token.value = null
     admin_token.value = null

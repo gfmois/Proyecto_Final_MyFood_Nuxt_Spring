@@ -2,10 +2,8 @@
 import 'vue-toast-notification/dist/theme-sugar.css';
 
 import { useToast } from 'vue-toast-notification';
-import { useLogin } from '~~/composables/auth/useAuth';
+import { useLogin, useRegister } from '~~/composables/auth/useAuth';
 import { useAuth } from "~/store"
-
-const { actCheckHasUser, hasUser } = useAuth()
 
 const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
@@ -21,12 +19,6 @@ const register = ref(false)
 const book_open = ref(false)
 const login = ref(true)
 const isLogin = ref(true)
-
-const opening_login = () => {
-	setTimeout(() => {
-		login.value = true
-	}, 500);
-}
 
 const loginInputs = {
 	name: "login",
@@ -58,6 +50,12 @@ const registerInputs = {
 		{
 			name: "Email",
 			type: "email",
+			required: true,
+			value: ""
+		},
+		{
+			name: "Teléfono",
+			type: "text",
 			required: true,
 			value: ""
 		},
@@ -135,7 +133,7 @@ const submit_login = async () => {
 		})
 		let response = await useLogin(login_info)
 
-		response.value.status != 500 || response.value != undefined 
+		response.value.status != 500
 			? (toast.success(validation.msg), router.replace('/')) 
 			: toast.error("Usuario o contraseña incorrectos")
 	} else {
@@ -143,17 +141,15 @@ const submit_login = async () => {
     }
 }
 
-const submit_register = () => {
+const submit_register = async () => {
 	let validation = validate_register()
 	if(validation.value) {
 		let register_info = {}
 		registerInputs.children.map(ri => {
 			register_info[ri.name.toLocaleLowerCase()] = ri.value
 		})
-		// let response = useAuthRegister(register_info).user
-		// watch( response,(value, old) => {
-		// 	value != false ? (toast.success(validation.msg), router.push('/')) : toast.error("No se ha podido registrar el usuario")		
-		// })
+		let response = await useRegister(register_info)
+		response.value != false ? (toast.success(validation.msg), router.push('/')) : toast.error("No se ha podido registrar el usuario")		
 	} else {
 		toast.error(validation.msg)
 	}
@@ -201,10 +197,10 @@ const submit_register = () => {
                                 <LayoutCustomInput :stepCollection="registerInputs" :fill="white"/>
                                 <button @click="submit_register()">{{ $t('auth.register') }}</button>
                             </div>
-                            <div class="change-login">
+                            <!-- <div class="change-login">
                                 <p>¿Ya tienes cuenta?</p>
                                 <button @click="register = false, opening_login(), isLogin = true">{{ $t('auth.login') }}</button>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

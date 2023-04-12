@@ -15,12 +15,39 @@ export default {
             })
 
             const user = await response.json();
+            
+            if (user.status != 500) {
+                actChangeUser(user)
+            }
 
-            console.log(user);
-            actChangeUser(user)
             return user;
         } catch (error) {
             console.log(error);
+            return null
+        }
+    },
+
+    async register(credentials) {
+        const { actChangeUser } = useAuth()
+
+        try {
+            const res = await fetch(`${secret.DEFAULT_URL}/auth/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': "application/json"
+                },
+                body: JSON.stringify(credentials)
+            })
+
+            const user = await res.json()
+
+            if (user.status != 500) {
+                actChangeUser(user)
+            }
+
+            return user;
+        } catch (e) {
+            console.log(e);
             return null
         }
     },
