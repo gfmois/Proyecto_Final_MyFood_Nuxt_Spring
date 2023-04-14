@@ -9,6 +9,8 @@ const { id } = route.params
 
 const isModalVisible = ref(false)
 const productSelected = ref(null)
+const reserveModal = ref(false)
+
 const data = reactive(await useGetRestaurantsById(id));
 
 data.value.products.map((e) => {
@@ -71,7 +73,7 @@ const totalToPay = reactive(computed(() => {
                 <div class="mt-8 flex items-center justify-start p-2 flex-row gap-1">
                     <LayoutButton button-type="custom"
                         custom-style="rounded-none dark:bg-crimson-500 dark:text-black ring-crimson-600"
-                        :title="$t('reserve')" :action="() => store.clearStore()" />
+                        :title="$t('reserve')" :action="() => reserveModal = true" />
                     <LayoutButton button-type="custom"
                         custom-style="rounded-none dark:bg-crimson-500 dark:text-black ring-crimson-600"
                         :title="$t('make_order')" :action="() => isModalVisible = true" />
@@ -95,6 +97,8 @@ const totalToPay = reactive(computed(() => {
         </section>
 
         <ProductCart :items="store.cart" />
+
+        <ReserveModal :isModalVisible="reserveModal" />
 
         <ActionModal :isModalVisible="isModalVisible" @itemClicked="$e => productSelected = $e"
             :hasTotal="true"

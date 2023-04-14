@@ -11,7 +11,6 @@ const { isModalVisible, itemSelected, title, hasTotal, total } = defineProps({
 
 <template>
     <div v-if="isModalVisible">
-        {{ productSelected }}
         <div class="fixed top-0 left-0 p-8 w-screen h-screen z-[51]">
             <div class="bg-gray-100 rounded-lg p-4 w-full h-full relative">
                 <div class="w-full flex items-center justify-between">
