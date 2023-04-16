@@ -58,7 +58,8 @@
     {
         title: "Confirmación",
         done: false,
-        visible: false
+        visible: false,
+        end: true
     }
 ])
 

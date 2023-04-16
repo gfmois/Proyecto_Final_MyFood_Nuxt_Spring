@@ -1,17 +1,20 @@
 <template>
-    <canvas ref="canvas"></canvas>
+    <LayoutLoading v-if="showLoading"/>
+    <canvas v-if="!showLoading" ref="canvas"></canvas>
 </template>
   
 <script setup>
 import QRCode from 'qrcode'
 
-const { url } = defineProps({
-    url: String
+const { url, isLoading } = defineProps({
+    url: String,
+    isLoading: Boolean
 })
 
 // TODO: text will be url to download the pdf
-const text = ref('https://example.com')
+const text = ref(url)
 const canvas = ref(null)
+const showLoading = ref(isLoading || true)
 
 const options = {
     width: 256,
@@ -27,10 +30,10 @@ const options = {
     type: 'image/png'
 }
 
-onMounted(() => {
+function loadQr() {
     QRCode.toCanvas(canvas.value, text.value, options, (error) => {
         if (error) console.error(error)
     })
-})
+}
 </script>
   

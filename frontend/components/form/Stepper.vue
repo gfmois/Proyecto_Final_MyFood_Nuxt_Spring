@@ -15,21 +15,26 @@ export default {
         const btnText = ref('Contiune')
 
         const checkStep = () => {
-            // Check if input value is empty
-            steps[actualStep.value].fields.forEach((input) => {
-                errors.value[input.title] = input.value == ''
-            })
+            if (!steps[actualStep.value].end) {
+                // Check if input value is empty
+                steps[actualStep.value].fields.forEach((input) => {
+                    errors.value[input.title] = input.value == ''
+                })
 
-            // Check if can upadte the actualStep or send the request
-            if (Object.values(errors.value).every(v => v == false)) {
-                if (steps.length > (actualStep.value + 1)) {
-                    // TODO: If end of steps send request to save the action
-                    actualStep.value++
-                    steps[actualStep.value - 1].visible = false
-                    steps[actualStep.value - 1].done = true
-                    steps[actualStep.value].visible = true
+                // Check if can upadte the actualStep or send the request
+                if (Object.values(errors.value).every(v => v == false)) {
+                    if (steps.length > (actualStep.value + 1)) {
+                        actualStep.value++
+                        steps[actualStep.value - 1].visible = false
+                        steps[actualStep.value - 1].done = true
+                        steps[actualStep.value].visible = true
+                    }
                 }
+            } else {
+                // TODO: Make Order Petitio
             }
+
+
         }
 
         const goBack = () => {
@@ -71,7 +76,6 @@ export default {
 
             <div class="p-8 h-full top-0 absolute" v-for="step in steps">
                 <div v-if="step.visible" class="p-6 flex items-center justify-center z-[110]">
-                    <!-- TODO: Add Images & Calendar like MyFood Old -->
                     <div class="w-full h-full z-50 rounded-lg flex items-center justify-center p-6 flex-col">
                         <div
                             class="p-4 1/3 w-full flex items-center text-black uppercase font-bold justify-center text-3xl">

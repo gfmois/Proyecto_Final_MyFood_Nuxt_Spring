@@ -7,11 +7,15 @@ import javax.persistence.NamedEntityGraph;
 import javax.persistence.Table;
 
 import com.pf_nxsp_myfood.backend.domain.common.utils.BaseUtils;
+import com.pf_nxsp_myfood.backend.domain.reserves.entity.ReserveEntity;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -45,6 +49,9 @@ public class ClientEntity extends BaseUtils {
     @Column(name = "avatar")
     private String avatar;
 
+    @OneToMany(mappedBy = "client_reserves")
+    private List<ReserveEntity> reserves;
+
     @Builder
     public ClientEntity(String id_client, String name, String email, String phone, String password, String avatar) {
         this.id_client = id_client;
@@ -53,5 +60,7 @@ public class ClientEntity extends BaseUtils {
         this.phone = phone;
         this.password = password;
         this.avatar = avatar;
+
+        this.reserves = new ArrayList<>();
     }
 }

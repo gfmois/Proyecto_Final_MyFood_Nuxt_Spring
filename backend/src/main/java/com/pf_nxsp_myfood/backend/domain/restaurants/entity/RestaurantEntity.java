@@ -15,6 +15,7 @@ import com.pf_nxsp_myfood.backend.domain.common.utils.BaseUtils;
 import com.pf_nxsp_myfood.backend.domain.employee.entity.EmployeeEntity;
 import com.pf_nxsp_myfood.backend.domain.hollidays.entity.HollidayEntity;
 import com.pf_nxsp_myfood.backend.domain.products.entity.ProductEntity;
+import com.pf_nxsp_myfood.backend.domain.reserves.entity.ReserveEntity;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -64,6 +65,9 @@ public class RestaurantEntity extends BaseUtils {
     @OneToMany(mappedBy = "restaurant_hollidays")
     private List<HollidayEntity> hollidays;
 
+    @OneToMany(mappedBy = "restaurant_reserves")
+    private List<ReserveEntity> reserves;
+
     @Builder
     public RestaurantEntity(String id_restaurant, String name, Integer capacity, String logo, String image,
             String category, String lat, String lng, String city) {
@@ -79,6 +83,7 @@ public class RestaurantEntity extends BaseUtils {
         this.products = new ArrayList<>();
         this.employees = new ArrayList<>();
         this.hollidays = new ArrayList<>();
+        this.reserves = new ArrayList<>();
     }
 
     public List<ProductEntity> getProducts() {
