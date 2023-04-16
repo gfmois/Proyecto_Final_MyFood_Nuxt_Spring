@@ -5,6 +5,9 @@ import java.sql.Date;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.pf_nxsp_myfood.backend.domain.common.constants.ReservesTypes;
+import com.pf_nxsp_myfood.backend.domain.common.utils.BaseUtils;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +19,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ReserveDto {
+public class ReserveDto extends BaseUtils {
     @NotNull
     @NotEmpty
     private String id_reserve;
@@ -28,6 +31,10 @@ public class ReserveDto {
     @NotNull
     @NotEmpty
     private String id_restaurant;
+
+    @NotNull
+    @NotEmpty
+    private ReservesTypes types;
 
     @NotNull
     @NotEmpty

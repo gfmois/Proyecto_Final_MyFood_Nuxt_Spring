@@ -10,9 +10,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.Table;
 
+import com.pf_nxsp_myfood.backend.domain.clients.entity.ClientEntity;
 import com.pf_nxsp_myfood.backend.domain.common.constants.ReservesTypes;
 import com.pf_nxsp_myfood.backend.domain.restaurants.entity.RestaurantEntity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -45,5 +47,17 @@ public class ReserveEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_client", nullable = false)
-    private RestaurantEntity client_reserves;
+    private ClientEntity client_reserves;
+
+    @Builder
+    public ReserveEntity(String id_reserve, Date date_reserve, ReservesTypes types, Integer diners, String status, RestaurantEntity restaurant, ClientEntity client) {
+        this.id_reserve = id_reserve;
+        this.date_reserve = date_reserve;
+        this.status = status;
+        this.types = types;
+        this.diners = diners;
+
+        this.client_reserves = client;
+        this.restaurant_reserves = restaurant;
+    }
 }
