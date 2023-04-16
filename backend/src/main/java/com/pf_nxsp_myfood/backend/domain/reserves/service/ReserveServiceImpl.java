@@ -60,13 +60,10 @@ public class ReserveServiceImpl implements ReserveService {
     public ResponseEntity<?> getBannedDays(Integer diners, ReservesTypes type, String id_restaurant) {
         List<Object> finalList = new ArrayList<>();
 
-        reserveRepository.getBannedDays(diners, type, id_restaurant).stream().forEach(e -> {
-            System.out.println(e.toString());
-        });
-        // finalList.addAll(reserveRepository.getHolidays(id_restaurant));
-        // finalList.addAll(reserveRepository.getBannedDays(diners, type, id_restaurant));
+        finalList.addAll(reserveRepository.getHolidays(id_restaurant));
+        finalList.addAll(reserveRepository.getBannedDays(diners, String.valueOf(type.ordinal()), id_restaurant));
 
-        return new ResponseEntity<>(finalList, HttpStatus.OK);
+        return new ResponseEntity<List<Object>>(finalList, HttpStatus.OK);
     }
 
 }
