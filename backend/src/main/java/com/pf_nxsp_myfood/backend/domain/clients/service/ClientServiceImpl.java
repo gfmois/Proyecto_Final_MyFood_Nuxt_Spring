@@ -51,7 +51,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public JWTResponse registration(final SignUpRequest data) {
-        clientRepository.findByNameOrEmail(data.getName(), data.getEmail())
+        clientRepository.findByEmail(data.getEmail())
                 .stream()
                 .findAny()
                 .ifPresent(entity -> {

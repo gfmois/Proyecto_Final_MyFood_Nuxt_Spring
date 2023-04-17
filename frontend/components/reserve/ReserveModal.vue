@@ -1,8 +1,8 @@
 <script setup>
+    const emit = defineEmits(["isVisible"])
     const { isModalVisible } = defineProps({
         isModalVisible: Boolean
     })
-    const emit = defineEmits(["isVisible"])
 
     const resetFormSteps = () => {
         emit("isVisible", false)
@@ -19,21 +19,16 @@
     const formSteps = reactive([
     {
         title: "Información del Cliente",
+        name: "information",
         visible: true,
         done: false,
         fields: [
             {
-                title: "Nombre",
-                objName: "name",
-                placeholder: "John",
-                type: "text",
-                errorMsg: "Tiene que rellenar todos los campos",
-                value: ""
-            },
-            {
-                title: "Email",
-                placeholder: "johndoe@example.com",
-                type: "email",
+                title: "Número de Comensales",
+                objName: "diners",
+                placeholder: "2",
+                type: "number",
+                "min": 2,
                 errorMsg: "Tiene que rellenar todos los campos",
                 value: ""
             },
@@ -63,14 +58,20 @@
                 value: ""
             },
             {
-                title: "Número de Comensales",
-                objName: "diners",
-                placeholder: "2",
-                type: "number",
-                "min": 2,
+                title: "Nombre",
+                objName: "name",
+                placeholder: "John",
+                type: "text",
                 errorMsg: "Tiene que rellenar todos los campos",
                 value: ""
-            }
+            },
+            {
+                title: "Email",
+                placeholder: "johndoe@example.com",
+                type: "email",
+                errorMsg: "Tiene que rellenar todos los campos",
+                value: ""
+            },
         ]
     },
     {
@@ -87,7 +88,7 @@
     <div v-if="isModalVisible">
         <div class="fixed top-0 left-0 p-8 w-screen h-screen z-[51] flex items-center justify-center bg-black/40">
             <div class="bg-white w-3/4 h-2/3 rounded-lg shadow-md">
-                <div class="bg-red-400 flex items-center justify-end p-1">
+                <div class="bg-neutral-300 flex items-center justify-end p-1">
                     <Icon name="ci:close-big" size="1.5rem" class="cursor-pointer" @click="$emit('isVisible', false)" />
                 </div>
                 <!-- FIXME: When Closed the modal still in last step -->

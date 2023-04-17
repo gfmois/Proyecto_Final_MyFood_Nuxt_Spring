@@ -2,6 +2,9 @@
 import QrComponent from "~/components/qr/QrComponent.vue"
 import { useGetBannedDays, useCreateReserve } from "~/composables/reserves/useReserves"
 import { useToast } from 'vue-toast-notification';
+import flatpickr from 'flatpickr'
+
+import 'flatpickr/dist/flatpickr.min.css'
 
 export default {
     components: {
@@ -14,6 +17,12 @@ export default {
         const errors = ref({})
         const actualStep = ref(0)
         const btnText = ref('Contiune')
+        const backBtn = ref('Back')
+        const qrValue = reactive({ url: "" })
+        const qrIsLoading = ref(true)
+        const flatpickrInput = ref(null)
+        const bannedDays = ref([])
+        const bannedDaysObj = reactive({ value: [] })
 
         const toast = useToast({
             position: 'top-right',
@@ -34,6 +43,18 @@ export default {
                         steps[actualStep.value - 1].visible = false
                         steps[actualStep.value - 1].done = true
                         steps[actualStep.value].visible = true
+
+                        // Initialize FlatFpickr
+                        if (steps[actualStep.value].title == "Reserva") {
+                            nextTick(() => {
+                                console.log(flatpickrInput.value);
+                                flatpickr(flatpickrInput.value, {
+                                    disable: bannedDays.value,
+                                    dateFormat: "Y-m-d",
+                                    minDate: "today"
+                                })
+                            })
+                        }
                     }
                 }
             } else {
@@ -55,12 +76,48 @@ export default {
 
                 if (response.value.status == 200) {
                     toast.success(response.value.message)
-                    emit("closeModal", true)
+                    qrValue.url = `http://localhost:3000/reserves/${response.value.id_reserve}`
+                    qrIsLoading.value = false
+                    btnText.value = "Descargar"
+                    backBtn.value = "Cerrar"
                 }
-
             }
+        }
+
+        watch(bannedDaysObj, (v, pv) => {
+            steps[actualStep.value].fields.forEach((e) => {
+                console.log(e);
+            })
+        })
+
+        watch(steps[steps.findIndex(e => e.name == "information")], async (v, pv) => {
+            steps[steps.findIndex(e => e.name == "information")] = v
+            
+            v.fields.forEach((f) => {
+                bannedDaysObj.value[f.objName] = f.value
+            })
+
+            bannedDaysObj.value.id_restaurant = useRoute().params.id
+
+            const dates = ref((await useGetBannedDays(bannedDaysObj.value)))
+
+            bannedDays.value = dates.value.length > 0 ? dates.value.map((d) => new Date(d)) : dates.value
+
+            console.log(bannedDays.value);
+        })
 
 
+        const closeAndReset = () => {
+            steps.forEach((step) => {
+                step.done = false
+                step.visible = false
+            })
+
+
+            steps[0].visible = true
+            console.log(steps);
+            actualStep.value = 0
+            emit('closeModal', true)
         }
 
         const goBack = () => {
@@ -71,6 +128,8 @@ export default {
                 // Gives visibility to the anterior step
                 actualStep.value--
                 steps[actualStep.value].visible = true
+                qrIsLoading.value = true
+                qrValue.url = ""
             }
         }
 
@@ -84,7 +143,7 @@ export default {
             loadFields()
         })
 
-        return { goBack, checkStep, errors, actualStep, steps, btnText }
+        return { goBack, checkStep, errors, actualStep, steps, btnText, qrIsLoading, qrValue, backBtn, closeAndReset, flatpickrInput }
     }
 }
 </script>
@@ -109,15 +168,22 @@ export default {
                         <div class="rounded-lg w-full h-full flex items-center justify-center p-4 flex-col">
                             <div v-for="input in step.fields" v-if="step.title != 'Confirmación'">
                                 <div v-if="input.type != 'select'">
-                                    <label class="block text-gray-700 text-sm font-bold mb-2" :for="input.title">
-                                        {{ input.title }}
-                                    </label>
-                                    <input
-                                        :class="`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline ${errors[input.title] ? 'border-red-500' : ''}`"
-                                        :id="input.title" :min="input.min" v-model="input.value" :type="input.type"
-                                        :placeholder="input.placeholder">
-                                    <p class="text-red-500 text-xs italic" v-if="errors[input.title]">{{ input.errorMsg }}
-                                    </p>
+                                    <div v-if="input.type != 'date'">
+                                        <label class="block text-gray-700 text-sm font-bold mb-2" :for="input.title">
+                                            {{ input.title }}
+                                        </label>
+                                        <input
+                                            :class="`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline ${errors[input.title] ? 'border-red-500' : ''}`"
+                                            :id="input.title" :min="input.min" v-model="input.value" :type="input.type"
+                                            :placeholder="input.placeholder">
+                                        <p class="text-red-500 text-xs italic" v-if="errors[input.title]">{{ input.errorMsg
+                                        }}</p>
+                                    </div>
+                                    <div v-if="input.type == 'date'">
+                                        <input ref="flatpickrInput"
+                                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                                            type="text" v-model="input.value">
+                                    </div>
                                 </div>
                                 <div v-if="input.type == 'select'" class="mt-4">
                                     <label class="block text-gray-700 text-sm font-bold mb-2" :for="input.title">
@@ -126,23 +192,24 @@ export default {
                                     <select v-model="input.value"
                                         :class="`block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors[input.title] ? 'border-red-500' : ''}`">
                                         <option disabled value="">Selecciona una opción</option>
-                                        <option v-for="option, index in input.options" :value="input.optionsValue[index]">{{ option }}</option>
+                                        <option v-for="option, index in input.options" :value="input.optionsValue[index]">{{
+                                            option }}</option>
                                     </select>
                                     <p class="text-red-500 text-xs italic mt-1" v-if="errors[input.title]">{{ input.errorMsg
                                     }}</p>
                                 </div>
                             </div>
                             <div v-if="step.title == 'Confirmación'">
-                                <QrComponent value="asdf" />
+                                <QrComponent v-if="!qrIsLoading" :url="qrValue" :isLoading="qrIsLoading" />
                             </div>
                             <div class="mt-5 flex items-center justify-center gap-2">
-                                <LayoutButton title="Back" v-if="actualStep > 0" :action="() => goBack()" />
-                                <LayoutButton :title="btnText" :action="() => checkStep()" />
+                                <LayoutButton :title="backBtn" v-if="actualStep > 0"
+                                    :action="() => backBtn == 'Back' ? goBack() : closeAndReset()" />
+                                <LayoutButton :title="btnText" :action="() => checkStep()" v-if="qrIsLoading" />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</template>
+</div></template>
