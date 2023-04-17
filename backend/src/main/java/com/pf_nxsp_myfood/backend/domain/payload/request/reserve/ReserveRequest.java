@@ -33,7 +33,7 @@ public class ReserveRequest {
     @NotBlank
     @NotNull
     @NotEmpty
-    private String status;
+    private String name;
 
     @NotBlank
     @NotNull

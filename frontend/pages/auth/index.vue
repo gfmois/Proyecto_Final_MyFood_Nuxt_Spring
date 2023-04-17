@@ -1,9 +1,6 @@
 <script setup>
-import 'vue-toast-notification/dist/theme-sugar.css';
-
-import { useToast } from 'vue-toast-notification';
+import { useToast } from "vue-toast-notification"
 import { useLogin, useRegister } from '~~/composables/auth/useAuth';
-import { useAuth } from "~/store"
 
 const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");

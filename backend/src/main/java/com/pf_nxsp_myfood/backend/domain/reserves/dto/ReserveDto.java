@@ -34,6 +34,10 @@ public class ReserveDto extends BaseUtils {
 
     @NotNull
     @NotEmpty
+    private String name;
+
+    @NotNull
+    @NotEmpty
     private ReservesTypes types;
 
     @NotNull

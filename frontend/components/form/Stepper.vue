@@ -1,6 +1,7 @@
 <script>
-import { defineProps } from 'vue'
 import QrComponent from "~/components/qr/QrComponent.vue"
+import { useGetBannedDays, useCreateReserve } from "~/composables/reserves/useReserves"
+import { useToast } from 'vue-toast-notification';
 
 export default {
     components: {
@@ -9,12 +10,17 @@ export default {
     props: {
         steps: Array
     },
-    setup({ steps }) {
+    setup({ steps }, { emit }) {
         const errors = ref({})
         const actualStep = ref(0)
         const btnText = ref('Contiune')
 
-        const checkStep = () => {
+        const toast = useToast({
+            position: 'top-right',
+            pauseOnHover: true,
+        })
+
+        const checkStep = async () => {
             if (!steps[actualStep.value].end) {
                 // Check if input value is empty
                 steps[actualStep.value].fields.forEach((input) => {
@@ -31,7 +37,27 @@ export default {
                     }
                 }
             } else {
-                // TODO: Make Order Petitio
+                // Makes the petition to save the reserve
+                const reqObj = ref({})
+
+                steps.forEach((e) => {
+                    if (e.fields) {
+                        e?.fields.forEach((f) => {
+                            if (f.objName) {
+                                reqObj.value[f.objName] = f.value
+                            }
+                        })
+                    }
+                })
+
+                reqObj.value["id_restaurant"] = useRoute().params.id
+                const response = await useCreateReserve(reqObj)
+
+                if (response.value.status == 200) {
+                    toast.success(response.value.message)
+                    emit("closeModal", true)
+                }
+
             }
 
 
@@ -100,7 +126,7 @@ export default {
                                     <select v-model="input.value"
                                         :class="`block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors[input.title] ? 'border-red-500' : ''}`">
                                         <option disabled value="">Selecciona una opción</option>
-                                        <option v-for="option in input.options">{{ option }}</option>
+                                        <option v-for="option, index in input.options" :value="input.optionsValue[index]">{{ option }}</option>
                                     </select>
                                     <p class="text-red-500 text-xs italic mt-1" v-if="errors[input.title]">{{ input.errorMsg
                                     }}</p>

@@ -8,8 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 import com.pf_nxsp_myfood.backend.domain.reserves.entity.ReserveEntity;
 
-import jakarta.transaction.Transactional;
-
 public interface ReserveRepository extends JpaRepository<ReserveEntity, String> {
     @Query(value = "SELECT date FROM holidays WHERE id_restaurant = :restaurant", nativeQuery = true)
     public List<?> getHolidays(@Param("restaurant") String restaurant);

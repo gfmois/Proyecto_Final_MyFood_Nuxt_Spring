@@ -30,9 +30,16 @@ public class ReservesController {
         return rService.getBannedDays(diners, type, id_restaurant);
     }
 
+    @GetMapping("/holidays")
+    public ResponseEntity<?> getHolidays(@RequestParam String restaurant) {
+        return rService.getHolidays(restaurant);
+    }
+
     @PostMapping
     public ResponseEntity<?> createOrder(@AuthenticationPrincipal AuthClientDetails aDetails, @RequestBody ReserveRequest reserve) {
-        new ReserveDto();
+
+        System.out.println(reserve);
+        
         ReserveDto dto = ReserveDto.builder()
             .id_reserve(IdGenerator.generateWithLength(20))
             .id_client(aDetails.getId_client())
@@ -40,7 +47,8 @@ public class ReservesController {
             .diners(reserve.getDiners())
             .date_reserve(reserve.getDate_reserve())
             .types(reserve.getType())
-            .status(reserve.getStatus())
+            .status("Reserved")
+            .name(reserve.getName())
             .build();
                 
             return rService.createOrder(dto);

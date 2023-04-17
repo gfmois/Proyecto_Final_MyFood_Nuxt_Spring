@@ -29,6 +29,9 @@ public class ReserveEntity {
     @Id
     private String id_reserve;
 
+    @Column(name = "name")
+    private String name;
+
     @Column(name = "date_reserve")
     private Date date_reserve;
 
@@ -50,12 +53,13 @@ public class ReserveEntity {
     private ClientEntity client_reserves;
 
     @Builder
-    public ReserveEntity(String id_reserve, Date date_reserve, ReservesTypes types, Integer diners, String status, RestaurantEntity restaurant, ClientEntity client) {
+    public ReserveEntity(String id_reserve, Date date_reserve, ReservesTypes types, Integer diners, String status, RestaurantEntity restaurant, ClientEntity client, String name) {
         this.id_reserve = id_reserve;
         this.date_reserve = date_reserve;
         this.status = status;
         this.types = types;
         this.diners = diners;
+        this.name = name;
 
         this.client_reserves = client;
         this.restaurant_reserves = restaurant;

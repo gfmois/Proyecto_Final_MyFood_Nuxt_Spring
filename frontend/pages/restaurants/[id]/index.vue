@@ -71,6 +71,7 @@ const totalToPay = reactive(computed(() => {
                     amet
                     faucibus velit est in libero. Proin et ullamcorper nulla. </p>
                 <div class="mt-8 flex items-center justify-start p-2 flex-row gap-1">
+                    {{ reserveModal }}
                     <LayoutButton button-type="custom"
                         custom-style="rounded-none dark:bg-crimson-500 dark:text-black ring-crimson-600"
                         :title="$t('reserve')" :action="() => reserveModal = true" />
@@ -98,7 +99,8 @@ const totalToPay = reactive(computed(() => {
 
         <ProductCart :items="store.cart" />
 
-        <ReserveModal :isModalVisible="reserveModal" />
+        {{ reserveModal }}
+        <ReserveModal :isModalVisible="reserveModal" @isVisible="$e => reserveModal = $e" />
 
         <ActionModal :isModalVisible="isModalVisible" @itemClicked="$e => productSelected = $e"
             :hasTotal="true"

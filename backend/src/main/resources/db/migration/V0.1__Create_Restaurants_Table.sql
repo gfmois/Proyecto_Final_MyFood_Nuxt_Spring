@@ -13,6 +13,7 @@ CREATE TABLE `reserves` (
   `id_reserve` VARCHAR(20) PRIMARY KEY,
   `id_client` varchar(255),
   `id_restaurant` varchar(255),
+  `name` VARCHAR(255),
   `date_reserve` date,
   `type` varchar(255),
   `diners` int,

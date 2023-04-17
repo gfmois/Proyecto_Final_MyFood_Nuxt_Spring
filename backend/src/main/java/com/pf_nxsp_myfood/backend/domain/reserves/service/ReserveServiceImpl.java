@@ -34,6 +34,7 @@ public class ReserveServiceImpl implements ReserveService {
                 .restaurant(RestaurantEntity.builder().id_restaurant(dto.getId_restaurant()).build())
                 .client(ClientEntity.builder().id_client(dto.getId_client()).build())
                 .status(dto.getStatus())
+                .name(dto.getName())
                 .build();
 
     }
@@ -64,6 +65,17 @@ public class ReserveServiceImpl implements ReserveService {
         finalList.addAll(reserveRepository.getBannedDays(diners, String.valueOf(type.ordinal()), id_restaurant));
 
         return new ResponseEntity<List<Object>>(finalList, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<?> getHolidays(String id_restaurant) {
+        List<Object> response = new ArrayList<>();
+
+        response.addAll(reserveRepository.getHolidays(id_restaurant));
+
+        System.out.println(reserveRepository.getHolidays(id_restaurant));
+
+        return new ResponseEntity<List<Object>>(response, HttpStatus.OK);
     }
 
 }
