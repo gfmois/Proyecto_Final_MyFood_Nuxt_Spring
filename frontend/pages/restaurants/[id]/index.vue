@@ -35,6 +35,10 @@ const totalToPay = reactive(computed(() => {
 //         'X-RapidAPI-Host': import.meta.env.VITE_RAPID_API_HOST
 //     }
 // })
+
+const test = () =>  {
+    console.log('INside');
+}
 </script>
 
 <template>
@@ -78,9 +82,9 @@ const totalToPay = reactive(computed(() => {
                     <LayoutButton button-type="custom"
                         custom-style="rounded-none dark:bg-crimson-500 dark:text-black ring-crimson-600"
                         :title="$t('make_order')" :action="() => isModalVisible = true" />
-                    <LayoutButton button-type="custom"
+                    <!-- <LayoutButton button-type="custom"
                         custom-style="rounded-none dark:bg-crimson-500 dark:text-black ring-crimson-600"
-                        :title="$t('make_event')" />
+                        :title="$t('make_event')" /> -->
                     <LayoutButton button-type="custom" showOptionsButton="true"
                         custom-style="rounded-none dark:bg-crimson-500 dark:text-black ring-crimson-600" />
                 </div>
@@ -91,8 +95,7 @@ const totalToPay = reactive(computed(() => {
                 <h3 class="text-2xl font-bold mb-4 text-center p-2">Productos</h3>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-2">
-                <ProductCard :hasActionModal="true" :product="product" v-for="product in data.products"
-                    v-if="data.products.length > 0" />
+                <ProductCard :hasActionModal="true" :product="product" v-for="product in data.products" v-if="data.products.length > 0" />
                 <div v-if="data.products.length == 0" class="text-center w-full bg-red-400">Sin productos todavía</div>
             </div>
         </section>
@@ -102,12 +105,13 @@ const totalToPay = reactive(computed(() => {
         <AuthGoLoginModal :show="reserveModal && !token_client" @close="$e => reserveModal = false" />
         <ReserveModal :isModalVisible="reserveModal && token_client" @isVisible="$e => reserveModal = $e" />
 
+        {{ isModalVisible }}
         <ActionModal :isModalVisible="isModalVisible" @itemClicked="$e => productSelected = $e"
             :hasTotal="true"
             :total="totalToPay"
             @closeModal="$e => isModalVisible = $e" title="Realizar Pedido">
-            <div class="w-fit h-fit" v-for="product in data.products">
-                <ProductCard :hasActionModal="true" :product="product" v-if="data.products.length > 0" />
+            <div class="w-fit h-fit" v-for="product in data.products" v-if="data.products.length > 0">
+                <ProductCard :hasActionModal="true" :product="product" />
             </div>
         </ActionModal>
     </div>
