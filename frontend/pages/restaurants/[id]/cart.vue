@@ -16,6 +16,10 @@ const totalCart = reactive(computed(() => {
 </script>
 
 <template>
+    <Header>
+        <Title>Carrito</Title>
+    </Header>
+
     <div class="h-screen bg-gray-200 pt-20" v-if="cart.length > 0">
         <h1 class="mb-10 text-center text-2xl font-bold">Cart Items</h1>
         <div class="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0 w-full">
@@ -53,4 +57,6 @@ const totalCart = reactive(computed(() => {
             <NuxtLink class="bg-crimson-600 p-3  rounded-lg hover:bg-crimson-700 text-white hover:shadow-xl" :to="`/restaurants/${$route.params.id}`">Volver atrás</NuxtLink>
         </div>
     </div>
+
+    <CartCreditCardModal/>
 </template>

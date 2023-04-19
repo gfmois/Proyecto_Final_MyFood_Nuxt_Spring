@@ -13,6 +13,7 @@ specifiers:
   nuxt: ^3.2.3
   nuxt-icon: ^0.3.2
   qrcode: ^1.5.1
+  stripe: ^12.1.1
   vue-datepicker-ui: ^2.3.0
   vue-toast-notification: ^3.1.1
   vue3-carousel: ^0.2.12
@@ -23,6 +24,7 @@ dependencies:
   flatpickr: 4.6.13
   nuxt-icon: 0.3.2
   qrcode: 1.5.1
+  stripe: 12.1.1
   vue-datepicker-ui: 2.3.0
   vue-toast-notification: 3.1.1
   vue3-carousel: 0.2.12
@@ -2375,7 +2377,6 @@ packages:
 
   /@types/node/18.15.11:
     resolution: {integrity: sha512-E5Kwq2n4SbMzQOn6wnmBjuK9ouqlURrcZDVfbo9ftDDTFt3nk7ZKK4GMOzoYgnpQJKcxwQw+lGaBvvlMo0qN/Q==}
-    dev: true
 
   /@types/optimize-css-assets-webpack-plugin/5.0.5:
     resolution: {integrity: sha512-txpFQcyPPVaXFgTL7aTy43CqbQkvtzWXpzS/n663Lz8QB7qYDbQau/O+URRsvt96/u4QsjZLsZ/4KW7UnPfiYw==}
@@ -3197,7 +3198,6 @@ packages:
     dependencies:
       function-bind: 1.1.1
       get-intrinsic: 1.2.0
-    dev: true
 
   /callsites/3.1.0:
     resolution: {integrity: sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==}
@@ -4477,7 +4477,6 @@ packages:
 
   /function-bind/1.1.1:
     resolution: {integrity: sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==}
-    dev: true
 
   /gauge/3.0.2:
     resolution: {integrity: sha512-+5J6MS/5XksCuXq++uFRsnUd7Ovu1XenbeuIuNRJxYWjgQbPuFhT14lAvsWfqfAmnwluf1OwMjz39HjfLPci0Q==}
@@ -4522,7 +4521,6 @@ packages:
       function-bind: 1.1.1
       has: 1.0.3
       has-symbols: 1.0.3
-    dev: true
 
   /get-port-please/3.0.1:
     resolution: {integrity: sha512-R5pcVO8Z1+pVDu8Ml3xaJCEkBiiy1VQN9za0YqH8GIi1nIqD4IzQhzY6dDzMRtdS1lyiGlucRzm8IN8wtLIXng==}
@@ -4701,7 +4699,6 @@ packages:
   /has-symbols/1.0.3:
     resolution: {integrity: sha512-l3LCuF6MgDNwTDKkdYGEihYjt5pRPbEg46rtlmnSPlUbgmB8LOIrKJbYYFBSbnPaJexMKtiPO8hmeRjRz2Td+A==}
     engines: {node: '>= 0.4'}
-    dev: true
 
   /has-tostringtag/1.0.0:
     resolution: {integrity: sha512-kFjcSNhnlGV1kyoGk7OXKSawH5JOb/LzUc5w9B02hOTO0dfFRjbHQKvg1d6cf3HbeUmtU9VbbV3qzZ2Teh97WQ==}
@@ -4719,7 +4716,6 @@ packages:
     engines: {node: '>= 0.4.0'}
     dependencies:
       function-bind: 1.1.1
-    dev: true
 
   /hash-sum/2.0.0:
     resolution: {integrity: sha512-WdZTbAByD+pHfl/g9QSsBIIwy8IT+EsPiKDs0KNX+zSHhdDLFKdZu0BQHljvO+0QI/BasbMSUa8wYNCZTvhslg==}
@@ -6226,6 +6222,10 @@ packages:
     engines: {node: '>= 6'}
     dev: true
 
+  /object-inspect/1.12.3:
+    resolution: {integrity: sha512-geUvdk7c+eizMNUDkRpW1wJwgfOiOeHbxBR/hLXK1aT6zmVSO0jsQcs7fj6MGw89jC/cjGfLcNOrtMYtGqm81g==}
+    dev: false
+
   /ofetch/1.0.1:
     resolution: {integrity: sha512-icBz2JYfEpt+wZz1FRoGcrMigjNKjzvufE26m9+yUiacRQRHwnNlGRPiDnW4op7WX/MR6aniwS8xw8jyVelF2g==}
     dependencies:
@@ -7081,6 +7081,13 @@ packages:
       yargs: 15.4.1
     dev: false
 
+  /qs/6.11.1:
+    resolution: {integrity: sha512-0wsrzgTz/kAVIeuxSjnpGC56rzYtr6JT/2BwEvMaPhFIoYa1aGO8LbzuU1R0uUYQkLpWBTOj0l/CLAJB64J6nQ==}
+    engines: {node: '>=0.6'}
+    dependencies:
+      side-channel: 1.0.4
+    dev: false
+
   /querystringify/2.2.0:
     resolution: {integrity: sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==}
     dev: true
@@ -7426,6 +7433,14 @@ packages:
     resolution: {integrity: sha512-QHsz8GgQIGKlRi24yFc6a6lN69Idnx634w49ay6+jA5yFh7a1UY+4Rp6HPx/L/1zcEDPEij8cIsiqR6bQsE5VQ==}
     dev: true
 
+  /side-channel/1.0.4:
+    resolution: {integrity: sha512-q5XPytqFEIKHkGdiMIrY10mvLRvnQh42/+GoBlFW3b2LXLE2xxJpZFdm94we0BaoV3RwJyGqg5wS7epxTv0Zvw==}
+    dependencies:
+      call-bind: 1.0.2
+      get-intrinsic: 1.2.0
+      object-inspect: 1.12.3
+    dev: false
+
   /signal-exit/3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
 
@@ -7642,6 +7657,14 @@ packages:
     resolution: {integrity: sha512-QZTsipNpa2Ppr6v1AmJHESqJ3Uz247MUS0OjrnnZjFAvEoWqxuyFuXn2xLgMtRnijJShAa1HL0gtJyUs7u7n3Q==}
     dependencies:
       acorn: 8.8.2
+
+  /stripe/12.1.1:
+    resolution: {integrity: sha512-vn74vXtZeJx18oGzA0AhL818euhLF/juCgkKrJfAS1Y0bp5/EzQKPuc/75qQUvY43nNGIkgOVb3kUBuyoeqEkA==}
+    engines: {node: '>=12.*'}
+    dependencies:
+      '@types/node': 18.15.11
+      qs: 6.11.1
+    dev: false
 
   /strnum/1.0.5:
     resolution: {integrity: sha512-J8bbNyKKXl5qYcR36TIO8W3mVGVHrmmxsd5PAItGkmyzwJvybiw2IVq5nqd0i4LSNSkB/sx9VHllbfFdr9k1JA==}

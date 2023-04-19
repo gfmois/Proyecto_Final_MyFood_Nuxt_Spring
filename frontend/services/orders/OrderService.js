@@ -5,11 +5,15 @@ export default {
         try {
             const res = await fetch(`${secret.DEFAULT_URL}/orders`, {
                 headers: {
-                    'Authorization': `Bearer ${useCookie('token_client').value}`
+                    'Authorization': `Bearer ${useCookie('token_client').value}`,
+                    'Content-Type': "application/json"
                 },
                 method: 'POST',
-                body: order
+                body: JSON.stringify(order)
             })
+
+
+            return await res.json()
         } catch (error) {
             console.log(error);
             return null

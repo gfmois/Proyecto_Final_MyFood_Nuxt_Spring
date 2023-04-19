@@ -1,4 +1,6 @@
 <script setup>
+import OrderModal from '../order/OrderModal.vue';
+
 const props = defineProps({
     product: Object,
     hasActionModal: Boolean,
@@ -17,6 +19,6 @@ const isModalVisible = ref(false)
         </div>
     </div>
     <div v-if="hasActionModal" class="fixed">
-        <ProductOrderModal v-if="isModalVisible" @closeModal="$e => isModalVisible = $e" :product="product" />
+        <OrderModal v-if="isModalVisible" @closeModal="$e => isModalVisible = $e" :product="product" />
     </div>
 </template>

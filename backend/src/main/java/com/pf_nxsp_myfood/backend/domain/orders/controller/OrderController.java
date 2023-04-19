@@ -41,28 +41,36 @@ import com.pf_nxsp_myfood.backend.domain.common.constants.OrderTypes;
 import com.pf_nxsp_myfood.backend.domain.orders.dto.OrderDto;
 import com.pf_nxsp_myfood.backend.domain.orders.service.OrderService;
 import com.pf_nxsp_myfood.backend.domain.payload.request.order.NewOrderRequest;
+import com.pf_nxsp_myfood.backend.domain.products.service.ProductService;
 import com.pf_nxsp_myfood.backend.plugins.IdGenerator;
 import com.pf_nxsp_myfood.backend.security.AuthClientDetails;
-
+import com.stripe.Stripe;
 // STRIPE
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
+import com.stripe.model.Source;
 
 @RestController
 @RequestMapping("/orders")
 @CrossOrigin(origins = "*")
 public class OrderController {
     @Value("${paypal.client-id}")
-    private String clientId;
+    private String paypal_clientId;
 
     @Value("${paypal.client-secret}")
-    private String clientSecret;
+    private String paypal_clientSecret;
+
+    @Value("${stripe.api.secretKey}")
+    private String stripe_secretKey;
 
     @Autowired
     private OrderService oService;
 
     @Autowired
     private ClientService cService;
+
+    @Autowired
+    private ProductService pService;
 
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.create();
@@ -93,6 +101,15 @@ public class OrderController {
             @RequestBody NewOrderRequest newOrderRequest) throws StripeException {
         OrderDto dto = new OrderDto();
 
+        Stripe.apiKey = stripe_secretKey;
+
+        // Convertir token en objeto Source
+        Map<String, Object> sourceParams = new HashMap<>();
+        sourceParams.put("type", "card");
+        sourceParams.put("token", newOrderRequest.getCard_token());
+
+        Source source = Source.create(sourceParams);
+
         dto.setId_order(IdGenerator.generateWithLength(20));
         dto.setId_client(cService.currentUser(aDetails).getId_client());
         dto.setStatus(OrderTypes.PENDING);
@@ -103,7 +120,7 @@ public class OrderController {
                 .forEach(o -> o.setId_order(dto.getId_order()));
 
         BigDecimal amount = newOrderRequest.getProducts().stream()
-                .map(e -> new BigDecimal(e.getProducts().getPrice())
+                .map(e -> new BigDecimal(pService.getProductById(e.getId_product()).getPrice())
                         .multiply(new BigDecimal(e.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
@@ -111,16 +128,19 @@ public class OrderController {
 
         Map<String, Object> paymentParams = new HashMap<>();
 
+        int amountInCents = amount.multiply(new BigDecimal(100)).intValueExact();
+
         // Creates Stripe Order Payment
-        paymentParams.put("amount", amount);
+        paymentParams.put("amount", amountInCents);
         paymentParams.put("currency", "eur");
         paymentParams.put("description", String.format("Pago de orden #%s", dto.getId_order()));
-        paymentParams.put("source", newOrderRequest.getCard_token());
+        paymentParams.put("source", source.getId());
 
         try {
             PaymentIntent.create(paymentParams);
             return oService.addOrder(dto, newOrderRequest.getProducts());
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body("Cannot Create the Order");
         }
     }
@@ -140,8 +160,8 @@ public class OrderController {
                         new PurchaseUnitRequest().amountWithBreakdown(
                                 new AmountWithBreakdown().currencyCode("USD").value("100.00")))));
 
-        System.out.println(clientId);
-        System.out.println(clientSecret);
+        System.out.println(paypal_clientId);
+        System.out.println(paypal_clientSecret);
 
         try {
             HttpResponse<Order> response = httpClient.execute(req);

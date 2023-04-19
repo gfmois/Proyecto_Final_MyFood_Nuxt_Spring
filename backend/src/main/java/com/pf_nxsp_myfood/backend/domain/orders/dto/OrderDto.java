@@ -5,6 +5,7 @@ import lombok.*;
 import javax.validation.constraints.NotNull;
 
 import com.pf_nxsp_myfood.backend.domain.common.constants.OrderTypes;
+import com.pf_nxsp_myfood.backend.domain.common.utils.BaseUtils;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderDto {
+public class OrderDto extends BaseUtils {
     @NotNull
     private String id_order;
 

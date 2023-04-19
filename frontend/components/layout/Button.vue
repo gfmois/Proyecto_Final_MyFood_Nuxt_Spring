@@ -15,6 +15,7 @@ const styles = {
     yellow: "text-white bg-yellow-700 hover:bg-yellow-800 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-md text-sm px-5 py-2.5 text-center mr-2 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-900",
     crimson: "text-white bg-crimson-700 hover:bg-crimson-800 focus:outline-none focus:ring-4 focus:ring-crimson-300 font-medium rounded-md text-sm px-5 py-2.5 text-center mr-2 dark:bg-crimson-600 dark:hover:bg-crimson-700 dark:focus:ring-crimson-900",
     green: "text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-md text-sm px-5 py-2.5 text-center mr-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800",
+    reverse: "text-blue-400 hover:bg-white font-medium rounded-md text-sm px-5 py-2.5 text-center mr-2 dark:border-2 dark:border-blue-200 dark:hover:bg-blue-300 dark:hover:text-white",
     custom: "text-white focus:outline-none focus:ring-4 font-medium rounded-md text-sm px-5 py-2.5 text-center mr-2",
     empty_custom: ''
 }

@@ -105,7 +105,6 @@ const test = () =>  {
         <AuthGoLoginModal :show="reserveModal && !token_client" @close="$e => reserveModal = false" />
         <ReserveModal :isModalVisible="reserveModal && token_client" @isVisible="$e => reserveModal = $e" />
 
-        {{ isModalVisible }}
         <ActionModal :isModalVisible="isModalVisible" @itemClicked="$e => productSelected = $e"
             :hasTotal="true"
             :total="totalToPay"

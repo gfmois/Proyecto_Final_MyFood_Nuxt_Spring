@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.pf_nxsp_myfood.backend.domain.common.utils.BaseUtils;
 import com.pf_nxsp_myfood.backend.domain.products.entity.ProductEntity;
 
 import lombok.Builder;
@@ -21,7 +22,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "products_ordered")
 @IdClass(OrderProductId.class)
-public class OrderProductEntity {
+public class OrderProductEntity extends BaseUtils {
     @Id
     @Column(name = "id_order")
     private String id_order;
