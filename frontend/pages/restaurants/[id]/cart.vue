@@ -3,6 +3,8 @@ import { useShoppingCart } from "~~/store"
 
 const { cart, removeItem } = useShoppingCart()
 
+const openModal = ref(false)
+
 const shippingCost = ref(4.99) // NOTE: This will be configured by the Restaurant on the admin panel
 const totalCart = reactive(computed(() => {
     const _total = ref(0)
@@ -46,7 +48,7 @@ const totalCart = reactive(computed(() => {
                         <p class="text-sm text-gray-700">including IVA</p>
                     </div>
                 </div>
-                <button class="mt-6 w-full rounded-md bg-crimson-500 py-1.5 font-medium text-blue-50 hover:bg-crimson-600">Check out</button>
+                <button class="mt-6 w-full rounded-md bg-crimson-500 py-1.5 font-medium text-blue-50 hover:bg-crimson-600" @click="() => openModal = true">Check out</button>
             </div>
         </div>
     </div>
@@ -58,5 +60,5 @@ const totalCart = reactive(computed(() => {
         </div>
     </div>
 
-    <CartCreditCardModal/>
+    <CartCreditCardModal :isVisible="openModal" @closeModal="$e => openModal = false"/>
 </template>

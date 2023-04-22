@@ -99,9 +99,8 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<?> addOrder(@AuthenticationPrincipal AuthClientDetails aDetails,
             @RequestBody NewOrderRequest newOrderRequest) throws StripeException {
-        OrderDto dto = new OrderDto();
-
         Stripe.apiKey = stripe_secretKey;
+        OrderDto dto = new OrderDto();
 
         // Convertir token en objeto Source
         Map<String, Object> sourceParams = new HashMap<>();
@@ -136,9 +135,16 @@ public class OrderController {
         paymentParams.put("description", String.format("Pago de orden #%s", dto.getId_order()));
         paymentParams.put("source", source.getId());
 
+        PaymentIntent paymentIntent;
+        Map<String, Object> res = new HashMap<>();
+
         try {
-            PaymentIntent.create(paymentParams);
-            return oService.addOrder(dto, newOrderRequest.getProducts());
+            paymentIntent = PaymentIntent.create(paymentParams);
+            paymentIntent.confirm();
+            res.put("order", oService.addOrder(dto, newOrderRequest.getProducts()));
+            res.put("stripe", paymentParams.get("description"));
+
+            return ResponseEntity.ok().body(res);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body("Cannot Create the Order");

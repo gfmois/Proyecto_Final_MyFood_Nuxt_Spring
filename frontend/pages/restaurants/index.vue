@@ -1,9 +1,16 @@
 <script setup>
-import { useGetRestaurants } from '~~/composables/restaurants/useRestaurants';
+import { useGetRestaurants, useGetFilteredRestaunrats } from '~~/composables/restaurants/useRestaurants';
 import { Suspense } from 'vue';
 
-const restaurants = await useGetRestaurants()
+const restaurants = ref(await useGetRestaurants())
 const seeFilters = ref(true)
+
+const filters = reactive({ value: {} })
+
+watch(filters, async (v, pv) => {
+    // TODO: Petition and set restaurants to var
+    restaurants.value = (await useGetFilteredRestaunrats(v.value)).value
+})
 
 </script>
 
@@ -26,11 +33,12 @@ const seeFilters = ref(true)
             <template #default>
                 <div class="flex gap-4 flex-col">
                     <div class="bg-gray-200 w-full h-full p-2 flex flex-row gap-3" v-if="seeFilters">
-                        <LayoutFilterBean filterName="Ciudad" :filterOptions="['Alicante', 'Valencia', 'Madrid']" />
+                        <LayoutFilterBean filterName="Ciudad" :filterOptions="['Alicante', 'Valencia', 'Madrid']" @value="$e => filters.value.city = $e" />
                         <!-- Will Come from DB -->
                         <LayoutFilterBean filterName="Categoria"
-                            :filterOptions="['Chino', 'Japones', 'De la Terreta', 'Nacional']" />
-                        <LayoutFilterBean filterName="A Domicilio" :filterOptions="['Si', 'No']" />
+                            :filterOptions="['Chino', 'Japones', 'De la Terreta', 'Nacional']" @value="$e => filters.value.category = $e" />
+                            <!-- FIXME: Change this to line -->
+                        <LayoutFilterBean filterName="Precio" :filterOptions="['5', '10', '15', '20']" @value="$e => filters.value.price = $e"  />
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 lg:gap-10">
                         <NuxtLink

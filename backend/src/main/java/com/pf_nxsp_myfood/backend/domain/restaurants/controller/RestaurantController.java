@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -63,7 +64,7 @@ public class RestaurantController {
     // private RedisTemplate<String, Object> rTemplate;
 
     @Autowired
-	private FileUpload fileUpload;
+    private FileUpload fileUpload;
 
     @Autowired
     GsonBuilder builder = new GsonBuilder();
@@ -74,47 +75,67 @@ public class RestaurantController {
     @GetMapping
     public List<RestaurantDto> getRestaurants(HttpServletRequest req) {
         List<RestaurantDto> res = new ArrayList<>();
-    
+
         if (req.getParameterMap().size() > 0) {
+            AtomicBoolean hasCity = new AtomicBoolean(false);
+            AtomicBoolean hasPrice = new AtomicBoolean(false);
+            AtomicBoolean hasCategory = new AtomicBoolean(false);
+
             List<RestaurantDto> restaurantsByCity = new ArrayList<>();
             List<RestaurantDto> restaurantsByPrice = new ArrayList<>();
-    
+            List<RestaurantDto> restaurantsByCategory = new ArrayList<>();
+
             req.getParameterMap().entrySet().forEach(e -> {
                 if (e.getKey().equals("city")) {
+                    hasCity.set(true);
                     restaurantsByCity.addAll(rService.getRestaurantsByCity(String.join(" ", e.getValue())));
                 }
-    
+
                 if (e.getKey().equals("price")) {
                     Set<ProductDto> products = new HashSet<>();
+                    hasPrice.set(true);
+
                     pService.getProducts()
                             .stream()
-                            .filter(p -> Double.parseDouble(p.getPrice()) <= Double.parseDouble((String.join(" ", e.getValue()))))
+                            .filter(p -> Double.parseDouble(p.getPrice()) >= Double
+                                    .parseDouble((String.join(" ", e.getValue()))))
                             .forEach(products::add);
-    
+
                     products
                             .stream()
-                            .map(product -> (RestaurantDto) rService.getRestaurantById(product.getRestaurant()).get("restaurant"))
+                            .map(product -> (RestaurantDto) rService.getRestaurantById(product.getRestaurant())
+                                    .get("restaurant"))
                             .forEach(restaurantsByPrice::add);
                 }
+
+                if (e.getKey().equals("category")) {
+                    hasCategory.set(true);
+                    restaurantsByCategory.addAll(rService.getRestaurants().stream()
+                            .filter(r -> r.getCategory().equals(String.join(" ", e.getValue())))
+                            .collect(Collectors.toList()));
+                }
             });
-    
-            // Obtener la intersección de ambos conjuntos de restaurantes
-            if (restaurantsByCity.isEmpty()) {
-                res = restaurantsByPrice;
-            } else if (restaurantsByPrice.isEmpty()) {
-                res = restaurantsByCity;
-            } else {
+
+            if (hasCity.get() && hasPrice.get()) {
                 res = restaurantsByCity.stream()
                         .filter(restaurantsByPrice::contains)
+                        .filter(restaurantsByCategory::contains)
+                        .map(r -> (RestaurantDto) r)
                         .collect(Collectors.toList());
+            } else if (hasCity.get()) {
+                res = restaurantsByCity;
+            } else if (hasPrice.get()) {
+                res = restaurantsByPrice;
+            } else if (hasCategory.get()) {
+                res = restaurantsByCategory;
             }
+
         } else {
             res = rService.getRestaurants();
         }
-    
+
         return res;
     }
-    
 
     @GetMapping("/{id_restaurant}")
     public Map<String, Object> getRestaurantById(@PathVariable String id_restaurant) {
@@ -131,11 +152,9 @@ public class RestaurantController {
         return rSize;
     }
 
-    @GetMapping(
-        value = "/{id_restaurant}/image", 
-        produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
-    )
-    public @ResponseBody ResponseEntity<byte[]> getRestaurantImage(@PathVariable String id_restaurant) throws IOException {
+    @GetMapping(value = "/{id_restaurant}/image", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public @ResponseBody ResponseEntity<byte[]> getRestaurantImage(@PathVariable String id_restaurant)
+            throws IOException {
         Map<String, Object> pDto = rService.getRestaurantById(id_restaurant);
         String str_imagePath = ((RestaurantDto) pDto.get("restaurant")).getImage();
         String[] imageSplitted = str_imagePath.split("/");
@@ -154,15 +173,14 @@ public class RestaurantController {
     @CacheEvict(value = "restaurants", allEntries = true)
     @PostMapping(consumes = { "multipart/form-data" })
     public MessageResponse addRestaurant(
-        @RequestParam("file") MultipartFile file,
-        @RequestParam("name") String name,
-        @RequestParam("logo") MultipartFile logo,
-        @RequestParam("category") String category,
-        @RequestParam("lat") String lat,
-        @RequestParam("lng") String lng,
-        @RequestParam("city") String city,
-        @RequestParam("capacity") Integer capacity
-    ) {
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("name") String name,
+            @RequestParam("logo") MultipartFile logo,
+            @RequestParam("category") String category,
+            @RequestParam("lat") String lat,
+            @RequestParam("lng") String lng,
+            @RequestParam("city") String city,
+            @RequestParam("capacity") Integer capacity) {
         try {
             // RestaurantDto new Instance
             RestaurantDto rDto = new RestaurantDto();
@@ -173,13 +191,13 @@ public class RestaurantController {
             }
 
             // Saves the image and gets the full path of the file to save it into DB
-			Map<String, Object> fileObj = fileUpload.saveFile("restaurants", file);
-			Map<String, Object> logoObj = fileUpload.saveFile("restaurants/logos", logo);
+            Map<String, Object> fileObj = fileUpload.saveFile("restaurants", file);
+            Map<String, Object> logoObj = fileUpload.saveFile("restaurants/logos", logo);
 
             if ((Integer) logoObj.get("statusCode") == 400) {
-				return new MessageResponse("Error trying to uploading the image",
-						String.valueOf((Integer) logoObj.get("status")));
-			}
+                return new MessageResponse("Error trying to uploading the image",
+                        String.valueOf((Integer) logoObj.get("status")));
+            }
 
             // Transform Form-Data to RestaurantDto
             rDto.setId_restaurant(IdGenerator.generateWithLength(20));

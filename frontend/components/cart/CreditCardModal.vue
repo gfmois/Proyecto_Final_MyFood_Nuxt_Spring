@@ -2,20 +2,34 @@
 import { Stripe } from "stripe"
 import { useShoppingCart } from "~/store"
 import { useCreateOrder } from "~~/composables/orders/useOrder";
+import { useToast } from 'vue-toast-notification';
 
 const stripe = new Stripe(import.meta.env.VITE_STRIPE_SECRET_KEY)
+const emit = defineEmits()
+
+const isLoading = ref(false)
+const toast = useToast({
+    position: 'top-right',
+    pauseOnHover: true,
+})
+
+const { isVisible } = defineProps({
+    isVisible: false
+})
+
 const { cart } = useShoppingCart()
 
 const expirationDate = ref(null)
 
 const obj = reactive({
     name: "",
-    number: "4020020174100236",
+    number: "4000056655665556",
     expiration: "2025-08",
     cvc: "729"
 })
 
 const loadObject = async () => {
+    isLoading.value = true
     try {
         const splittedData = obj.expiration.split("-");
         const { id } = await stripe.tokens.create({
@@ -24,11 +38,23 @@ const loadObject = async () => {
                 cvc: obj.cvc,
                 exp_month: splittedData[1],
                 exp_year: splittedData[0],
+                name: obj.name
             }
         })
 
         const res = useCreateOrder({ products: cart.value, card_token: id })
-        console.log((await res).value);
+        const tRes = (await res).value
+
+        if (tRes.order.status != 'saved') {
+            toast.error('No se pudo crear el pedido, intentelo más tarde')
+            emit('closeModal', true)
+        } else {
+            toast.success(tRes.stripe)
+        }
+
+        isLoading.value = false
+        emit('closeModal', true)
+        useRouter().replace('/orders')
     } catch (error) {
         console.log(error);
     }
@@ -39,13 +65,14 @@ const loadObject = async () => {
 </script>
 
 <template>
-    <div class="flex items-center justify-center fixed left-0 top-0 bg-[#a3a2a7]/90 w-screen h-screen z-50">
+    <div class="flex items-center justify-center fixed left-0 top-0 bg-[#a3a2a7]/90 w-screen h-screen z-50"
+        v-if="isVisible">
         <div class="p-8 bg-white rounded-lg w-1/3 h-fit flex flex-col gap-4">
             <div class="flex justify-between">
                 <div class="font-bold text-2xl text-[#2d2d2d] mb-4">Add Payment Method</div>
-                <Icon name="ci:close-md" class="cursor-pointer hover:border rounded-lg" size="1.5rem" />
+                <Icon name="ci:close-md" class="cursor-pointer hover:border rounded-lg" size="1.5rem"
+                    @click="() => $emit('closeModal', true)" />
             </div>
-            <pre>{{ obj }}</pre>
             <div class="flex flex-col w-full h-full">
                 <div class="flex gap-3 flex-col p-2">
                     <p class="text-sm text-[#7b7a7f]">Card Holder*</p>
@@ -77,6 +104,11 @@ const loadObject = async () => {
                     </div>
                 </div>
             </div>
+        </div>
+        <div v-if="isLoading"
+            class="absolute flex flex-col items-center justify-center gap-5 bg-crimson-600 text-white p-6 shadow-xl rounded-lg">
+            <LayoutLoading />
+            <p>Porfavor espere...</p>
         </div>
     </div>
 </template>

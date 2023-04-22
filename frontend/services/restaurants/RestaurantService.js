@@ -29,5 +29,29 @@ export default {
       console.log(error)
       return null
     }
+  },
+
+  async getFilteredRestaurants(filters) {
+    try {
+      let url = `${s.DEFAULT_URL}/restaurants`
+
+      Object.keys(filters).forEach((k, index) => {
+        if (index == 0) {
+          url += `?${k}=${filters[k]}`
+        } else {
+          url += `&${k}=${filters[k]}`
+        }
+      })
+
+      console.log(url);
+
+      const response = await fetch(url)
+
+      return await response.json()
+
+    } catch (error) {
+      console.log(error);
+      return null
+    }
   }
 }

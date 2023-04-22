@@ -6,6 +6,8 @@ const { filterName } = defineProps({
 })
 </script>
 
+<!-- FIXME: Acabar filtros, onclick en filtro cambiar el nombre del dropdown al del filtro seleccionado y boton resetear -->
+
 <template>
     <div class="relative inline-block text-left">
         <button type="button"
@@ -27,6 +29,7 @@ const { filterName } = defineProps({
                 <div
                     v-for="option in filterOptions"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
+                    v-on:click="$emit('value', option)"
                     role="menuitem">{{ option }}</div>
             </div>
         </div>

@@ -1,14 +1,17 @@
 package com.pf_nxsp_myfood.backend.domain.restaurants.service;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.pf_nxsp_myfood.backend.domain.payload.response.MessageResponse;
+import com.pf_nxsp_myfood.backend.domain.products.dto.ProductDto;
 import com.pf_nxsp_myfood.backend.domain.products.service.ProductService;
 import com.pf_nxsp_myfood.backend.domain.restaurants.dto.RestaurantDto;
 import com.pf_nxsp_myfood.backend.domain.restaurants.entity.RestaurantEntity;
@@ -36,11 +39,10 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 				.lng(rEntity.getLng())
 				.city(rEntity.getCity())
 				.products(rEntity
-					.getProducts()
-					.stream()
-					.map(e -> e.getId_product())
-					.collect(Collectors.toList())
-				)
+						.getProducts()
+						.stream()
+						.map(e -> e.getId_product())
+						.collect(Collectors.toList()))
 				.build();
 	}
 

@@ -45,3 +45,15 @@ export const useGetNOrders = async () => {
 
   return orders
 }
+
+export const useGetFilteredRestaunrats = async (filters) => {
+  const restaurants = ref([])
+  try {
+      const data = await RestaurantService.getFilteredRestaurants(filters)
+      restaurants.value = data
+  } catch (error) {
+    console.log(error);
+  }
+
+  return restaurants
+}

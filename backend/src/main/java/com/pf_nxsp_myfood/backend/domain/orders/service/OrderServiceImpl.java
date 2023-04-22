@@ -2,12 +2,11 @@ package com.pf_nxsp_myfood.backend.domain.orders.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,14 +74,20 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public ResponseEntity<?> addOrder(OrderDto newOrder, Set<OrderProductEntity> newOrderProducts) {
+    public Map<String, Object> addOrder(OrderDto newOrder, Set<OrderProductEntity> newOrderProducts) {
+        Map<String, Object> response = new HashMap<>();
         OrderEntity newOrderEntity = convertDtoToEntity(newOrder);
         newOrderEntity.setProducts_ordered(newOrderProducts);
 
         if(this.orderRepository.save(newOrderEntity) != null) {
-            return new ResponseEntity<>(newOrder.getId_order(), HttpStatus.OK);
+            response.put("id_order", newOrder.getId_order());
+            response.put("status", "saved");
+        } else {
+            response.put("id_order", "");
+            response.put("status", "error");
         }
-        return new ResponseEntity<>("{'msg':'Hubo un error al crear el pedido'}", HttpStatus.BAD_REQUEST);
+
+        return response;
     }
 
 }
