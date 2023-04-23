@@ -9,6 +9,8 @@ public interface RestaurantSerivce {
     List<RestaurantDto> getRestaurants();
     List<RestaurantDto> getRestaurantsByCity(String city);
     Map<String, Object> getRestaurantById(String id);
+    Map<String, Object> getRestaurantByIdOrSlug(String id);
+    Map<String, List<String>> getRestaurantsInfo();
     MessageResponse saveRestaurant(RestaurantDto rDto);
     MessageResponse updateRestaurant(RestaurantDto rDto);
     MessageResponse deleteRestaurant(String id);

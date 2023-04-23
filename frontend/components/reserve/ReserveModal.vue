@@ -76,6 +76,7 @@
     },
     {
         title: "Confirmación",
+        objName: 'confirmation',
         done: false,
         visible: false,
         end: true

@@ -35,16 +35,13 @@ const totalToPay = reactive(computed(() => {
 //         'X-RapidAPI-Host': import.meta.env.VITE_RAPID_API_HOST
 //     }
 // })
-
-const test = () =>  {
-    console.log('INside');
-}
 </script>
 
 <template>
     <Header>
         <Title>{{ data.restaurant.name || 'Restaurante' }}</Title>
     </Header>
+
     <div class="flex items-start flex-col justify-center relative">
         <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="md:col-span-2">

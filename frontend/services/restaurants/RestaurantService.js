@@ -11,9 +11,29 @@ export default {
     }
   },
 
+  async getRestaurantsInfo() {
+    try {
+      const response = await fetch(`${s.DEFAULT_URL}/restaurants/info`)
+      return await response.json()
+    } catch (error) {
+      console.log(error)
+      return null
+    }
+  },
+
   async getRestaurantById(id) {
     try {
       const response = await fetch(`${s.DEFAULT_URL}/restaurants/${id}`)
+      return await response.json()
+    } catch (error) {
+      console.log(error)
+      return null
+    }
+  },
+
+  async getRestaurantBySlug(slug) {
+    try {
+      const response = await fetch(`${s.DEFAULT_URL}/restaurants/${slug}`)
       return await response.json()
     } catch (error) {
       console.log(error)

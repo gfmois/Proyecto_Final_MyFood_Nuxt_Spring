@@ -12,4 +12,5 @@ public interface ProductService {
     MessageResponse updateProduct(ProductDto pDto);
     MessageResponse deleteProduct(String id);
     List<ProductDto> getProductByRestaurantId(String id_restaurant);
+    List<ProductDto> getProductByRestaurantIdOrSlug(String id_restaurant);
 }

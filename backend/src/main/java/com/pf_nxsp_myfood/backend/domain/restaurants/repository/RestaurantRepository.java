@@ -15,4 +15,10 @@ public interface RestaurantRepository extends JpaRepository<RestaurantEntity, St
 
     @Query(value = "SELECT * FROM restaurants r WHERE r.city LIKE :city", nativeQuery = true)
     public List<RestaurantEntity> getRestaurantsByCity(@Param("city") String city);
+
+    @Query(value = "SELECT * FROM restaurants r WHERE r.id_restaurant = :text OR r.slug = :text", nativeQuery = true)
+    public List<RestaurantEntity> getRestaurantsByIdOrSlug(@Param("text") String text);
+
+    @Query(value = "SELECT DISTINCT city FROM restaurants", nativeQuery = true)
+    public List<String> getCities();
 }

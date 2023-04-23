@@ -14,7 +14,7 @@ const user = computed(() => storeUser.value)
 
 const dropdown = ref([
     {name: "Mi perfil", src: "/profile", icon: "fa-user"},
-    {name: "Mis pedidos", src: "/profilel/orders", icon: "bi-basket2-fill"},
+    {name: "Mis pedidos", src: "/profile/orders", icon: "bi-basket2-fill"},
     {name: "Mis reservas", src: "/profile/reserves", icon: "md-daterange"},
     {name: "Logout", click: "logout", icon: "md-logout", action: () => logout()}
 ])
@@ -54,10 +54,10 @@ const logout = () => {
                                 class="cursor-pointer" />
                         </NuxtLink>
                     </li>
-                    <li>
+                    <!-- <li>
                         <Icon name="ri:article-fill" size="2rem" style="color: rgb(228 228 231 / 1);"
                             class="cursor-pointer" />
-                    </li>
+                    </li> -->
                     <li>
                         <NuxtLink to="/auth" v-if="!user">
                             <Icon name="ri:account-box-fill" size="2rem" style="color: rgb(228 228 231 / 1);"
@@ -74,7 +74,7 @@ const logout = () => {
                                     </NuxtLink>
                                   </div>
                                 </div>
-                              </div>   
+                              </div>
                         </div>
                     </li>
                     <li>

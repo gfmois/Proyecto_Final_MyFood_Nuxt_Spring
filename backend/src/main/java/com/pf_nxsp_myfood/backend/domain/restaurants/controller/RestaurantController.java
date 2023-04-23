@@ -139,7 +139,7 @@ public class RestaurantController {
 
     @GetMapping("/{id_restaurant}")
     public Map<String, Object> getRestaurantById(@PathVariable String id_restaurant) {
-        return rService.getRestaurantById(id_restaurant);
+        return rService.getRestaurantByIdOrSlug(id_restaurant);
     }
 
     @GetMapping("/count")
@@ -209,6 +209,8 @@ public class RestaurantController {
             rDto.setLat(lat);
             rDto.setLng(lng);
             rDto.setCity(city);
+            rDto.setSlug(
+                    String.format("%s-%s", name.toLowerCase().replaceAll(" ", "-"), IdGenerator.generateWithLength(8)));
 
             // Saves the new Restaurant
             return rService.saveRestaurant(rDto);
@@ -227,5 +229,11 @@ public class RestaurantController {
     @DeleteMapping("/{id_restaurant}")
     public MessageResponse deleteRestaurant(@PathVariable String id_restaurant) {
         return rService.deleteRestaurant(id_restaurant);
+    }
+
+    @CacheEvict(value = "restaurants", allEntries = true)
+    @GetMapping("/info")
+    public Map<String, List<String>> getRestaurantsInfo() {
+        return rService.getRestaurantsInfo();
     }
 }

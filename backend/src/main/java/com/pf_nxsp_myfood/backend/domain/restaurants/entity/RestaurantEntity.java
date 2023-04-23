@@ -56,6 +56,9 @@ public class RestaurantEntity extends BaseUtils {
     @Column(name = "city")
     private String city;
 
+    @Column(name = "slug")
+    private String slug;
+
     @OneToMany(mappedBy = "restaurant")
     private List<ProductEntity> products;
 
@@ -70,7 +73,7 @@ public class RestaurantEntity extends BaseUtils {
 
     @Builder
     public RestaurantEntity(String id_restaurant, String name, Integer capacity, String logo, String image,
-            String category, String lat, String lng, String city) {
+            String slug, String category, String lat, String lng, String city) {
         this.id_restaurant = id_restaurant;
         this.name = name;
         this.capacity = capacity;
@@ -80,6 +83,7 @@ public class RestaurantEntity extends BaseUtils {
         this.lat = lat;
         this.lng = lng;
         this.city = city;
+        this.slug = slug;
         this.products = new ArrayList<>();
         this.employees = new ArrayList<>();
         this.hollidays = new ArrayList<>();

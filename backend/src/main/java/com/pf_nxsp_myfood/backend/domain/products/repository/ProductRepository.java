@@ -26,31 +26,31 @@ public interface ProductRepository extends JpaRepository<ProductEntity, String> 
     public Integer getFilteredProductsCategoriesLength(@Param("categories") List<String> categories,  @Param("rango1") String rango1, @Param("rango2") String rango2);
 
     @Query(
-        value = "SELECT COUNT(*) FROM products p " + 
-                "INNER JOIN product_category c " + 
+        value = "SELECT COUNT(*) FROM products p " +
+                "INNER JOIN product_category c " +
                 "ON c.id_product = p.id_product " +
                 "WHERE p.price BETWEEN :rango1 AND :rango2 ",
         nativeQuery = true)
     public Integer getFilteredProductsLength(@Param("rango1") String rango1, @Param("rango2") String rango2);
 
     @Query(
-        value = "SELECT p.* FROM products p " + 
-                "INNER JOIN product_category c " + 
+        value = "SELECT p.* FROM products p " +
+                "INNER JOIN product_category c " +
                 "ON c.id_product = p.id_product " +
                 "WHERE c.id_category IN(:categories) " +
                 "AND p.price BETWEEN :rango1 AND :rango2 " +
-                "ORDER BY CASE WHEN :orden = 'ASC' THEN p.price END ASC, " + 
+                "ORDER BY CASE WHEN :orden = 'ASC' THEN p.price END ASC, " +
                 "CASE WHEN :orden = 'DESC' THEN p.price END DESC " +
                 "LIMIT :paginacion, 12",
         nativeQuery = true)
     public List<ProductEntity> getFilteredProductsCategories(@Param("categories") List<String> categories, @Param("orden") String orden, @Param("rango1") String rango1, @Param("rango2") String rango2, @Param("paginacion") Integer paginacion);
 
     @Query(
-        value = "SELECT p.* FROM products p " + 
-                "INNER JOIN product_category c " + 
+        value = "SELECT p.* FROM products p " +
+                "INNER JOIN product_category c " +
                 "ON c.id_product = p.id_product " +
                 "WHERE p.price BETWEEN :rango1 AND :rango2 " +
-                "ORDER BY CASE WHEN :orden = 'ASC' THEN p.price END ASC, " + 
+                "ORDER BY CASE WHEN :orden = 'ASC' THEN p.price END ASC, " +
                 "CASE WHEN :orden = 'DESC' THEN p.price END DESC " +
                 "LIMIT :paginacion, 12",
         nativeQuery = true)
@@ -61,4 +61,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, String> 
                 "WHERE p.name LIKE %:product% ",
         nativeQuery = true)
     public List<ProductEntity> searchProducts(@Param("product") String product);
+
+    @Query(value = "SELECT p.* FROM products p, restaurants r WHERE p.id_restaurant = r.id_restaurant AND (r.id_restaurant = :identifier OR r.slug = :identifier)", nativeQuery = true)
+    public List<ProductEntity> getProductsByIdRestaurantOrRestaurantSlug(@Param("identifier") String identifier);
 }

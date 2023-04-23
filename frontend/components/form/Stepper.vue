@@ -1,6 +1,7 @@
 <script>
 import QrComponent from "~/components/qr/QrComponent.vue"
 import { useGetBannedDays, useCreateReserve } from "~/composables/reserves/useReserves"
+import { useGetRestaurantsById } from "~~/composables/restaurants/useRestaurants";
 import { useToast } from 'vue-toast-notification';
 import flatpickr from 'flatpickr'
 
@@ -13,7 +14,8 @@ export default {
     props: {
         steps: Array
     },
-    setup({ steps }, { emit }) {
+    async setup({ steps }, { emit }) {
+        const date = new Date()
         const errors = ref({})
         const actualStep = ref(0)
         const btnText = ref('Contiune')
@@ -23,6 +25,8 @@ export default {
         const flatpickrInput = ref(null)
         const bannedDays = ref([])
         const bannedDaysObj = reactive({ value: [] })
+        const todayDate = `${date.getFullYear()} - ${date.getMonth()} - ${date.getDay()}`
+        const data = ref(await useGetRestaurantsById(useRoute().params.id));
 
         const toast = useToast({
             position: 'top-right',
@@ -47,7 +51,7 @@ export default {
                         // Initialize FlatFpickr
                         if (steps[actualStep.value].title == "Reserva") {
                             nextTick(() => {
-                                console.log(flatpickrInput.value);
+
                                 flatpickr(flatpickrInput.value, {
                                     disable: bannedDays.value,
                                     dateFormat: "Y-m-d",
@@ -71,7 +75,7 @@ export default {
                     }
                 })
 
-                reqObj.value["id_restaurant"] = useRoute().params.id
+                reqObj.value["id_restaurant"] = data.value.restaurant.id_restaurant
                 const response = await useCreateReserve(reqObj)
 
                 if (response.value.status == 200) {
@@ -86,24 +90,22 @@ export default {
 
         watch(bannedDaysObj, (v, pv) => {
             steps[actualStep.value].fields.forEach((e) => {
-                console.log(e);
+
             })
         })
 
         watch(steps[steps.findIndex(e => e.name == "information")], async (v, pv) => {
             steps[steps.findIndex(e => e.name == "information")] = v
-            
+
             v.fields.forEach((f) => {
                 bannedDaysObj.value[f.objName] = f.value
             })
 
-            bannedDaysObj.value.id_restaurant = useRoute().params.id
+            bannedDaysObj.value.id_restaurant = data.value.restaurant.id_restaurant
 
             const dates = ref((await useGetBannedDays(bannedDaysObj.value)))
 
             bannedDays.value = dates.value.length > 0 ? dates.value.map((d) => new Date(d)) : dates.value
-
-            console.log(bannedDays.value);
         })
 
 
@@ -115,7 +117,6 @@ export default {
 
 
             steps[0].visible = true
-            console.log(steps);
             actualStep.value = 0
             emit('closeModal', true)
         }
@@ -143,7 +144,7 @@ export default {
             loadFields()
         })
 
-        return { goBack, checkStep, errors, actualStep, steps, btnText, qrIsLoading, qrValue, backBtn, closeAndReset, flatpickrInput }
+        return { data, todayDate, goBack, checkStep, errors, actualStep, steps, btnText, qrIsLoading, qrValue, backBtn, closeAndReset, flatpickrInput }
     }
 }
 </script>
@@ -181,10 +182,12 @@ export default {
                                     </div>
                                     <div v-if="input.type == 'date'">
                                         <input ref="flatpickrInput"
+                                            :placeholder="todayDate"
                                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                                             type="text" v-model="input.value">
                                     </div>
                                 </div>
+
                                 <div v-if="input.type == 'select'" class="mt-4">
                                     <label class="block text-gray-700 text-sm font-bold mb-2" :for="input.title">
                                         {{ input.title }}
@@ -192,14 +195,14 @@ export default {
                                     <select v-model="input.value"
                                         :class="`block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors[input.title] ? 'border-red-500' : ''}`">
                                         <option disabled value="">Selecciona una opción</option>
-                                        <option v-for="option, index in input.options" :value="input.optionsValue[index]">{{
-                                            option }}</option>
+                                        <option v-for="option, index in input.options" :value="input.optionsValue[index]">
+                                            {{ option }}
+                                        </option>
                                     </select>
-                                    <p class="text-red-500 text-xs italic mt-1" v-if="errors[input.title]">{{ input.errorMsg
-                                    }}</p>
+                                    <p class="text-red-500 text-xs italic mt-1" v-if="errors[input.title]">{{ input.errorMsg }}</p>
                                 </div>
                             </div>
-                            <div v-if="step.title == 'Confirmación'">
+                            <div v-if="step.objName == 'confirmation'">
                                 <QrComponent v-if="!qrIsLoading" :url="qrValue" :isLoading="qrIsLoading" />
                             </div>
                             <div class="mt-5 flex items-center justify-center gap-2">

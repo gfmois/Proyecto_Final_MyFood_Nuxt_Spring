@@ -1,17 +1,14 @@
 package com.pf_nxsp_myfood.backend.domain.restaurants.service;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.pf_nxsp_myfood.backend.domain.payload.response.MessageResponse;
-import com.pf_nxsp_myfood.backend.domain.products.dto.ProductDto;
 import com.pf_nxsp_myfood.backend.domain.products.service.ProductService;
 import com.pf_nxsp_myfood.backend.domain.restaurants.dto.RestaurantDto;
 import com.pf_nxsp_myfood.backend.domain.restaurants.entity.RestaurantEntity;
@@ -38,6 +35,7 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 				.lat(rEntity.getLat())
 				.lng(rEntity.getLng())
 				.city(rEntity.getCity())
+				.slug(rEntity.getSlug())
 				.products(rEntity
 						.getProducts()
 						.stream()
@@ -56,6 +54,7 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 				.category(rDto.getCategory())
 				.lat(rDto.getLat())
 				.lng(rDto.getLng())
+				.slug(rDto.getSlug())
 				.city(rDto.getCity())
 				.build();
 	}
@@ -87,6 +86,16 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 	}
 
 	@Override
+	public Map<String, Object> getRestaurantByIdOrSlug(String id) {
+		Map<String, Object> obj = new HashMap<String, Object>();
+		RestaurantDto rDto = convertEntityToDto(rRepository.getRestaurantsByIdOrSlug(id).get(0));
+
+		obj.put("restaurant", rDto);
+		obj.put("products", pService.getProductByRestaurantIdOrSlug(id));
+		return obj;
+	}
+
+	@Override
 	public MessageResponse saveRestaurant(RestaurantDto rDto) {
 		try {
 			rRepository.save(convertDtoToEntity(rDto));
@@ -113,6 +122,7 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 			rEntity.setLng(rDto.getLng());
 			rEntity.setCity(rDto.getCity());
 			rEntity.setImage(rDto.getImage());
+			rEntity.setSlug(rDto.getSlug());
 
 			rRepository.save(rEntity);
 
@@ -130,5 +140,15 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 		} catch (Exception e) {
 			return new MessageResponse(String.format("Error: %s", e.getMessage()), "400");
 		}
+	}
+
+	@Override
+	public Map<String, List<String>> getRestaurantsInfo() {
+		Map<String, List<String>> res = new HashMap<>();
+
+		res.put("cities", rRepository.getCities());
+		res.put("categories", rRepository.getCategories());
+
+		return res;
 	}
 }

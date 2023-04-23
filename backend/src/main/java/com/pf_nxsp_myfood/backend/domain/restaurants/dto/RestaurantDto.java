@@ -36,6 +36,9 @@ public class RestaurantDto extends BaseUtils implements Serializable {
     private String image;
 
     @NotNull
+    private String slug;
+
+    @NotNull
     private String category;
 
     @NotNull
