@@ -7,6 +7,7 @@ const props = defineProps({
 })
 
 const isModalVisible = ref(false)
+const token_client = reactive(useCookie('token_client').value)
 </script>
 
 <template>
@@ -18,6 +19,7 @@ const isModalVisible = ref(false)
             <p class="font-bold">{{ $t('price') }}: {{ Number.parseFloat(product.price) || '--,--' }}€</p>
         </div>
     </div>
+
     <div v-if="hasActionModal" class="fixed">
         <OrderModal v-if="isModalVisible" @closeModal="$e => isModalVisible = $e" :product="product" />
     </div>

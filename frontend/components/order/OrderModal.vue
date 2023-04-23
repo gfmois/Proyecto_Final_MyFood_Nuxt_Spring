@@ -5,8 +5,10 @@ const store = useShoppingCart()
 const total = ref(0)
 
 const { quantity, product } = defineProps({
-    product: Object
+    product: Object,
 })
+
+const hasUser = ref(useCookie('token_client').value)
 
 // NOTE: Ask Yolanda if this functions should be in the [id].vue which is the parent and pass it using props
 
@@ -59,8 +61,11 @@ const addToTotal = () => {
                 </p>
             </div>
             <div class="border-b border-gray-300 my-4" />
+            <div v-if="!hasUser" class="flex items-center justify-center">
+                <div class="bg-green-600 p-3 rounded text-white hover:shadow-xl cursor-pointer" @click="() => $router.replace('/auth')">Iniciar Sesión</div>
+            </div>
             <div class="flex flex-col justify-center items-center gap-2">
-                <div class="flex flex-row items-center justify-center">
+                <div class="flex flex-row items-center justify-center" v-if="hasUser">
                     <!-- Chane it to an span or something like that -->
                     <LayoutButton :disabled="product.quantity == 0" button-type="red" title="-"
                         :showOptionsButton="product.quantity == 1 ? true : false" iconName="mdi-light:delete"

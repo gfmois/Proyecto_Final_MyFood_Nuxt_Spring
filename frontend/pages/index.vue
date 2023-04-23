@@ -7,8 +7,13 @@ const selectInfo = await useGetRestaurantsInfo();
 const obj = reactive({ value: {} })
 
 const goRestaurants = () => {
-    // NOTE: Ask if information can be passed across pages
-    useRouter().replace('/restaurants')
+    useRouter().replace({
+        path: '/restaurants',
+        query: {
+            city: obj.value.city,
+            category: obj.value.category
+        }
+    })
 }
 
 </script>

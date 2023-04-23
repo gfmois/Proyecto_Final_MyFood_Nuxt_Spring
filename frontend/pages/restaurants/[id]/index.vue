@@ -99,10 +99,10 @@ const totalToPay = reactive(computed(() => {
 
         <ProductCart :items="store.cart" />
 
-        <AuthGoLoginModal :show="reserveModal && !token_client" @close="$e => reserveModal = false" />
+        <AuthGoLoginModal :show="reserveModal && !token_client || isModalVisible && !token_client" @close="$e => { reserveModal = false; isModalVisible = false; }" />
         <ReserveModal :isModalVisible="reserveModal && token_client" @isVisible="$e => reserveModal = $e" />
 
-        <ActionModal :isModalVisible="isModalVisible" @itemClicked="$e => productSelected = $e"
+        <ActionModal :isModalVisible="isModalVisible && token_client" @itemClicked="$e => productSelected = $e"
             :hasTotal="true"
             :total="totalToPay"
             @closeModal="$e => isModalVisible = $e" title="Realizar Pedido">

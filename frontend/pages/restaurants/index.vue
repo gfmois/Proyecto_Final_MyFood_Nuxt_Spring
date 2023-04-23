@@ -2,6 +2,8 @@
 import { useGetRestaurants, useGetFilteredRestaunrats } from '~~/composables/restaurants/useRestaurants';
 import { Suspense } from 'vue';
 
+const route = useRoute()
+
 const restaurants = ref(await useGetRestaurants())
 const seeFilters = ref(true)
 
@@ -13,6 +15,12 @@ const resetFilters = () => {
 
 watch(filters, async (v, pv) => {
     restaurants.value = (await useGetFilteredRestaunrats(v.value)).value
+})
+
+onMounted(() => {
+    if (route.query) {
+        filters.value = route.query
+    }
 })
 
 </script>
@@ -37,7 +45,8 @@ watch(filters, async (v, pv) => {
                 <div class="flex gap-4 flex-col">
                     <div class="bg-gray-200 w-full h-full p-2 flex flex-row gap-3 items-center" v-if="!seeFilters">
                         <div class="p-2 ml-2 flex items-center justify-center">
-                            <Icon name="ri:delete-bin-2-fill" class="cursor-pointer hover:text-red-600" size="1.25rem" @click="() => resetFilters()" />
+                            <Icon name="ri:delete-bin-2-fill" class="cursor-pointer hover:text-red-600" size="1.25rem"
+                                @click="() => resetFilters()" />
                         </div>
                         <LayoutFilterBean filterName="Ciudad" :filterOptions="['Alicante', 'Valencia', 'Madrid']"
                             @value="$e => filters.value.city = $e" />
@@ -64,5 +73,6 @@ watch(filters, async (v, pv) => {
                     </div>
                 </div>
             </template>
-    </Suspense>
-</div></template>
+        </Suspense>
+    </div>
+</template>
