@@ -14,7 +14,12 @@ export const useLogin = async (credentials) => {
         loginData.value = data
 
         if (data.status != 500) {
-            clientCookie.value = data.token
+            if (data.user_type == "NONE") {
+                clientCookie.value = data.token
+            } else {
+                adminCookie.value = data.token
+            }
+
             actChangeHasUser(true)
         }
 

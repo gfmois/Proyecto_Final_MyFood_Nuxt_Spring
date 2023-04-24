@@ -1,6 +1,5 @@
 <script setup>
 import { useAuth } from "~~/store"
-import { useGetProfile } from "~~/composables/client/useClient"
 
 const { locale } = useI18n()
 const { actCheckHasUser, mutCheckIsAdmin, isAdmin, user: storeUser, actChangeUser, hasUser } = useAuth()

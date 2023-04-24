@@ -18,9 +18,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EmployeeController {
     private final EmployeeService eService;
-    
+
     @GetMapping("/admin")
     public EmployeeDto isAdmin(@AuthenticationPrincipal AuthClientDetails aDetails) {
         return eService.currentUser(aDetails);
     }
+
+    @GetMapping("/profile")
+    public EmployeeDto getProfile(@AuthenticationPrincipal AuthClientDetails authDetails) {
+        return eService.currentUser(authDetails);
+    }
+
 }

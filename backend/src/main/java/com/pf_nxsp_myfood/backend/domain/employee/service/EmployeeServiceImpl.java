@@ -1,6 +1,7 @@
 package com.pf_nxsp_myfood.backend.domain.employee.service;
 
 import java.util.Base64;
+import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final PasswordEncoder pEncoder;
 
     public EmployeeDto convertEntityToDTO(EmployeeEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
         return EmployeeDto.builder()
                 .id_employee(entity.getId_employee())
                 .name(entity.getName())
@@ -79,14 +84,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         return responseToken(eEntity);
     }
 
-    // Check if login info is valid by getting the whole use by the email 
+    // Check if login info is valid by getting the whole use by the email
     // and filtering if password matches and type are the same.
     @Override
     @Transactional(readOnly = true)
     public JWTResponse login(LoginRequest credentials) {
+        System.out.println(credentials.toString());
+
         EmployeeEntity eEntity = eRepository.findByEmail(credentials.getEmail())
-                .filter(employee -> employee.getType() == credentials.getType()
-                        && pEncoder.matches(credentials.getPassword(), employee.getPassword()))
+                .filter(employee -> pEncoder.matches(credentials.getPassword(), employee.getPassword()))
                 .orElseThrow(() -> new AppException(Error.LOGIN_INFO_INVALID));
 
         return responseToken(eEntity);
@@ -94,8 +100,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDto currentUser(AuthClientDetails employee) {
-        EmployeeEntity eEntity = eRepository.
-                findById(employee.getId_employee())
+        EmployeeEntity eEntity = eRepository.findById(employee.getId_employee())
                 .orElseThrow(() -> new AppException(Error.USER_NOT_FOUND));
 
         return convertEntityToDTO(eEntity);
@@ -105,5 +110,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDto update(UpdateRequest newData, AuthClientDetails clientDetails) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
+    }
+
+    @Override
+    public EmployeeDto getEmployeeInfo(String email) {
+        final Optional<EmployeeEntity> employee = eRepository.findByEmail(email);
+        if (employee.isPresent()) {
+            return convertEntityToDTO(employee.get());
+        }
+
+        return null;
     }
 }

@@ -28,7 +28,6 @@ public class AuthController {
 
     @PostMapping(path = "/register")
     public JWTResponse register(@RequestBody @Valid SignUpRequest data) {
-        System.out.println(EmployeesTypes.NONE);
         if (data.getType() != EmployeesTypes.NONE) {
             EmployeeSignUpRequest request = EmployeeSignUpRequest.builder()
                 .email(data.getEmail())
@@ -38,7 +37,7 @@ public class AuthController {
                 .phone(data.getPhone())
                 .type(data.getType())
                 .build();
-                
+
             return eService.registration(request);
         }
 
@@ -47,7 +46,7 @@ public class AuthController {
 
     @PostMapping(path = "/login")
     public JWTResponse login(@RequestBody @Valid LoginRequest credentials) {
-        if (credentials.getType() != EmployeesTypes.NONE) {
+        if (eService.getEmployeeInfo(credentials.getEmail()) != null) {
             return eService.login(credentials);
         }
 

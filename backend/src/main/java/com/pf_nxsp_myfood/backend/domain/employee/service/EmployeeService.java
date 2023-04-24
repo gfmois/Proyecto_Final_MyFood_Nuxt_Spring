@@ -13,4 +13,5 @@ public interface EmployeeService {
 
     EmployeeDto currentUser(final AuthClientDetails client);
     EmployeeDto update(UpdateRequest newData, final AuthClientDetails clientDetails);
+    EmployeeDto getEmployeeInfo(String email);
 }
