@@ -1,7 +1,7 @@
 <template>
     <div class="fixed w-screen h-screen">
         <AdminLayoutAside :aside-items="asideItems" />
-        <main class="absolute w-5/6 h-screen bg-blue-600 right-0">
+        <main class="absolute w-5/6 h-screen bg-white right-0">
             <slot/>
         </main>
     </div>
