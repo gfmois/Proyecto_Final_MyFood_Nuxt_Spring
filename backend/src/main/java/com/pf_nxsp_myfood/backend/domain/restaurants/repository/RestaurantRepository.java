@@ -21,4 +21,7 @@ public interface RestaurantRepository extends JpaRepository<RestaurantEntity, St
 
     @Query(value = "SELECT DISTINCT city FROM restaurants", nativeQuery = true)
     public List<String> getCities();
+
+    @Query(value = "SELECT r.* FROM restaurants r where r.id_restaurant = (SELECT e.id_restaurant from employees e where e.id_employee = :idEmployee)", nativeQuery = true)
+    public RestaurantEntity getRestaurantByEmployeeId(@Param("idEmployee") String idEmployee);
 }

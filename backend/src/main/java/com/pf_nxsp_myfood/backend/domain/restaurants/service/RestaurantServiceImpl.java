@@ -151,4 +151,14 @@ public class RestaurantServiceImpl implements RestaurantSerivce {
 
 		return res;
 	}
+
+	@Override
+	public RestaurantDto getRestaurantByEmployee(String idEmployee) {
+		try {
+			return idEmployee != null ? convertEntityToDto(rRepository.getRestaurantByEmployeeId(idEmployee)) : null;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
 }
