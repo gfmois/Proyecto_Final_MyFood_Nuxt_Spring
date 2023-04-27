@@ -12,6 +12,10 @@ export const useGetBannedDays = async (restaurantInfo) => {
     return bannedDays
 }
 
+export const useGetRestaurantReserves = async () => {
+
+}
+
 export const useCreateReserve = async (reserveInfo) => {
     const createResponse = ref({})
     try {

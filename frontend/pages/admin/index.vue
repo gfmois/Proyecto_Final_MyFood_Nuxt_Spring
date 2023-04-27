@@ -31,7 +31,9 @@
     <div class="px-6 py-4 w-full h-full flex items-center justify-end">
         <div class="bg-[#1f2937] rounded-lg w-5/6 h-full px-6 py-4 text-white">
             <!-- Routing -->
-            <component :is="pages[pageClicked]" />
+            <ClientOnly placeholder="Loading...">
+                <component :is="pages[pageClicked]" v-bind="restaurant" />
+            </ClientOnly>
         </div>
     </div>
 </template>
@@ -54,8 +56,8 @@ const user = (await useGetEmployee()).value
 const restaurant = await ref(computed(async () => (await useGetRestaurantByEmployee()).value)).value
 const pageClicked = ref(0)
 const pages = ref([
+    defineAsyncComponent(() => import('~/components/admin/Dashboard.vue')),
     defineAsyncComponent(() => import('~/components/admin/ListOrders.vue')),
-    defineAsyncComponent(() => import('~/components/admin/Dashboard.vue'))
 ])
 
 const todaysDate = new Date();

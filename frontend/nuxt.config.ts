@@ -10,6 +10,9 @@ export default defineNuxtConfig({
             ],
         }
     },
+    build: {
+        transpile: ['chart.js']
+    },
     modules: [
         "@nuxtjs/tailwindcss",
         "nuxt-icon",
