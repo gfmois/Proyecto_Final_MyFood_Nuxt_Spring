@@ -44,7 +44,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private OrderEntity convertDtoToEntity(OrderDto dto) {
-        System.out.println(dto.getId_restaurant());
         return OrderEntity.builder()
                 .id_order(dto.getId_order())
                 .id_client(dto.getId_client())
@@ -111,6 +110,42 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
 
         return orders;
+    }
+
+    @Override
+    public OrderDto getOrder(String id_order) {
+        return converToDto(orderRepository.findById(id_order).get());
+    }
+
+    @Override
+    public Map<String, Object> updateOrder(OrderDto order) {
+        try {
+            OrderEntity orderToUpdate = orderRepository.findById(order.getId_order()).get();
+            Map<String, Object> res = new HashMap<String, Object>();
+
+            orderToUpdate.setStatus(order.getStatus());
+
+            if (orderRepository.save(orderToUpdate) != null) {
+                res.put("status", 200);
+                res.put("message", "Order updated");
+                // res.put("order", orderToUpdate);
+
+                return res;
+            }
+
+            res.put("status", 400);
+            res.put("message", "Error trying to update the order");
+
+            return res;
+        } catch (Exception e) {
+            Map<String, Object> res = new HashMap<String, Object>();
+
+            res.put("status", 200);
+            res.put("message", e.getMessage());
+
+            return res;
+        }
+
     }
 
 }

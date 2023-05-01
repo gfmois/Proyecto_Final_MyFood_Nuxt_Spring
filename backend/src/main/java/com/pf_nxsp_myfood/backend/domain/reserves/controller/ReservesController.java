@@ -37,9 +37,6 @@ public class ReservesController {
 
     @PostMapping
     public ResponseEntity<?> createOrder(@AuthenticationPrincipal AuthClientDetails aDetails, @RequestBody ReserveRequest reserve) {
-
-        System.out.println(reserve);
-        
         ReserveDto dto = ReserveDto.builder()
             .id_reserve(IdGenerator.generateWithLength(20))
             .id_client(aDetails.getId_client())
@@ -50,7 +47,7 @@ public class ReservesController {
             .status("Reserved")
             .name(reserve.getName())
             .build();
-                
+
             return rService.createOrder(dto);
     }
 }

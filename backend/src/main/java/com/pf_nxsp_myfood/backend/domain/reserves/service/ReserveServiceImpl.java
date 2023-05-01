@@ -70,11 +70,7 @@ public class ReserveServiceImpl implements ReserveService {
     @Override
     public ResponseEntity<?> getHolidays(String id_restaurant) {
         List<Object> response = new ArrayList<>();
-
         response.addAll(reserveRepository.getHolidays(id_restaurant));
-
-        System.out.println(reserveRepository.getHolidays(id_restaurant));
-
         return new ResponseEntity<List<Object>>(response, HttpStatus.OK);
     }
 

@@ -43,6 +43,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .avatar(entity.getAvatar())
                 .password(entity.getPassword())
                 .type(entity.getType())
+                .id_restaurant(entity.getEmployee_restaurant().getId_restaurant())
                 .build();
     }
 
@@ -89,8 +90,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional(readOnly = true)
     public JWTResponse login(LoginRequest credentials) {
-        System.out.println(credentials.toString());
-
         EmployeeEntity eEntity = eRepository.findByEmail(credentials.getEmail())
                 .filter(employee -> pEncoder.matches(credentials.getPassword(), employee.getPassword()))
                 .orElseThrow(() -> new AppException(Error.LOGIN_INFO_INVALID));
@@ -120,5 +119,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         return null;
+    }
+
+    @Override
+    public Boolean isEmployee(String id_restaurant, String id_employee) {
+        return eRepository.findById(id_employee).get()
+                .getEmployee_restaurant()
+                .getId_restaurant()
+                .equals(id_restaurant);
     }
 }

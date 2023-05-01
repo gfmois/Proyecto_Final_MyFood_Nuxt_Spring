@@ -23,3 +23,15 @@ export const useGetRestaurantOrders = async () => {
 
     return orderRes
 }
+
+export const useUpdateOrder = async(order) => {
+    const orderRes = ref()
+    try {
+        const data = await OrderService.updateOrder(order)
+        orderRes.value = data
+    } catch (error) {
+        console.log(error);
+    }
+
+    return orderRes
+}

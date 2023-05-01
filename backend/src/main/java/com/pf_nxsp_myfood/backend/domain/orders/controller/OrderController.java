@@ -17,6 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,9 +40,11 @@ import com.paypal.orders.PurchaseUnitRequest;
 import com.pf_nxsp_myfood.backend.domain.clients.service.ClientService;
 import com.pf_nxsp_myfood.backend.domain.common.constants.EmployeesTypes;
 import com.pf_nxsp_myfood.backend.domain.common.constants.OrderTypes;
+import com.pf_nxsp_myfood.backend.domain.employee.service.EmployeeService;
 import com.pf_nxsp_myfood.backend.domain.orders.dto.OrderDto;
 import com.pf_nxsp_myfood.backend.domain.orders.service.OrderService;
 import com.pf_nxsp_myfood.backend.domain.payload.request.order.NewOrderRequest;
+import com.pf_nxsp_myfood.backend.domain.payload.request.order.UpdateOrderRequest;
 import com.pf_nxsp_myfood.backend.domain.products.service.ProductService;
 import com.pf_nxsp_myfood.backend.plugins.IdGenerator;
 import com.pf_nxsp_myfood.backend.security.AuthClientDetails;
@@ -73,6 +76,9 @@ public class OrderController {
     @Autowired
     private ProductService pService;
 
+    @Autowired
+    private EmployeeService eService;
+
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.create();
 
@@ -100,7 +106,7 @@ public class OrderController {
 
     // @Cacheable(value = "restaurant_orders")
     @GetMapping("/restaurant")
-    public Map<String, Object> getRestaurantOrders(@AuthenticationPrincipal AuthClientDetails aDetails ) {
+    public Map<String, Object> getRestaurantOrders(@AuthenticationPrincipal AuthClientDetails aDetails) {
         if (aDetails == null || aDetails.getId_employee() == null) {
             Map<String, Object> err = new HashMap<String, Object>();
 
@@ -120,6 +126,29 @@ public class OrderController {
         return res;
     }
 
+    @PutMapping
+    public ResponseEntity<?> updateOrder(@AuthenticationPrincipal AuthClientDetails aDetails,
+            @RequestBody UpdateOrderRequest request) {
+        if (aDetails == null || aDetails.getId_employee() == null) {
+            Map<String, Object> err = new HashMap<String, Object>();
+
+            err.put("status", 400);
+            err.put("message", "No ID Found");
+
+            return ResponseEntity.badRequest().body(err);
+        }
+
+        if (eService.isEmployee(oService.getOrder(request.getId_order()).getId_restaurant(),
+                aDetails.getId_employee())) {
+            OrderDto order = OrderDto.builder().id_order(request.getId_order()).status(request.getStatus()).build();
+
+            return ResponseEntity.ok().body(oService.updateOrder(order));
+        }
+
+        return ResponseEntity.badRequest().body(
+                Map.of("Status", 200, "message", "Error trying to update the Order"));
+    }
+
     // @CacheEvict(value = "restaurant_orders", allEntries = true)
     @PostMapping
     public ResponseEntity<?> addOrder(@AuthenticationPrincipal AuthClientDetails aDetails,
@@ -131,8 +160,6 @@ public class OrderController {
         Map<String, Object> sourceParams = new HashMap<>();
         sourceParams.put("type", "card");
         sourceParams.put("token", newOrderRequest.getCard_token());
-
-        System.out.println(newOrderRequest.toString());
 
         Source source = Source.create(sourceParams);
 
@@ -165,8 +192,6 @@ public class OrderController {
 
         PaymentIntent paymentIntent;
         Map<String, Object> res = new HashMap<>();
-
-        System.out.println(dto.getId_restaurant());
 
         try {
             paymentIntent = PaymentIntent.create(paymentParams);

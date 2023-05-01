@@ -48,7 +48,7 @@ CREATE TABLE `orders` (
   `id_order` VARCHAR(20) PRIMARY KEY,
   `id_client` varchar(20),
   `id_restaurant` VARCHAR(20),
-  `date` varchar(255),
+  `order_date` varchar(255),
   `status` varchar(255)
 );
 
