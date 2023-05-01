@@ -13,4 +13,7 @@ public interface OrderRepository extends JpaRepository<OrderEntity, String> {
     @EntityGraph("fetch-orders")
     @Query("SELECT o FROM OrderEntity o WHERE o.id_client = :id_client")
     List<OrderEntity> getOrders(@Param("id_client") String id_client);
+
+    @Query("SELECT o FROM OrderEntity o WHERE o.restaurant_orders.id_restaurant = :idRestaurant ")
+    List<OrderEntity> findByIdRestaurant(@Param("idRestaurant") String idRestaurant);
 }

@@ -42,7 +42,7 @@ const loadObject = async () => {
             }
         })
 
-        const res = useCreateOrder({ products: cart.value, card_token: id })
+        const res = useCreateOrder({ products: cart.value, card_token: id, id_restaurant: cart.value[0].restaurant })
         const tRes = (await res).value
 
         if (tRes.order.status != 'saved') {

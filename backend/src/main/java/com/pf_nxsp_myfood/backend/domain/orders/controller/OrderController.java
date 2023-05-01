@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 // SpringBoot
@@ -75,6 +76,7 @@ public class OrderController {
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.create();
 
+    // @Cacheable(value = "orders")
     @GetMapping
     public OrderDto.MultipleOrders getOrders(@AuthenticationPrincipal AuthClientDetails aDetails) {
         System.out.println(LocalDate.now());
@@ -96,6 +98,29 @@ public class OrderController {
                 .build();
     }
 
+    // @Cacheable(value = "restaurant_orders")
+    @GetMapping("/restaurant")
+    public Map<String, Object> getRestaurantOrders(@AuthenticationPrincipal AuthClientDetails aDetails ) {
+        if (aDetails == null || aDetails.getId_employee() == null) {
+            Map<String, Object> err = new HashMap<String, Object>();
+
+            err.put("status", 400);
+            err.put("message", "No ID Found");
+
+            return err;
+        }
+
+        List<OrderDto> orders = oService.getRestaurantOrdersByEmployee(aDetails.getId_employee());
+
+        Map<String, Object> res = new HashMap<String, Object>();
+
+        res.put("orders", orders);
+        res.put("status", 200);
+
+        return res;
+    }
+
+    // @CacheEvict(value = "restaurant_orders", allEntries = true)
     @PostMapping
     public ResponseEntity<?> addOrder(@AuthenticationPrincipal AuthClientDetails aDetails,
             @RequestBody NewOrderRequest newOrderRequest) throws StripeException {
@@ -107,11 +132,14 @@ public class OrderController {
         sourceParams.put("type", "card");
         sourceParams.put("token", newOrderRequest.getCard_token());
 
+        System.out.println(newOrderRequest.toString());
+
         Source source = Source.create(sourceParams);
 
         dto.setId_order(IdGenerator.generateWithLength(20));
         dto.setId_client(cService.currentUser(aDetails).getId_client());
         dto.setStatus(OrderTypes.PENDING);
+        dto.setId_restaurant(newOrderRequest.getId_restaurant());
         dto.setOrderDate(LocalDate.now());
 
         newOrderRequest.getProducts()
@@ -137,6 +165,8 @@ public class OrderController {
 
         PaymentIntent paymentIntent;
         Map<String, Object> res = new HashMap<>();
+
+        System.out.println(dto.getId_restaurant());
 
         try {
             paymentIntent = PaymentIntent.create(paymentParams);

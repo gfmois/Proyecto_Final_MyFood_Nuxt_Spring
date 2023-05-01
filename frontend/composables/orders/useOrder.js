@@ -12,7 +12,7 @@ export const useCreateOrder = async (order) => {
     return orderRes
 }
 
-export const useGetRestaurantOrders = async (restaurant) => {
+export const useGetRestaurantOrders = async () => {
     const orderRes = ref([])
     try {
         const data = await OrderService.getRestaurantOrders()

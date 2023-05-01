@@ -24,4 +24,9 @@ public class NewOrderRequest extends BaseUtils {
     @NotEmpty
     @NotNull
     private String card_token;
+
+    @NotNull
+    @NotEmpty
+    @NotNull
+    private String id_restaurant;
 }
