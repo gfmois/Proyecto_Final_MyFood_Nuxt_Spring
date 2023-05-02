@@ -44,7 +44,6 @@ watch(itemToUpdate, async(v, pv) => {
 </script>
 
 <template>
-    {{ user }}
     <div class="flex items-center justify-center p-2 w-full h-full">
         <ListItems :object="restaurantOrders.orders" keyBanned="product_ordered" keyPreffered="Productos" :hasActionButtons="true" @cancel="$e => cancelOrder = $e[0]" :toSee="['status']" @update="$e => itemToUpdate = $e" />
     </div>

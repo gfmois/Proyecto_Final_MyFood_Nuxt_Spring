@@ -32,7 +32,7 @@
         <div class="bg-[#1f2937] rounded-lg w-5/6 h-full px-6 py-4 text-white">
             <!-- Routing -->
             <ClientOnly placeholder="Loading...">
-                <component :is="pages[pageClicked]" v-bind="restaurant" />
+                <component :is="pages[pageClicked]" />
             </ClientOnly>
         </div>
     </div>
@@ -58,6 +58,7 @@ const pageClicked = ref(0)
 const pages = ref([
     defineAsyncComponent(() => import('~/components/admin/Dashboard.vue')),
     defineAsyncComponent(() => import('~/components/admin/ListOrders.vue')),
+    defineAsyncComponent(() => import('~/components/admin/ListReserves.vue')),
 ])
 
 const todaysDate = new Date();

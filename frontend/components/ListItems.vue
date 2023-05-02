@@ -1,9 +1,13 @@
 <script setup>
-const { object, keyBanned, keyPreffered, hasActionButtons, toSee } = defineProps({
+import flatpickr from 'flatpickr'
+import { useGetBannedDays } from '~~/composables/reserves/useReserves'
+
+const { object, keyBanned, keyPreffered, hasActionButtons, toSee, idObj } = defineProps({
   object: Array,
   keyBanned: String,
   keyPreffered: String,
   hasActionButtons: true,
+  idObj: "",
   toSee: []
 })
 
@@ -11,9 +15,11 @@ const keys = reactive({})
 const values = reactive({})
 const isBannedModal = ref(false)
 const openEditModal = ref(false)
+const flatpickrInput = ref(null)
+const bannedDays = ref(computed(() => []).value)
 const selectedItems = ref()
-const copy = object
-const copySelected = reactive(computed(() => values.value[0]))
+const copy = reactive(computed(() => object)).value
+const copySelected = computed(() => values.value[0])
 
 const objCopy = object.map((e) => { delete e.id_restaurant; return e })
 
@@ -38,7 +44,42 @@ const load = () => {
 }
 
 const checkIfVisible = (index) => {
-  return !toSee.includes(keys.value[index])
+  if (!toSee.includes(keys.value[index])) {
+    loadDatepicker()
+    return true
+  }
+
+  return false
+}
+
+watch(values, async (v, pv) => {
+  loadBannedDays()
+})
+
+
+const loadBannedDays = async () => {
+  const item = {
+    id_restaurant: idObj
+  }
+
+  selectedItems.value.forEach((e, index) => {
+    if (keys.value[index] == 'diners' || keys.value[index] == 'types') {
+      item[keys.value[index]] = e
+    }
+  })
+
+  const dates = (await useGetBannedDays(item)).value
+  bannedDays.value = dates
+}
+
+const loadDatepicker = () => {
+  nextTick(() => {
+    flatpickr(flatpickrInput.value, {
+      minDate: "today",
+      dateFormat: "Y-m-d",
+      disable: bannedDays.value
+    })
+  })
 }
 </script>
 
@@ -68,14 +109,13 @@ const checkIfVisible = (index) => {
           v-if="hasActionButtons">
           <div class="flex gap-x-3 items-center justify-center w-full h-full">
             <p class="cursor-pointer w-fit h-fit text-blue-500"
-              @click="() => { openEditModal = true; selectedItems = value }">Ver</p>
+              @click="() => { openEditModal = true; selectedItems = value; loadBannedDays() }">Ver</p>
             <p class="cursor-pointer w-fit h-fit text-red-500" @click="() => $emit('cancel', copy)">Cancelar</p>
           </div>
         </th>
       </tr>
     </tbody>
   </table>
-
 
   <div v-if="isBannedModal" class="absolute w-full h-full bg-black/40 left-0 top-0 p-4 flex items-center justify-center">
     <div class="bg-gray-800 p-4 w-2/3 h-2/3 rounded-lg shadow-2xl">
@@ -115,17 +155,21 @@ const checkIfVisible = (index) => {
               <label class="block text-white font-bold mb-2" :for="v">
                 {{ keys.value[index] }}
               </label>
-              <input
+              <input v-if="!keys.value[index].includes('date')"
                 :class="`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline disabled:bg-white/70 ${checkIfVisible(index) ? 'cursor-not-allowed' : 'cursor-text'}`"
                 :id="v" type="text" :placeholder="copySelected[index]" v-model="copySelected[index]"
-                :disabled="checkIfVisible(index)"
-              >
+                :disabled="checkIfVisible(index)">
+              <input v-if="keys.value[index].includes('date')"
+                :class="`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline disabled:bg-white/70 ${checkIfVisible(index) ? 'cursor-not-allowed' : 'cursor-text'}`"
+                :id="v" type="text" :placeholder="copySelected[index]" v-model="copySelected[index]"
+                :disabled="checkIfVisible(index)" ref="flatpickrInput">
             </div>
           </div>
         </div>
       </div>
       <div class="h-fit py-4 px-8 flex items-center justify-end">
-        <LayoutButton title="Actualizar" buttonType="green" @click="() => {$emit('update', selectedItems); values.value[0] = copySelected; openEditModal = false}"/>
+        <LayoutButton title="Actualizar" buttonType="green"
+          @click="() => { $emit('update', selectedItems); values.value[0] = copySelected; openEditModal = false }" />
       </div>
     </div>
   </div>

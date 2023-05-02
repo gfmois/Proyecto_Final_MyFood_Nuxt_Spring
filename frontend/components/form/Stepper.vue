@@ -51,7 +51,6 @@ export default {
                         // Initialize FlatFpickr
                         if (steps[actualStep.value].title == "Reserva") {
                             nextTick(() => {
-
                                 flatpickr(flatpickrInput.value, {
                                     disable: bannedDays.value,
                                     dateFormat: "Y-m-d",
@@ -103,6 +102,7 @@ export default {
 
             bannedDaysObj.value.id_restaurant = data.value.restaurant.id_restaurant
 
+            console.log(bannedDays.value);
             const dates = ref((await useGetBannedDays(bannedDaysObj.value)))
 
             bannedDays.value = dates.value.length > 0 ? dates.value.map((d) => new Date(d)) : dates.value

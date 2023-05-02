@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import com.pf_nxsp_myfood.backend.domain.reserves.dto.ReserveDto;
 import com.pf_nxsp_myfood.backend.domain.reserves.entity.ReserveEntity;
 import com.pf_nxsp_myfood.backend.domain.reserves.repository.ReserveRepository;
 import com.pf_nxsp_myfood.backend.domain.restaurants.entity.RestaurantEntity;
+import com.pf_nxsp_myfood.backend.domain.restaurants.service.RestaurantSerivce;
 
 import lombok.AllArgsConstructor;
 
@@ -24,6 +26,9 @@ import lombok.AllArgsConstructor;
 public class ReserveServiceImpl implements ReserveService {
     @Autowired
     private ReserveRepository reserveRepository;
+
+    @Autowired
+    private RestaurantSerivce rSerivce;
 
     private ReserveEntity convertDtoToEntity(ReserveDto dto) {
         return ReserveEntity.builder()
@@ -36,7 +41,19 @@ public class ReserveServiceImpl implements ReserveService {
                 .status(dto.getStatus())
                 .name(dto.getName())
                 .build();
+    }
 
+    private ReserveDto convertToDto(ReserveEntity entity) {
+        return ReserveDto.builder()
+                .id_reserve(entity.getId_reserve())
+                .diners(entity.getDiners())
+                .date_reserve(entity.getDate_reserve())
+                .types(entity.getTypes())
+                .id_client(entity.getClient_reserves().getId_client())
+                .id_restaurant(entity.getRestaurant_reserves().getId_restaurant())
+                .name(entity.getName())
+                .status(entity.getStatus())
+                .build();
     }
 
     @Override
@@ -72,6 +89,43 @@ public class ReserveServiceImpl implements ReserveService {
         List<Object> response = new ArrayList<>();
         response.addAll(reserveRepository.getHolidays(id_restaurant));
         return new ResponseEntity<List<Object>>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public List<ReserveDto> getRestaurantReservesByEmployee(String id_employee) {
+        String idRestaurant = rSerivce.getRestaurantByEmployee(id_employee).getId_restaurant();
+        List<ReserveDto> reserves = reserveRepository.findByIdRestaurant(idRestaurant)
+        .stream()
+        .map(this::convertToDto)
+        .collect(Collectors.toList());
+
+        return reserves;
+    }
+
+    @Override
+    public ReserveDto getReserve(String id_Order) {
+        return convertToDto(reserveRepository.findById(id_Order).get());
+    }
+
+    @Override
+    public ResponseEntity<?> updateReserve(ReserveDto reserve) {
+        try {
+            ReserveEntity reserveToUpdate = reserveRepository.findById(reserve.getId_reserve()).get();
+
+            reserveToUpdate.setStatus(reserve.getStatus());
+            reserveToUpdate.setDate_reserve(reserve.getDate_reserve());
+            reserveToUpdate.setDiners(reserve.getDiners());
+            reserveToUpdate.setTypes(reserve.getTypes());
+
+            if (reserveRepository.save(reserveToUpdate) != null) {
+                return ResponseEntity.ok().body(Map.of("Status", 200, "message", "Reserve Updated"));
+            }
+
+            return ResponseEntity.badRequest().body(Map.of("Status", 400, "message", "Error while trying to update the Reserve"));
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("Status", 400, "message", e.getMessage()));
+        }
     }
 
 }

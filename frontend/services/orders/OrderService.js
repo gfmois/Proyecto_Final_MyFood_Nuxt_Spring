@@ -10,7 +10,6 @@ export default {
                 },
                 method: 'POST',
                 body: JSON.stringify(order)
-                // TODO :ADD IDREstaurant
             })
 
 
