@@ -109,6 +109,7 @@ public class ReserveServiceImpl implements ReserveService {
 
     @Override
     public ResponseEntity<?> updateReserve(ReserveDto reserve) {
+        System.out.println("Error Here");
         try {
             ReserveEntity reserveToUpdate = reserveRepository.findById(reserve.getId_reserve()).get();
 
@@ -124,6 +125,7 @@ public class ReserveServiceImpl implements ReserveService {
             return ResponseEntity.badRequest().body(Map.of("Status", 400, "message", "Error while trying to update the Reserve"));
 
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body(Map.of("Status", 400, "message", e.getMessage()));
         }
     }

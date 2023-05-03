@@ -2,6 +2,8 @@
 import flatpickr from 'flatpickr'
 import { useGetBannedDays } from '~~/composables/reserves/useReserves'
 
+import 'flatpickr/dist/flatpickr.min.css'
+
 const { object, keyBanned, keyPreffered, hasActionButtons, toSee, idObj } = defineProps({
   object: Array,
   keyBanned: String,
@@ -31,7 +33,7 @@ if (Array.isArray(objCopy)) {
 const subValues = ref([])
 
 const load = () => {
-  // const keys = Object.keys(selectedItems.value[0])
+  const keys = Object.keys(selectedItems.value[0])
   const values = Object.values(selectedItems.value[0])
 
   subValues.value = []
@@ -109,7 +111,7 @@ const loadDatepicker = () => {
           v-if="hasActionButtons">
           <div class="flex gap-x-3 items-center justify-center w-full h-full">
             <p class="cursor-pointer w-fit h-fit text-blue-500"
-              @click="() => { openEditModal = true; selectedItems = value; loadBannedDays() }">Ver</p>
+              @click="() => { openEditModal = true; selectedItems = value }">Ver</p>
             <p class="cursor-pointer w-fit h-fit text-red-500" @click="() => $emit('cancel', copy)">Cancelar</p>
           </div>
         </th>

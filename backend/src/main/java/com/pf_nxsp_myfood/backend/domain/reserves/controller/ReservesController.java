@@ -87,6 +87,9 @@ public class ReservesController {
     @PutMapping
     public ResponseEntity<?> updateReserve(@AuthenticationPrincipal AuthClientDetails aDetails,
             @RequestBody UpdateReserveRequest request) {
+
+                System.out.println(request.toString());
+
         if (aDetails == null || aDetails.getId_employee() == null) {
             Map<String, Object> err = new HashMap<String, Object>();
 
@@ -107,7 +110,7 @@ public class ReservesController {
                     .date_reserve(request.getDate_reserve())
                     .build();
 
-            return ResponseEntity.ok().body(rService.updateReserve(reserve));
+            return rService.updateReserve(reserve);
         }
 
         return ResponseEntity.badRequest().body(Map.of("Status", 200, "message", "Error trying to update the Reserve"));

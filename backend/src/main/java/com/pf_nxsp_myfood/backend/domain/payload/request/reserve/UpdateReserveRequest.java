@@ -7,10 +7,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.pf_nxsp_myfood.backend.domain.common.constants.ReservesTypes;
+import com.pf_nxsp_myfood.backend.domain.common.utils.BaseUtils;
 
 import lombok.Getter;
 
-public class UpdateReserveRequest {
+public class UpdateReserveRequest extends BaseUtils {
     @NotNull
     @NotBlank
     @NotEmpty

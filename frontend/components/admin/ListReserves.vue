@@ -35,13 +35,27 @@ watch(cancelReserve, async (v) => {
     }
 })
 
-watch(itemToUpdate, async(v, pv) => {
-    // FIXME: Not Updating the record
-    const obj = {}
-    keys.forEach((e, index) => obj[e == 'types' ? 'type' : e] = v[index])
-    const res = (await useUpdateReserve(obj)).value
+watch(itemToUpdate, async (v, pv) => {
+    const _keys = {
+        id_reserve: 0,
+        id_client: 1,
+        name: 2,
+        types: 3,
+        date_reserve: 4,
+        diners: 5,
+        status: 6
+    };
 
-    console.log(obj);
+    const obj = ref({})
+
+    Object.keys(_keys).map((e, index) => {
+        console.log(e);
+        obj.value[e] = v[index]
+    })
+
+    console.log(obj.value);
+
+    const res = (await useUpdateReserve(obj.value)).value
 
     if (res.status != 400) {
         toast.success(res.message)
@@ -52,6 +66,9 @@ watch(itemToUpdate, async(v, pv) => {
 
 <template>
     <div class="flex items-center justify-center p-2 w-full h-full">
-        <ListItems :idObj="restaurantReserves.reserves[0].id_restaurant" :object="restaurantReserves.reserves" keyBanned="product_ordered" keyPreffered="Productos" :hasActionButtons="true" @cancel="$e => cancelReserve = $e[0]" :toSee="['status', 'diners', 'types', 'date_reserve']" @update="$e => itemToUpdate = $e" />
+        <ListItems :idObj="restaurantReserves.reserves[0].id_restaurant" :object="restaurantReserves.reserves"
+            keyBanned="product_ordered" keyPreffered="Productos" :hasActionButtons="true"
+            @cancel="$e => cancelReserve = $e[0]" :toSee="['status', 'diners', 'types', 'date_reserve']"
+            @update="$e => itemToUpdate = $e" />
     </div>
 </template>

@@ -48,8 +48,9 @@ definePageMeta({
 
 const asideItems = [
     { title: "Home", icon: "ph:house-simple", redirect: "/admin" },
-    { title: "Mis Pedidos", icon: "solar:box-linear", redirect: "/admin/orders" },
-    { title: "Mis Reservas", icon: "ic:twotone-table-bar", redirect: "/admin/reserves" },
+    { title: "Pedidos", icon: "solar:box-linear", redirect: "/admin/orders" },
+    { title: "Reservas", icon: "ic:twotone-table-bar", redirect: "/admin/reserves" },
+    { title: "Empleados", icon: "clarity:employee-solid", redirect: "/admin/employees" },
 ]
 
 const user = (await useGetEmployee()).value
