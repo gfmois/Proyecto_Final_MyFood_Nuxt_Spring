@@ -12,6 +12,7 @@ import javax.persistence.Table;
 
 import com.pf_nxsp_myfood.backend.domain.clients.entity.ClientEntity;
 import com.pf_nxsp_myfood.backend.domain.common.constants.ReservesTypes;
+import com.pf_nxsp_myfood.backend.domain.common.utils.BaseUtils;
 import com.pf_nxsp_myfood.backend.domain.restaurants.entity.RestaurantEntity;
 
 import lombok.Builder;
@@ -25,7 +26,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "reserves")
 @NamedEntityGraph(name = "fetch-reserves")
-public class ReserveEntity {
+public class ReserveEntity extends BaseUtils {
     @Id
     private String id_reserve;
 

@@ -14,5 +14,6 @@ public interface ReserveService {
     List<ReserveDto> getRestaurantReservesByEmployee(String id_employee);
     ReserveDto getReserve(String id_Order);
     ResponseEntity<?> updateReserve(ReserveDto reserve);
+    List<ReserveDto> getClientReserves(String id_client);
 }
 

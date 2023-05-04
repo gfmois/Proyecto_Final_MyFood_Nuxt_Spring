@@ -109,7 +109,6 @@ public class ReserveServiceImpl implements ReserveService {
 
     @Override
     public ResponseEntity<?> updateReserve(ReserveDto reserve) {
-        System.out.println("Error Here");
         try {
             ReserveEntity reserveToUpdate = reserveRepository.findById(reserve.getId_reserve()).get();
 
@@ -128,6 +127,17 @@ public class ReserveServiceImpl implements ReserveService {
             System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body(Map.of("Status", 400, "message", e.getMessage()));
         }
+    }
+
+    @Override
+    public List<ReserveDto> getClientReserves(String id_client) {
+        // FIXME: Not Working
+        reserveRepository.findAll().stream().forEach(e -> {
+            System.out.println(e.toString());
+        });
+
+
+        return reserveRepository.findAll().stream().filter(e -> e.getClient_reserves().getId_client() == id_client).map(this::convertToDto).collect(Collectors.toList());
     }
 
 }

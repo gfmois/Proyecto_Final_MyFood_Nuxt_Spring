@@ -146,7 +146,7 @@ public class OrderController {
         }
 
         return ResponseEntity.badRequest().body(
-                Map.of("Status", 200, "message", "Error trying to update the Order"));
+                Map.of("Status", 400, "message", "Error trying to update the Order"));
     }
 
     // @CacheEvict(value = "restaurant_orders", allEntries = true)

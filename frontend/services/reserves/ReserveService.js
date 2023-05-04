@@ -6,12 +6,13 @@ export default {
         try {
             const params = new URLSearchParams({
                 diners: restaurantInfo.diners,
-                types: restaurantInfo.types,
+                types: restaurantInfo.type,
                 id_restaurant: restaurantInfo.id_restaurant
             })
 
             const res = await fetch(`${secret.DEFAULT_URL}/reserves/available?${params}`)
             return await res.json()
+
         } catch (error) {
             console.log(error);
             return null
@@ -51,6 +52,8 @@ export default {
         }
     },
     async updateReserve(reserve) {
+        const json = JSON.stringify(reserve)
+        console.log(json);
         try {
             const res = await fetch(`${secret.DEFAULT_URL}/reserves`, {
                 method: 'PUT',
@@ -58,7 +61,7 @@ export default {
                     'Authorization': `Bearer ${useCookie('token_admin').value}`,
                     'Content-Type': "application/json"
                 },
-                body: JSON.stringify(reserve)
+                body: json
             })
 
             return await res.json()
