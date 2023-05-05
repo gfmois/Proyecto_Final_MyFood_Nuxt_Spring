@@ -1,7 +1,14 @@
 <script setup>
-const { keys } = defineProps({
-    keys: Array
+const { keys, values } = defineProps({
+    keys: Array,
+    values: Array
 })
+
+const valuesArr = ref()
+valuesArr.value = values.map((e) => {
+    return Object.values(e)
+})
+
 </script>
 
 <template>
@@ -21,35 +28,27 @@ const { keys } = defineProps({
                                                         <table class="w-full">
                                                             <thead class="bg-white border-b sticky top-0">
                                                                 <tr>
-                                                                    <th scope="col"
-                                                                        v-for="key in keys"
+                                                                    <th scope="col" v-for="key in keys"
                                                                         class="text-md font-medium text-gray-900 px-6 py-4 text-left">
                                                                         {{ key }}
                                                                     </th>
+                                                                    <th
+                                                                        class="text-md font-medium text-gray-900 px-6 py-4 text-left">
+                                                                        Actions</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody class="h-96 overflow-y-auto">
-                                                                <tr v-for="i in 100"
+                                                                <tr v-for="item in valuesArr"
                                                                     class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                                                                    <td
-                                                                        class="text-sm text-gray-900 font-bold px-6 py-4 whitespace-nowrap">
-                                                                        <p>askdgasdi</p>
+                                                                    <td v-for="value, index in item"
+                                                                        :class="`text-sm text-gray-900  px-6 py-4 whitespace-nowrap ${index == 0 ? 'font-bold' : ''}`">
+                                                                        <p>{{ value }}</p>
                                                                     </td>
                                                                     <td
-                                                                        class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                                        21/03/2023</td>
-                                                                    <td
-                                                                        class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                                        Moisés </td>
-                                                                    <td
-                                                                        class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                                        Restaurante Amore Mio </td>
-                                                                    <td
-                                                                        class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                                        17.85 </td>
-                                                                    <td
-                                                                        class="text-sm text-red-500 font-medium  px-6 py-4 whitespace-nowrap">
-                                                                        <p class="cursor-pointer w-fit h-fit">Cancel</p>
+                                                                        class="text-sm text-red-600 font-medium px-6 py-4 whitespace-nowrap">
+                                                                        <p class="cursor-pointer">
+                                                                            Cancel
+                                                                        </p>
                                                                     </td>
                                                                 </tr>
                                                             </tbody>

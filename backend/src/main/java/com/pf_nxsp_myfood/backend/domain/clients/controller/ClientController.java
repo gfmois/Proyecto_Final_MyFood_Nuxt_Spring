@@ -58,7 +58,7 @@ public class ClientController {
             return ResponseEntity.badRequest().body(Map.of("status", 400, "message", "No ID Found"));
         }
 
-        List<ReserveDto> reserves = rService.getClientReserves(aDetails.getId_client());
+        List<Object> reserves = rService.getClientReserves(aDetails.getId_client());
         return ResponseEntity.ok().body(Map.of("status", 200, "reserves", reserves));
     }
 }

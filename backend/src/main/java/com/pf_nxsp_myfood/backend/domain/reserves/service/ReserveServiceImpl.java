@@ -16,6 +16,7 @@ import com.pf_nxsp_myfood.backend.domain.common.constants.ReservesTypes;
 import com.pf_nxsp_myfood.backend.domain.reserves.dto.ReserveDto;
 import com.pf_nxsp_myfood.backend.domain.reserves.entity.ReserveEntity;
 import com.pf_nxsp_myfood.backend.domain.reserves.repository.ReserveRepository;
+import com.pf_nxsp_myfood.backend.domain.restaurants.dto.RestaurantDto;
 import com.pf_nxsp_myfood.backend.domain.restaurants.entity.RestaurantEntity;
 import com.pf_nxsp_myfood.backend.domain.restaurants.service.RestaurantSerivce;
 
@@ -95,9 +96,9 @@ public class ReserveServiceImpl implements ReserveService {
     public List<ReserveDto> getRestaurantReservesByEmployee(String id_employee) {
         String idRestaurant = rSerivce.getRestaurantByEmployee(id_employee).getId_restaurant();
         List<ReserveDto> reserves = reserveRepository.findByIdRestaurant(idRestaurant)
-        .stream()
-        .map(this::convertToDto)
-        .collect(Collectors.toList());
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
 
         return reserves;
     }
@@ -121,7 +122,8 @@ public class ReserveServiceImpl implements ReserveService {
                 return ResponseEntity.ok().body(Map.of("Status", 200, "message", "Reserve Updated"));
             }
 
-            return ResponseEntity.badRequest().body(Map.of("Status", 400, "message", "Error while trying to update the Reserve"));
+            return ResponseEntity.badRequest()
+                    .body(Map.of("Status", 400, "message", "Error while trying to update the Reserve"));
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -130,14 +132,22 @@ public class ReserveServiceImpl implements ReserveService {
     }
 
     @Override
-    public List<ReserveDto> getClientReserves(String id_client) {
-        // FIXME: Not Working
-        reserveRepository.findAll().stream().forEach(e -> {
-            System.out.println(e.toString());
-        });
+    public List<Object> getClientReserves(String id_client) {
+        // FIXME: Non Sense what i'm doing here
+        Map<String, Object> restaurants = new HashMap<>();
+        Map<String, Object> reserves = new HashMap<>();
+        List<Map<String, Object>> reservesFilter = reserveRepository.findAll().stream()
+                .filter(e -> e.getClient_reserves().getId_client().equals(id_client)).map(this::convertToDto)
+                .map(e -> {
+                    restaurants.put(e.getId_reserve(), ((RestaurantDto) rSerivce.getRestaurantById(e.getId_restaurant()).get("restaurant")).getName());
+                    Map<String, Object> item = new HashMap<String, Object>();
 
+                    item.put(e.getId_reserve(), e);
 
-        return reserveRepository.findAll().stream().filter(e -> e.getClient_reserves().getId_client() == id_client).map(this::convertToDto).collect(Collectors.toList());
+                    return item;
+                })
+                .collect(Collectors.toList());
+        return null;
     }
 
 }
