@@ -132,22 +132,29 @@ public class ReserveServiceImpl implements ReserveService {
     }
 
     @Override
-    public List<Object> getClientReserves(String id_client) {
-        // FIXME: Non Sense what i'm doing here
-        Map<String, Object> restaurants = new HashMap<>();
-        Map<String, Object> reserves = new HashMap<>();
-        List<Map<String, Object>> reservesFilter = reserveRepository.findAll().stream()
-                .filter(e -> e.getClient_reserves().getId_client().equals(id_client)).map(this::convertToDto)
+    public List<Map<String, Object>> getClientReserves(String id_client) {
+        List<ReserveDto> userReserves = reserveRepository.findAll().stream()
+        .filter(e -> e.getClient_reserves().getId_client().equals(id_client)).map(this::convertToDto).collect(Collectors.toList());
+
+        List<Map<String, Object>> reservesFilter = userReserves.stream()
                 .map(e -> {
-                    restaurants.put(e.getId_reserve(), ((RestaurantDto) rSerivce.getRestaurantById(e.getId_restaurant()).get("restaurant")).getName());
                     Map<String, Object> item = new HashMap<String, Object>();
 
-                    item.put(e.getId_reserve(), e);
+                    item.put("id_reserve", e.getId_reserve());
+                    item.put("restaurant", ((RestaurantDto) rSerivce.getRestaurantById(e.getId_restaurant()).get("restaurant")).getName());
+                    item.put("id_client", e.getId_client());
+                    item.put("diners", e.getDiners());
+                    item.put("date_reserve", e.getDate_reserve());
+                    item.put("name", e.getName());
+                    item.put("types", e.getTypes());
+                    item.put("status", e.getStatus());
 
                     return item;
                 })
                 .collect(Collectors.toList());
-        return null;
+
+
+        return reservesFilter;
     }
 
 }

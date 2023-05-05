@@ -5,7 +5,9 @@ const keys = ["Reserve No", "Restaurant", "Bill To Name", "Type", "Date", "Diner
 
 const values = ref(await useGetClientReserves())
 
-values.value = values.value.reserves.map((e) => {
+const obj = reactive({ value: [] })
+
+values.value = values.value.reserves.forEach((e) => {
     const type = {
         MID_MORNING_SNACK: 'Almuerzo',
         LUNCH: 'Comida',
@@ -15,13 +17,36 @@ values.value = values.value.reserves.map((e) => {
     delete e.id_client;
     e.types = type[e.types]
 
-    return e
+    obj.value.push({
+        "Reserve No": e.id_reserve,
+        "Restaurant": e.restaurant,
+        "Bill To Name": e.name,
+        "Type": e.types,
+        "Date": e.date_reserve,
+        "Diners": e.diners,
+        "Status": e.status
+    })
 })
+
+const cancelReserve = (item) => {
+    const obj = {
+        id_reserve: item["Reserve No"],
+        restaurant: item["Restaurant"],
+        name: item["Bill To Name"],
+        types: item["Type"],
+        date_reserve: item["Date"],
+        diners: item.Diners,
+        status: item.Status
+    }
+
+    console.log(obj);
+}
 </script>
+
 
 <template>
     <Header>
         <Title>Mis Reservas</Title>
     </Header>
-    <LayoutTable :values="values" :keys="keys"/>
+    <LayoutTable :items="obj" @cancel="$e => cancelReserve($e)" />
 </template>

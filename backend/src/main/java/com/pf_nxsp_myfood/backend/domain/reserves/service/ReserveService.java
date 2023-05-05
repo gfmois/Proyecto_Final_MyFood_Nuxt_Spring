@@ -1,6 +1,7 @@
 package com.pf_nxsp_myfood.backend.domain.reserves.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 
@@ -14,6 +15,6 @@ public interface ReserveService {
     List<ReserveDto> getRestaurantReservesByEmployee(String id_employee);
     ReserveDto getReserve(String id_Order);
     ResponseEntity<?> updateReserve(ReserveDto reserve);
-    List<Object> getClientReserves(String id_client);
+    List<Map<String, Object>> getClientReserves(String id_client);
 }
 

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pf_nxsp_myfood.backend.domain.clients.dto.ClientDto;
 import com.pf_nxsp_myfood.backend.domain.clients.service.ClientService;
 import com.pf_nxsp_myfood.backend.domain.payload.request.auth.UpdateRequest;
-import com.pf_nxsp_myfood.backend.domain.reserves.dto.ReserveDto;
 import com.pf_nxsp_myfood.backend.domain.reserves.service.ReserveService;
 import com.pf_nxsp_myfood.backend.security.AuthClientDetails;
 
@@ -58,7 +57,7 @@ public class ClientController {
             return ResponseEntity.badRequest().body(Map.of("status", 400, "message", "No ID Found"));
         }
 
-        List<Object> reserves = rService.getClientReserves(aDetails.getId_client());
+        List<Map<String, Object>> reserves = rService.getClientReserves(aDetails.getId_client());
         return ResponseEntity.ok().body(Map.of("status", 200, "reserves", reserves));
     }
 }

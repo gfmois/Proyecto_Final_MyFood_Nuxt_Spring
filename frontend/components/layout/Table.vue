@@ -1,13 +1,11 @@
 <script setup>
-const { keys, values } = defineProps({
-    keys: Array,
-    values: Array
+const { items } = defineProps({
+    items: Object
 })
 
-const valuesArr = ref()
-valuesArr.value = values.map((e) => {
-    return Object.values(e)
-})
+const keys = ref(Object.keys(items.value[0]))
+const valuesArr = ref(computed(() => Object.values(items.value)).value)
+
 
 </script>
 
@@ -44,9 +42,9 @@ valuesArr.value = values.map((e) => {
                                                                         :class="`text-sm text-gray-900  px-6 py-4 whitespace-nowrap ${index == 0 ? 'font-bold' : ''}`">
                                                                         <p>{{ value }}</p>
                                                                     </td>
-                                                                    <td
+                                                                    <td v-if="item.Status != 'CANCELLED' && item.Status != 'COMPLETE'"
                                                                         class="text-sm text-red-600 font-medium px-6 py-4 whitespace-nowrap">
-                                                                        <p class="cursor-pointer">
+                                                                        <p class="cursor-pointer" @click="() => $emit('cancel', item)">
                                                                             Cancel
                                                                         </p>
                                                                     </td>
