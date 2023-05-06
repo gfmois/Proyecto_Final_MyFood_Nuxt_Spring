@@ -42,9 +42,27 @@ export default {
             const response = await fetch(`${secret.DEFAULT_URL}/client/reserves`, {
                 headers: {
                     'Authorization': `Bearer ${useCookie('token_client').value}`,
-                    'Content-Type': 'application+/json'
+                    'Content-Type': 'application/json'
                 },
                 method: 'GET'
+            })
+
+            return await response.json()
+        } catch (error) {
+            console.log(error);
+            return null
+        }
+    },
+    async updateReserve(reserve) {
+        const json = JSON.stringify(reserve)
+        try {
+            const response = await fetch(`${secret.DEFAULT_URL}/client/reserve`, {
+                headers: {
+                    'Authorization': `Bearer ${useCookie('token_client').value}`,
+                    'Content-Type': 'application/json'
+                },
+                method: 'PUT',
+                body: json
             })
 
             return await response.json()

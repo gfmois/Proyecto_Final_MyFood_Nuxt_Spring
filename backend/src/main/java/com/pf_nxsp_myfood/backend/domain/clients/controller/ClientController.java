@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pf_nxsp_myfood.backend.domain.clients.dto.ClientDto;
 import com.pf_nxsp_myfood.backend.domain.clients.service.ClientService;
+import com.pf_nxsp_myfood.backend.domain.orders.service.OrderService;
 import com.pf_nxsp_myfood.backend.domain.payload.request.auth.UpdateRequest;
+import com.pf_nxsp_myfood.backend.domain.payload.request.reserve.UpdateClientReserveRequest;
+import com.pf_nxsp_myfood.backend.domain.reserves.dto.ReserveDto;
 import com.pf_nxsp_myfood.backend.domain.reserves.service.ReserveService;
 import com.pf_nxsp_myfood.backend.security.AuthClientDetails;
 
@@ -33,6 +36,9 @@ public class ClientController {
 
     @Autowired
     private ReserveService rService;
+
+    @Autowired
+    private OrderService oService;
 
     @GetMapping("/profile")
     public ClientDto getProfile(@AuthenticationPrincipal AuthClientDetails authDetails) {
@@ -59,5 +65,29 @@ public class ClientController {
 
         List<Map<String, Object>> reserves = rService.getClientReserves(aDetails.getId_client());
         return ResponseEntity.ok().body(Map.of("status", 200, "reserves", reserves));
+    }
+
+    @PutMapping("/reserve")
+    public ResponseEntity<?> updateReserve(@AuthenticationPrincipal AuthClientDetails aDetails, @RequestBody UpdateClientReserveRequest request) {
+        if (aDetails.getId_client() == null || aDetails == null) {
+            return ResponseEntity.badRequest().body(Map.of("status", 400, "message", "No ID Found"));
+        }
+
+        ReserveDto reserve = rService.updateClientReserve(aDetails.getId_client(), request);
+        if (reserve != null) {
+            return ResponseEntity.ok().body(Map.of("status", 200, "reserve", reserve));
+        }
+
+        return ResponseEntity.badRequest().body(Map.of("status", 400, "message", "Error while trying to update the reserve"));
+    }
+
+    @GetMapping("/orders")
+    public ResponseEntity<?> getClientOrders(@AuthenticationPrincipal AuthClientDetails aDetails) {
+        if (aDetails.getId_client() == null || aDetails == null) {
+            return ResponseEntity.badRequest().body(Map.of("status", 400, "message", "No ID Found"));
+        }
+
+        List<Map<String, Object>> orders = oService.getClientOrders(aDetails.getId_client());
+        return ResponseEntity.ok().body(Map.of("status", 200, "orders", orders));
     }
 }

@@ -17,6 +17,7 @@ const token_client = reactive(useCookie('token_client').value)
             <h4 class="text-xl font-bold mb-2">{{ product.name }}</h4>
             <p class="mb-2">{{ product.description || 'None' }}</p>
             <p class="font-bold">{{ $t('price') }}: {{ Number.parseFloat(product.price) || '--,--' }}€</p>
+            <slot/>
         </div>
     </div>
 

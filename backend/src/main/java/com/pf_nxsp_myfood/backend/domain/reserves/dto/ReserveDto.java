@@ -5,6 +5,7 @@ import java.sql.Date;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.pf_nxsp_myfood.backend.domain.common.constants.ReservesStatusTypes;
 import com.pf_nxsp_myfood.backend.domain.common.constants.ReservesTypes;
 import com.pf_nxsp_myfood.backend.domain.common.utils.BaseUtils;
 
@@ -50,5 +51,5 @@ public class ReserveDto extends BaseUtils {
 
     @NotNull
     @NotEmpty
-    private String status;
+    private ReservesStatusTypes status;
 }

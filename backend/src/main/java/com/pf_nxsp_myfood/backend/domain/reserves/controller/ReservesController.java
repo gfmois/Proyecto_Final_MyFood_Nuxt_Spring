@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pf_nxsp_myfood.backend.domain.common.constants.ReservesStatusTypes;
 import com.pf_nxsp_myfood.backend.domain.common.constants.ReservesTypes;
 import com.pf_nxsp_myfood.backend.domain.employee.service.EmployeeService;
 import com.pf_nxsp_myfood.backend.domain.payload.request.reserve.ReserveRequest;
@@ -77,7 +78,7 @@ public class ReservesController {
                 .diners(reserve.getDiners())
                 .date_reserve(reserve.getDate_reserve())
                 .types(reserve.getType())
-                .status("Reserved")
+                .status(ReservesStatusTypes.RESERVED)
                 .name(reserve.getName())
                 .build();
 

@@ -14,4 +14,5 @@ public interface OrderService {
     List<OrderDto> getRestaurantOrdersByEmployee(String id_employee);
     OrderDto getOrder(String id_order);
     Map<String, Object> updateOrder(OrderDto order);
+    List<Map<String, Object>> getClientOrders(String id_client);
 }

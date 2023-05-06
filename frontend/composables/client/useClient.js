@@ -36,3 +36,15 @@ export const useGetClientReserves = async () => {
 
     return reserves
 }
+
+export const useCancelReserve = async (reserve) => {
+    const reserveUpdated = ref({})
+    try {
+        const data = await ClientService.updateReserve(reserve)
+        reserveUpdated.value = data
+    } catch (error) {
+        console.log(error);
+    }
+
+    return reserveUpdated
+}

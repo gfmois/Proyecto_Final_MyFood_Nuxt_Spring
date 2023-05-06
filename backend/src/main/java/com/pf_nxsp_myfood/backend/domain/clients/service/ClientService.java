@@ -7,8 +7,6 @@ import com.pf_nxsp_myfood.backend.domain.payload.request.auth.UpdateRequest;
 import com.pf_nxsp_myfood.backend.domain.payload.request.auth.LoginRequest;
 
 import com.pf_nxsp_myfood.backend.domain.payload.response.auth.JWTResponse;
-
-
 import com.pf_nxsp_myfood.backend.security.AuthClientDetails;
 
 public interface ClientService {

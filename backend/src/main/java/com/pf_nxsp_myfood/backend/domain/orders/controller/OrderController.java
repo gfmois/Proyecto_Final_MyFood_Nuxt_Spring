@@ -150,6 +150,7 @@ public class OrderController {
     }
 
     // @CacheEvict(value = "restaurant_orders", allEntries = true)
+    // FIXME: When more than one product crash
     @PostMapping
     public ResponseEntity<?> addOrder(@AuthenticationPrincipal AuthClientDetails aDetails,
             @RequestBody NewOrderRequest newOrderRequest) throws StripeException {
@@ -169,10 +170,12 @@ public class OrderController {
         dto.setId_restaurant(newOrderRequest.getId_restaurant());
         dto.setOrderDate(LocalDate.now());
 
-        newOrderRequest.getProducts()
-                .stream()
-                .forEach(o -> o.setId_order(dto.getId_order()));
 
+        newOrderRequest.getProducts()
+        .stream()
+        .forEach(o -> o.setId_order(dto.getId_order()));
+
+        System.out.println(newOrderRequest.toString());
         BigDecimal amount = newOrderRequest.getProducts().stream()
                 .map(e -> new BigDecimal(pService.getProductById(e.getId_product()).getPrice())
                         .multiply(new BigDecimal(e.getQuantity())))
@@ -206,7 +209,7 @@ public class OrderController {
         }
     }
 
-    // FIXME: Not Working
+    // FIXME: When more than one product crash
     @PostMapping("/createOrder")
     public ResponseEntity<?> paypalCreateOrder() {
         PayPalEnvironment environment = new PayPalEnvironment.Sandbox(System.getProperty("paypal.client-id"),

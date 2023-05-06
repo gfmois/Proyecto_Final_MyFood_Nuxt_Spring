@@ -16,6 +16,7 @@ import com.pf_nxsp_myfood.backend.domain.orders.entity.OrderEntity;
 import com.pf_nxsp_myfood.backend.domain.orders.entity.OrderProductEntity;
 import com.pf_nxsp_myfood.backend.domain.orders.repository.OrderRepository;
 import com.pf_nxsp_myfood.backend.domain.products.service.ProductService;
+import com.pf_nxsp_myfood.backend.domain.restaurants.dto.RestaurantDto;
 import com.pf_nxsp_myfood.backend.domain.restaurants.entity.RestaurantEntity;
 import com.pf_nxsp_myfood.backend.domain.restaurants.service.RestaurantSerivce;
 
@@ -146,6 +147,27 @@ public class OrderServiceImpl implements OrderService {
             return res;
         }
 
+    }
+
+    @Override
+    public List<Map<String, Object>> getClientOrders(String id_client) {
+        List<OrderDto> clientOrders = orderRepository.findAll().stream().filter(e -> e.getId_client().equals(id_client))
+                .map(this::converToDto).collect(Collectors.toList());
+
+        List<Map<String, Object>> ordersFiltered = clientOrders.stream().map(e -> {
+            Map<String, Object> item = new HashMap<String, Object>();
+
+            item.put("id_client", e.getId_client());
+            item.put("id_order", e.getId_order());
+            item.put("restaurant", ((RestaurantDto) rSerivce.getRestaurantById(e.getId_restaurant()).get("restaurant")).getName());
+            item.put("order_date", e.getOrderDate());
+            item.put("status", e.getStatus());
+            item.put("products", e.getProduct_ordered());
+
+            return item;
+        }).collect(Collectors.toList());
+
+        return ordersFiltered;
     }
 
 }

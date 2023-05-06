@@ -51,5 +51,21 @@ export default {
             console.log(error);
             return null
         }
+    },
+    async getClientOrders() {
+        try {
+            const res = await  fetch(`${secret.DEFAULT_URL}/client/orders`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${useCookie('token_client').value}`,
+                    'Content-Type': "application/json"
+                }
+            })
+
+            return await res.json()
+        } catch (error) {
+            console.log(error);
+            return null
+        }
     }
 }

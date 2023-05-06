@@ -1,11 +1,22 @@
 <script setup>
-const { items } = defineProps({
-    items: Object
+const { items, hasCancel } = defineProps({
+    items: Object,
+    hasCancel: Boolean,
+    toModal: Array
 })
 
 const keys = ref(Object.keys(items.value[0]))
 const valuesArr = ref(computed(() => Object.values(items.value)).value)
+const checkStartsWith = (value) => typeof value == "string" ? value.startsWith("_") : false
+const isModalOpen = ref(false)
+const modalTitle = ref("")
+const modalItems = ref([])
 
+const openModal = (item, title) => {
+    isModalOpen.value = true
+    modalTitle.value = title
+    modalItems.value = item
+}
 
 </script>
 
@@ -28,7 +39,9 @@ const valuesArr = ref(computed(() => Object.values(items.value)).value)
                                                                 <tr>
                                                                     <th scope="col" v-for="key in keys"
                                                                         class="text-md font-medium text-gray-900 px-6 py-4 text-left">
-                                                                        {{ key }}
+                                                                        <p v-if="!checkStartsWith(key)">
+                                                                            {{ key }}
+                                                                        </p>
                                                                     </th>
                                                                     <th
                                                                         class="text-md font-medium text-gray-900 px-6 py-4 text-left">
@@ -37,14 +50,20 @@ const valuesArr = ref(computed(() => Object.values(items.value)).value)
                                                             </thead>
                                                             <tbody class="h-96 overflow-y-auto">
                                                                 <tr v-for="item in valuesArr"
-                                                                    class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                                                                    <td v-for="value, index in item"
+                                                                    class="bg-white border-b
+                                                                    transition duration-300 ease-in-out hover:bg-gray-100">
+                                                                    <td v-for="(value, index) in item"
                                                                         :class="`text-sm text-gray-900  px-6 py-4 whitespace-nowrap ${index == 0 ? 'font-bold' : ''}`">
-                                                                        <p>{{ value }}</p>
+                                                                        <p v-if="!checkStartsWith(index)"
+                                                                            :class="`${typeof index == 'string' ? toModal.includes(index) ? 'text-blue-500 cursor-pointer w-fit h-fit' : null : null}`"
+                                                                            @click="() => toModal.includes(index) ? openModal(item, index) : null">
+                                                                            {{ value }}</p>
                                                                     </td>
-                                                                    <td v-if="item.Status != 'CANCELLED' && item.Status != 'COMPLETE'"
+                                                                    <td
                                                                         class="text-sm text-red-600 font-medium px-6 py-4 whitespace-nowrap">
-                                                                        <p class="cursor-pointer" @click="() => $emit('cancel', item)">
+                                                                        <p class="cursor-pointer"
+                                                                            @click="() => $emit('cancel', item)"
+                                                                            v-if="hasCancel && item.Status != 'CANCELLED' && item.Status != 'COMPLETED'">
                                                                             Cancel
                                                                         </p>
                                                                     </td>
@@ -59,10 +78,32 @@ const valuesArr = ref(computed(() => Object.values(items.value)).value)
                                 </div>
                             </div>
                         </form>
+                        <div class="flex items-center justify-center">
+                            <LayoutButton title="Volver" :action="() => $router.replace('/')" />
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
+    </div>
+
+    <div class="fixed top-0 left-0 flex items-center justify-center h-full w-full bg-black/50" v-if="isModalOpen">
+        <div class="w-2/3 h-2/3 rounded-lg shadow-xl bg-crimson-600 p-1">
+            <div class="text-white w-full h-12 flex items-center p-4 justify-between">
+                <h1 class="p-2">{{ modalTitle }}</h1>
+                <div>
+                    <Icon name="material-symbols:close-rounded" size="1.5rem" class="cursor-pointer border rounded-lg text-white border-white hover:text-black hover:border-black" @click="() => isModalOpen = false" />
+                </div>
+            </div>
+            <div class="w-full h-12 flex items-center p-4 justify-between">
+                <div v-for="item in modalItems[`_${modalTitle}`]" class="w-full h-full">
+                    <ProductCard :product="Object.values(item)[0]" :has-action-modal="false">
+                        <p class="font-bold">Cantidad: {{ item.quantity }}</p>
+                        <p class="font-bold">Total: {{ item.quantity * Object.values(item)[0].price }} €</p>
+                    </ProductCard>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 

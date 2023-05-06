@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 
 import com.pf_nxsp_myfood.backend.domain.common.constants.ReservesTypes;
+import com.pf_nxsp_myfood.backend.domain.payload.request.reserve.UpdateClientReserveRequest;
 import com.pf_nxsp_myfood.backend.domain.reserves.dto.ReserveDto;
 
 public interface ReserveService {
@@ -16,5 +17,6 @@ public interface ReserveService {
     ReserveDto getReserve(String id_Order);
     ResponseEntity<?> updateReserve(ReserveDto reserve);
     List<Map<String, Object>> getClientReserves(String id_client);
+    ReserveDto updateClientReserve(String id_client, UpdateClientReserveRequest request);
 }
 

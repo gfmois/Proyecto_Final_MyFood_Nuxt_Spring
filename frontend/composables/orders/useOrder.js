@@ -35,3 +35,15 @@ export const useUpdateOrder = async(order) => {
 
     return orderRes
 }
+
+export const useGetClientOrders = async () => {
+    const clientOrders = ref([])
+    try {
+        const data = await OrderService.getClientOrders()
+        clientOrders.value = data
+    } catch (error) {
+        console.log(error);
+    }
+
+    return clientOrders;
+}

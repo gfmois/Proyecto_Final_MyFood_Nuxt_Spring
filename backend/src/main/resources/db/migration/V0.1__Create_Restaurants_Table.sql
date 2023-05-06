@@ -30,7 +30,7 @@ CREATE TABLE `products` (
 );
 
 CREATE TABLE `products_ordered` (
-  `id_order` VARCHAR(20) PRIMARY KEY,
+  `id_order` VARCHAR(20),
   `id_product` VARCHAR(255),
   `quantity` int
 );

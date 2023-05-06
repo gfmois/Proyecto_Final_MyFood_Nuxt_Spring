@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.pf_nxsp_myfood.backend.domain.clients.entity.ClientEntity;
 import com.pf_nxsp_myfood.backend.domain.common.constants.ReservesTypes;
+import com.pf_nxsp_myfood.backend.domain.payload.request.reserve.UpdateClientReserveRequest;
 import com.pf_nxsp_myfood.backend.domain.reserves.dto.ReserveDto;
 import com.pf_nxsp_myfood.backend.domain.reserves.entity.ReserveEntity;
 import com.pf_nxsp_myfood.backend.domain.reserves.repository.ReserveRepository;
@@ -155,6 +156,18 @@ public class ReserveServiceImpl implements ReserveService {
 
 
         return reservesFilter;
+    }
+
+    @Override
+    public ReserveDto updateClientReserve(String id_client, UpdateClientReserveRequest request) {
+        ReserveEntity entity = reserveRepository.findById(request.getId_reserve()).get();
+        entity.setStatus(request.getStatus());
+
+        if (reserveRepository.save(entity) != null) {
+            return convertToDto(entity);
+        }
+
+        return null;
     }
 
 }
