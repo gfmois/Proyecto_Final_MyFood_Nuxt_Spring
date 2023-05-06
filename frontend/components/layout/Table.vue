@@ -7,15 +7,22 @@ const { items, hasCancel } = defineProps({
 
 const keys = ref(Object.keys(items.value[0]))
 const valuesArr = ref(computed(() => Object.values(items.value)).value)
+
 const checkStartsWith = (value) => typeof value == "string" ? value.startsWith("_") : false
 const isModalOpen = ref(false)
 const modalTitle = ref("")
 const modalItems = ref([])
+const total = ref(0)
 
 const openModal = (item, title) => {
+    total.value = 0;
     isModalOpen.value = true
     modalTitle.value = title
     modalItems.value = item
+
+    item._Products.forEach((e) => {
+        total.value += e.quantity * e.product.price
+    })
 }
 
 </script>
@@ -87,7 +94,7 @@ const openModal = (item, title) => {
         </main>
     </div>
 
-    <div class="fixed top-0 left-0 flex items-center justify-center h-full w-full bg-black/50" v-if="isModalOpen">
+    <div class="fixed top-0 left-0 flex items-center justify-center h-full w-full bg-black/50 gap-4" v-if="isModalOpen">
         <div class="w-2/3 h-2/3 rounded-lg shadow-xl bg-crimson-600 p-1">
             <div class="text-white w-full h-12 flex items-center p-4 justify-between">
                 <h1 class="p-2">{{ modalTitle }}</h1>
@@ -95,13 +102,20 @@ const openModal = (item, title) => {
                     <Icon name="material-symbols:close-rounded" size="1.5rem" class="cursor-pointer border rounded-lg text-white border-white hover:text-black hover:border-black" @click="() => isModalOpen = false" />
                 </div>
             </div>
-            <div class="w-full h-12 flex items-center p-4 justify-between">
+            <div class="w-full h-[80%] flex items-center flex-col p-4 gap-4 overflow-y-auto justify-between">
                 <div v-for="item in modalItems[`_${modalTitle}`]" class="w-full h-full">
-                    <ProductCard :product="Object.values(item)[0]" :has-action-modal="false">
-                        <p class="font-bold">Cantidad: {{ item.quantity }}</p>
-                        <p class="font-bold">Total: {{ item.quantity * Object.values(item)[0].price }} €</p>
-                    </ProductCard>
+                    <div class="flex gap-4 w-full h-full">
+                        <ProductCard :product="Object.values(item)[0]" :has-action-modal="false">
+                            <p class="font-bold">Cantidad: {{ item.quantity }}</p>
+                            <p class="font-bold">Total: {{ item.quantity * Object.values(item)[0].price }} €</p>
+                        </ProductCard>
+                    </div>
                 </div>
+            </div>
+            <div class="h-[10%] mt-2 w-full text-white flex items-center justify-end p-4">
+                <p class="mr-4">
+                    Total: {{ total }}€
+                </p>
             </div>
         </div>
     </div>

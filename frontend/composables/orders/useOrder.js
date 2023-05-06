@@ -47,3 +47,15 @@ export const useGetClientOrders = async () => {
 
     return clientOrders;
 }
+
+export const useCancelOrder = async (order) => {
+    const orderUpdated = ref({})
+    try {
+        const data = await OrderService.cancelOrder(order);
+        orderUpdated.value = data
+    } catch (error) {
+        console.log(error);
+    }
+
+    return orderUpdated
+}

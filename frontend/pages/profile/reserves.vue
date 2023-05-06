@@ -53,5 +53,5 @@ const cancelReserve = async (item) => {
     <Header>
         <Title>Mis Reservas</Title>
     </Header>
-    <LayoutTable :items="obj" @cancel="$e => cancelReserve($e)" :hasCancel="true" />
+    <LayoutTable :items="obj" @cancel="$e => cancelReserve($e)" :hasCancel="true" :toModal="[]" />
 </template>

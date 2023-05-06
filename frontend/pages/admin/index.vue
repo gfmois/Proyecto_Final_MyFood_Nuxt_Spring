@@ -51,6 +51,7 @@ const asideItems = [
     { title: "Pedidos", icon: "solar:box-linear", redirect: "/admin/orders" },
     { title: "Reservas", icon: "ic:twotone-table-bar", redirect: "/admin/reserves" },
     { title: "Empleados", icon: "clarity:employee-solid", redirect: "/admin/employees" },
+    { title: "Productos", icon: "streamline:food-drum-stick-1-cook-animal-drumsticks-products-chicken-cooking-nutrition-food", redirect: "/admin/employees" },
 ]
 
 const user = (await useGetEmployee()).value

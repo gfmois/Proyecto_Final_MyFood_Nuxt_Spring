@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pf_nxsp_myfood.backend.domain.clients.dto.ClientDto;
 import com.pf_nxsp_myfood.backend.domain.clients.service.ClientService;
+import com.pf_nxsp_myfood.backend.domain.common.constants.OrderTypes;
+import com.pf_nxsp_myfood.backend.domain.orders.dto.OrderDto;
 import com.pf_nxsp_myfood.backend.domain.orders.service.OrderService;
 import com.pf_nxsp_myfood.backend.domain.payload.request.auth.UpdateRequest;
+import com.pf_nxsp_myfood.backend.domain.payload.request.order.UpdateOrderRequest;
 import com.pf_nxsp_myfood.backend.domain.payload.request.reserve.UpdateClientReserveRequest;
 import com.pf_nxsp_myfood.backend.domain.reserves.dto.ReserveDto;
 import com.pf_nxsp_myfood.backend.domain.reserves.service.ReserveService;
@@ -89,5 +92,23 @@ public class ClientController {
 
         List<Map<String, Object>> orders = oService.getClientOrders(aDetails.getId_client());
         return ResponseEntity.ok().body(Map.of("status", 200, "orders", orders));
+    }
+
+    @PutMapping("/orders")
+    public ResponseEntity<?> cancelClientOrder(@AuthenticationPrincipal AuthClientDetails aDetails, @RequestBody UpdateOrderRequest request) {
+        if (aDetails == null || aDetails.getId_client() == null) {
+            return ResponseEntity.badRequest().body(Map.of("status", 400, "message", "No ID Found"));
+        }
+
+        OrderDto order = OrderDto.builder().id_order(request.getId_order()).status(OrderTypes.CANCELLED).build();
+
+        Map<String, Object> orderUpdated = oService.updateOrder(order);
+        if ((Integer) orderUpdated.get("status") == 200) {
+            return ResponseEntity.ok().body(
+                Map.of("status", 200, "message", "Order Updated", "order", orderUpdated.get("order")));
+        }
+
+        return ResponseEntity.badRequest().body(
+                Map.of("status", 400, "message", "Error trying to update the Order"));
     }
 }

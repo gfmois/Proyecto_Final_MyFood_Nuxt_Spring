@@ -127,9 +127,10 @@ public class OrderServiceImpl implements OrderService {
             orderToUpdate.setStatus(order.getStatus());
 
             if (orderRepository.save(orderToUpdate) != null) {
+                OrderDto orderUpdated = converToDto(orderRepository.findById(orderToUpdate.getId_order()).get());
                 res.put("status", 200);
                 res.put("message", "Order updated");
-                // res.put("order", orderToUpdate);
+                res.put("order", orderUpdated);
 
                 return res;
             }

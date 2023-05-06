@@ -2,7 +2,7 @@
 import { useAuth } from "~/store"
 
 const router = useRouter()
-const { actCheckHasUser, mutCheckIsAdmin, isAdmin, user: storeUser, actChangeUser, hasUser } = useAuth()
+const { actCheckHasUser, mutCheckIsAdmin, actChangeUser } = useAuth()
 const client_token = useCookie('token_client')
 const admin_token = useCookie('token_admin')
 

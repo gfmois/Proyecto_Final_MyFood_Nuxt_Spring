@@ -67,5 +67,23 @@ export default {
             console.log(error);
             return null
         }
+    },
+    async cancelOrder(order) {
+        try {
+            const json = JSON.stringify(order)
+            const res = await fetch(`${secret.DEFAULT_URL}/client/orders`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${useCookie('token_client').value}`,
+                    'Content-Type': 'application/json'
+                },
+                body: json
+            })
+
+            return await res.json()
+        } catch (error) {
+            console.log(error);
+            return null
+        }
     }
 }

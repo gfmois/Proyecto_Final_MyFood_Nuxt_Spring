@@ -150,7 +150,6 @@ public class OrderController {
     }
 
     // @CacheEvict(value = "restaurant_orders", allEntries = true)
-    // FIXME: When more than one product crash
     @PostMapping
     public ResponseEntity<?> addOrder(@AuthenticationPrincipal AuthClientDetails aDetails,
             @RequestBody NewOrderRequest newOrderRequest) throws StripeException {

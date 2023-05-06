@@ -53,7 +53,6 @@ export default {
     },
     async updateReserve(reserve) {
         const json = JSON.stringify(reserve)
-        console.log(json);
         try {
             const res = await fetch(`${secret.DEFAULT_URL}/reserves`, {
                 method: 'PUT',
