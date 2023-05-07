@@ -1,19 +1,22 @@
 <script setup>
 import flatpickr from 'flatpickr'
 import { useGetBannedDays } from '~~/composables/reserves/useReserves'
+import { useAuth } from '~~/store';
 
 import 'flatpickr/dist/flatpickr.min.css'
 
-const { object, keyBanned, keyPreffered, hasActionButtons, idObj, toSee, actionsKeys } = defineProps({
+const { user } = useAuth()
+const { object, keyBanned, keyPreffered, hasActionButtons, idObj, toSee, actionsKeys, onlyIsAdmin } = defineProps({
   object: Array,
   keyBanned: String,
   keyPreffered: String,
   hasActionButtons: true,
   idObj: "",
   toSee: [],
+  onlyIsAdmin: Boolean,
   actionsKeys: {
-    // FIXME: Want to default & props
-    default: ['Ver', 'Cancelar']
+    type: Array,
+    default: () => ['Ver', 'Cancelar']
   }
 });
 
@@ -50,12 +53,16 @@ const load = () => {
 }
 
 const checkIfVisible = (index) => {
-  if (!toSee.includes(keys.value[index])) {
-    loadDatepicker()
-    return true
-  }
+  try {
+    if (!toSee.includes(keys.value[index])) {
+      loadDatepicker()
+      return true
+    }
 
-  return false
+    return false
+  } catch (error) {
+    return false
+  }
 }
 
 watch(values, async (v, pv) => {
@@ -87,10 +94,25 @@ const loadDatepicker = () => {
     })
   })
 }
+const onlyAdmin = ref(true)
+
+onMounted(() => {
+  console.log(onlyIsAdmin);
+  if (onlyIsAdmin) {
+    if (user.value.type === 'ADMIN') {
+      onlyAdmin.value = true;
+    } else {
+      onlyAdmin.value = false;
+    }
+  } else {
+    onlyAdmin.value = true;
+  }
+});
+
+
 </script>
 
 <template>
-  {{ finalActionsKeys }}
   <table class="min-w-full divide-y divide-gray-200">
     <thead class="bg-gray-50 text-center">
       <tr>
@@ -117,7 +139,8 @@ const loadDatepicker = () => {
           <div class="flex gap-x-3 items-center justify-center w-full h-full">
             <p class="cursor-pointer w-fit h-fit text-blue-500"
               @click="() => { openEditModal = true; selectedItems = value }">{{ actionsKeys[0] }}</p>
-            <p class="cursor-pointer w-fit h-fit text-red-500" @click="() => $emit('cancel', copy)">{{ actionsKeys[1] }}</p>
+            <p v-if="onlyAdmin" class="cursor-pointer w-fit h-fit text-red-500" @click="() => $emit('cancel', copy)">{{ actionsKeys[1] }}
+            </p>
           </div>
         </th>
       </tr>

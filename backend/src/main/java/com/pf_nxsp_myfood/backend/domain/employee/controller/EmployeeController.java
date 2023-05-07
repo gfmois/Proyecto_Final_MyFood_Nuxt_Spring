@@ -6,11 +6,14 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pf_nxsp_myfood.backend.domain.common.constants.EmployeesTypes;
 import com.pf_nxsp_myfood.backend.domain.employee.dto.EmployeeDto;
 import com.pf_nxsp_myfood.backend.domain.employee.service.EmployeeService;
 import com.pf_nxsp_myfood.backend.security.AuthClientDetails;
@@ -47,6 +50,21 @@ public class EmployeeController {
 
         }
         return null;
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteEmployee(@AuthenticationPrincipal AuthClientDetails aDetails, @RequestBody Map<String, Object> body) {
+        if (aDetails == null || aDetails.getId_employee() == null) {
+            return ResponseEntity.badRequest().body(Map.of("status", 400, "message", "No ID Found"));
+        }
+
+        EmployeeDto admin = eService.currentUser(aDetails);
+
+        if (!admin.getType().equals(EmployeesTypes.ADMIN)) {
+            return ResponseEntity.badRequest().body(Map.of("status", 400, "message", "Sin permisos suficientes"));
+        } else {
+            return eService.deleteEmployee((String) body.get("id_employee"));
+        }
     }
 
 }

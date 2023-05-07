@@ -32,5 +32,25 @@ export default {
             } catch (error) {
                 return null
             }
+    },
+    async deleteEmployee(id_employee) {
+        const token = useCookie('token_admin').value
+
+        console.log(id_employee);
+
+        try {
+            const res = await fetch(`${secret.DEFAULT_URL}/employees`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ id_employee })
+            })
+
+            return await res.json()
+        } catch (error) {
+            console.log(error);
+            return null
+        }
     }
 }

@@ -67,6 +67,7 @@ watch(itemToUpdate, async (v, pv) => {
             keyBanned="product_ordered"
             keyPreffered="Productos"
             :hasActionButtons="true"
+            :onlyIsAdmin="false"
             @cancel="$e => cancelReserve = $e[0]" :toSee="['status', 'diners', 'types', 'date_reserve']"
             @update="$e => itemToUpdate = $e" />
     </div>

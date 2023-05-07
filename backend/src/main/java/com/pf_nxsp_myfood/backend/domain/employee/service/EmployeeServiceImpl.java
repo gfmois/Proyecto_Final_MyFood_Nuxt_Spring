@@ -2,9 +2,11 @@ package com.pf_nxsp_myfood.backend.domain.employee.service;
 
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,7 +64,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     // Creates new employee with the type (ADMIN, WAITER, MANAGER).
     @Override
     public JWTResponse registration(EmployeeSignUpRequest data) {
-        eRepository.findByNameOrEmail(data.getName(), data.getEmail())
+        eRepository.findByEmail(data.getEmail())
                 .stream()
                 .findAny()
                 .ifPresent(entity -> {
@@ -136,6 +138,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         return eRepository.findAll().stream()
                 .filter(e -> e.getEmployee_restaurant().getId_restaurant().equals(id_restaurant))
                 .map(this::convertEntityToDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public ResponseEntity<?> deleteEmployee(String id_employee) {
+        EmployeeEntity employee = eRepository.findById(id_employee).get();
+        if (employee != null) {
+            eRepository.delete(employee);
+            return ResponseEntity.ok().body(Map.of("status", 200, "message", String.format("Employe #%s deleted", employee.getId_employee())));
+        }
+
+        return ResponseEntity.badRequest().body(Map.of("status", 400, "message", "Error trying to delete employee"));
     }
 
 }

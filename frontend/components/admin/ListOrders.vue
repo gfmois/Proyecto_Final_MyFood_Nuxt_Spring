@@ -51,6 +51,7 @@ watch(itemToUpdate, async (v, pv) => {
             keyPreffered="Productos"
             :hasActionButtons="true"
             :toSee="['status']"
+            :onlyIsAdmin="false"
             @cancel="$e => cancelOrder = $e[0]"
             @update="$e => itemToUpdate = $e" />
     </div>

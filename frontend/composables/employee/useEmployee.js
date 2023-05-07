@@ -24,3 +24,15 @@ export const useGetRestaurantEmployees = async (id_restaurant) => {
 
     return employees
 }
+
+export const useDeleteEmployee = async (id_employee) => {
+    const response = ref({})
+    try {
+        const data = await EmployeeService.deleteEmployee(id_employee)
+        response.value = data
+    } catch (error) {
+        console.log(error);
+    }
+
+    return response
+}
