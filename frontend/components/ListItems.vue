@@ -4,14 +4,18 @@ import { useGetBannedDays } from '~~/composables/reserves/useReserves'
 
 import 'flatpickr/dist/flatpickr.min.css'
 
-const { object, keyBanned, keyPreffered, hasActionButtons, toSee, idObj } = defineProps({
+const { object, keyBanned, keyPreffered, hasActionButtons, idObj, toSee, actionsKeys } = defineProps({
   object: Array,
   keyBanned: String,
   keyPreffered: String,
   hasActionButtons: true,
   idObj: "",
-  toSee: []
-})
+  toSee: [],
+  actionsKeys: {
+    // FIXME: Want to default & props
+    default: ['Ver', 'Cancelar']
+  }
+});
 
 const keys = reactive({})
 const values = reactive({})
@@ -86,6 +90,7 @@ const loadDatepicker = () => {
 </script>
 
 <template>
+  {{ finalActionsKeys }}
   <table class="min-w-full divide-y divide-gray-200">
     <thead class="bg-gray-50 text-center">
       <tr>
@@ -111,8 +116,8 @@ const loadDatepicker = () => {
           v-if="hasActionButtons">
           <div class="flex gap-x-3 items-center justify-center w-full h-full">
             <p class="cursor-pointer w-fit h-fit text-blue-500"
-              @click="() => { openEditModal = true; selectedItems = value }">Ver</p>
-            <p class="cursor-pointer w-fit h-fit text-red-500" @click="() => $emit('cancel', copy)">Cancelar</p>
+              @click="() => { openEditModal = true; selectedItems = value }">{{ actionsKeys[0] }}</p>
+            <p class="cursor-pointer w-fit h-fit text-red-500" @click="() => $emit('cancel', copy)">{{ actionsKeys[1] }}</p>
           </div>
         </th>
       </tr>

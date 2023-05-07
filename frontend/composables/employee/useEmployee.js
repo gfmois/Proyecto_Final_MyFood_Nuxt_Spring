@@ -12,3 +12,15 @@ export const useGetEmployee = async () => {
 
     return profile
 }
+
+export const useGetRestaurantEmployees = async (id_restaurant) => {
+    const employees = ref([])
+    try {
+        const data = await EmployeeService.getRestaurantEmployees(id_restaurant)
+        employees.value = data
+    } catch (error) {
+        console.log(error);
+    }
+
+    return employees
+}

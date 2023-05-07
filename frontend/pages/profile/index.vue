@@ -5,6 +5,10 @@ import { useToast } from 'vue-toast-notification'
 
 const { user, actChangeUser } = useAuth()
 
+definePageMeta({
+    middleware: 'no-employee-middleware'
+})
+
 const profile = reactive({
     value: {
         name: null,

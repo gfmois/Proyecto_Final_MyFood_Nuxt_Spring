@@ -31,7 +31,7 @@ watch(cancelOrder, async (v) => {
     }
 })
 
-watch(itemToUpdate, async(v, pv) => {
+watch(itemToUpdate, async (v, pv) => {
     const obj = {}
     keys.forEach((e, index) => obj[e] = v[index])
     const res = (await useUpdateOrder(obj)).value
@@ -45,6 +45,13 @@ watch(itemToUpdate, async(v, pv) => {
 
 <template>
     <div class="flex items-center justify-center p-2 w-full h-full">
-        <ListItems :object="restaurantOrders.orders" keyBanned="product_ordered" keyPreffered="Productos" :hasActionButtons="true" @cancel="$e => cancelOrder = $e[0]" :toSee="['status']" @update="$e => itemToUpdate = $e" />
+        <ListItems
+            :object="restaurantOrders.orders"
+            keyBanned="product_ordered"
+            keyPreffered="Productos"
+            :hasActionButtons="true"
+            :toSee="['status']"
+            @cancel="$e => cancelOrder = $e[0]"
+            @update="$e => itemToUpdate = $e" />
     </div>
 </template>

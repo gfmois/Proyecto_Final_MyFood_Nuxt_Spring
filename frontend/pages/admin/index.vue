@@ -43,7 +43,7 @@ import { useGetEmployee } from "~/composables/employee/useEmployee"
 import { useGetRestaurantByEmployee } from "~~/composables/restaurants/useRestaurants"
 
 definePageMeta({
-    layout: ""
+    layout: "",
 })
 
 const asideItems = [
@@ -61,6 +61,7 @@ const pages = ref([
     defineAsyncComponent(() => import('~/components/admin/Dashboard.vue')),
     defineAsyncComponent(() => import('~/components/admin/ListOrders.vue')),
     defineAsyncComponent(() => import('~/components/admin/ListReserves.vue')),
+    defineAsyncComponent(() => import('~/components/admin/ListEmployees.vue'))
 ])
 
 const todaysDate = new Date();

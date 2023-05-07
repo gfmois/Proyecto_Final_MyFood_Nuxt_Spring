@@ -1,7 +1,9 @@
 package com.pf_nxsp_myfood.backend.domain.employee.service;
 
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -128,4 +130,12 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .getId_restaurant()
                 .equals(id_restaurant);
     }
+
+    @Override
+    public List<EmployeeDto> getRestaurantEmployees(String id_restaurant) {
+        return eRepository.findAll().stream()
+                .filter(e -> e.getEmployee_restaurant().getId_restaurant().equals(id_restaurant))
+                .map(this::convertEntityToDTO).collect(Collectors.toList());
+    }
+
 }

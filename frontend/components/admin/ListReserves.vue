@@ -16,11 +16,6 @@ const cancelReserve = ref()
 const itemToUpdate = ref()
 
 restaurantReserves.reserves = restaurantReserves.reserves.map((e) => {
-    // e.product_ordered.map((i) => {
-    //     delete i.product.restaurant
-    //     return i
-    // })
-
     e.id_restaurant = user.value.id_restaurant
     return e
 })
@@ -66,8 +61,12 @@ watch(itemToUpdate, async (v, pv) => {
 
 <template>
     <div class="flex items-center justify-center p-2 w-full h-full">
-        <ListItems :idObj="restaurantReserves.reserves[0].id_restaurant" :object="restaurantReserves.reserves"
-            keyBanned="product_ordered" keyPreffered="Productos" :hasActionButtons="true"
+        <ListItems
+            :idObj="restaurantReserves.reserves[0].id_restaurant"
+            :object="restaurantReserves.reserves"
+            keyBanned="product_ordered"
+            keyPreffered="Productos"
+            :hasActionButtons="true"
             @cancel="$e => cancelReserve = $e[0]" :toSee="['status', 'diners', 'types', 'date_reserve']"
             @update="$e => itemToUpdate = $e" />
     </div>

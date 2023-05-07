@@ -1,5 +1,7 @@
 package com.pf_nxsp_myfood.backend.domain.employee.service;
 
+import java.util.List;
+
 import com.pf_nxsp_myfood.backend.domain.employee.dto.EmployeeDto;
 import com.pf_nxsp_myfood.backend.domain.payload.request.auth.EmployeeSignUpRequest;
 import com.pf_nxsp_myfood.backend.domain.payload.request.auth.LoginRequest;
@@ -16,4 +18,5 @@ public interface EmployeeService {
     EmployeeDto getEmployeeInfo(String email);
 
     Boolean isEmployee(String id_restaurant, String id_employee);
+    List<EmployeeDto> getRestaurantEmployees(String id_restaurant);
 }
