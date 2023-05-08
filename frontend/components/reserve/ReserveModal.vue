@@ -92,7 +92,7 @@
                 <div class="bg-neutral-300 flex items-center justify-end p-1">
                     <Icon name="ci:close-big" size="1.5rem" class="cursor-pointer" @click="$emit('isVisible', false)" />
                 </div>
-                <!-- FIXME: When Closed the modal still in last step -->
+                
                 <FormStepper :steps="formSteps" @closeModal="$e => resetFormSteps()" />
             </div>
         </div>

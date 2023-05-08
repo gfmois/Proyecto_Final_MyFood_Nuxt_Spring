@@ -1,9 +1,9 @@
 <script setup>
 import { useGetNRestaurants, useGetRestaurantsInfo } from '~~/composables/restaurants/useRestaurants';
 
-definePageMeta({
-    middleware: 'is-admin-middleware'
-})
+// definePageMeta({
+//     middleware: 'is-admin-middleware'
+// })
 
 const nInfo = await useGetNRestaurants();
 const selectInfo = await useGetRestaurantsInfo();

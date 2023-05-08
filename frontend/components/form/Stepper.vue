@@ -166,7 +166,7 @@ export default {
                         <div
                             class="p-4 1/3 w-full flex items-center text-black uppercase font-bold justify-center text-3xl">
                             {{ step.title }}</div>
-                        <div class="rounded-lg w-full h-full flex items-center justify-center p-4 flex-col">
+                        <div class="rounded-lg w-full h-full flex items-center justify-center p-4 xs:flex-col xl:flex-row xl:gap-5">
                             <div v-for="input in step.fields" v-if="step.title != 'Confirmación'">
                                 <div v-if="input.type != 'select'">
                                     <div v-if="input.type != 'date'">

@@ -6,7 +6,8 @@ CREATE TABLE restaurants (
     `capacity` INTEGER,
     `category` VARCHAR(60),
     `lat` VARCHAR(255),
-    `long` VARCHAR(255)
+    `long` VARCHAR(255),
+    `slug` VARCHAR(255)
 );
 
 CREATE TABLE `reserves` (

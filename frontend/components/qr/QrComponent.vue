@@ -1,7 +1,7 @@
 <template>
     <div>
       <LayoutLoading v-if="isLoading" />
-      <canvas v-if="!isLoading" ref="canvas"></canvas>
+      <canvas v-if="!isLoading" ref="canvas" class="w-10 h-10"></canvas>
     </div>
   </template>
   
