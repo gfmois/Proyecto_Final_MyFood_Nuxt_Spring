@@ -113,7 +113,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <table class="min-w-full divide-y divide-gray-200">
+  <div class="jrs-table-scroller">
+  <table class="divide-y divide-gray-200 jrs-table">
     <thead class="bg-gray-50 text-center">
       <tr>
         <th scope="col" class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-center"
@@ -146,6 +147,7 @@ onMounted(() => {
       </tr>
     </tbody>
   </table>
+  </div>
 
   <div v-if="isBannedModal" class="absolute w-full h-full bg-black/40 left-0 top-0 p-4 flex items-center justify-center">
     <div class="bg-gray-800 p-4 w-2/3 h-2/3 rounded-lg shadow-2xl">
@@ -204,3 +206,12 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+  .jrs-table-scroller {
+    background-color: red;
+    width: 100%;
+    overflow-x: scroll;
+    box-sizing: border-box;
+  }
+</style>

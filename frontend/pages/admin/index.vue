@@ -14,7 +14,7 @@
         </div>
 
         <div class="flex gap-0 w-2/6 h-full items-center justify-around">
-            <div class="p-4 flex-1 w-full h-full flex justify-end items-center">
+            <div class="p-4 h-full flex justify-end items-center">
                 <div class="flex items-center justify-center rounded-full w-fit h-fit p-1 border-2 border-gray-200">
                     <Icon name="material-symbols:notifications-rounded" size="1.5rem" class="text-white" />
                 </div>

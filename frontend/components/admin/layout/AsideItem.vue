@@ -8,12 +8,16 @@ const { icon, redirect, text } = defineProps({
 </script>
 
 <template>
-    <div class="hover:bg-[#27333f] p-2 flex items-center justify-start gap-2 text-white rounded-lg cursor-pointer" @click="() => $router.replace(redirect)">
-        <Icon size="1.25rem" :name="icon" class="text-white" /> {{ text }}
+    <div class="jrs-aside-item gap-2 p-2 hover:bg-[#27333f] flex items-center justify-start text-white rounded-lg cursor-pointer" @click="() => $router.replace(redirect)">
+        <Icon size="20px" :name="icon" class="text-white" />
+        <p>{{ text }}</p>
     </div>
 </template>
 
 <style>
+.jrs-aside-item {
+    width: 150px;
+}
 .isActive {
     background: #394552;
 }
