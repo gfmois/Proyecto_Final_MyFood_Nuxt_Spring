@@ -11,6 +11,7 @@ import javax.persistence.NamedEntityGraph;
 import javax.persistence.Table;
 
 import com.pf_nxsp_myfood.backend.domain.clients.entity.ClientEntity;
+import com.pf_nxsp_myfood.backend.domain.common.constants.ReservesStatusTypes;
 import com.pf_nxsp_myfood.backend.domain.common.constants.ReservesTypes;
 import com.pf_nxsp_myfood.backend.domain.restaurants.entity.RestaurantEntity;
 
@@ -42,7 +43,7 @@ public class ReserveEntity {
     private Integer diners;
 
     @Column(name = "status")
-    private String status;
+    private ReservesStatusTypes status;
 
     @ManyToOne
     @JoinColumn(name = "id_restaurant", nullable = false)
@@ -53,7 +54,7 @@ public class ReserveEntity {
     private ClientEntity client_reserves;
 
     @Builder
-    public ReserveEntity(String id_reserve, Date date_reserve, ReservesTypes types, Integer diners, String status, RestaurantEntity restaurant, ClientEntity client, String name) {
+    public ReserveEntity(String id_reserve, Date date_reserve, ReservesTypes types, Integer diners, ReservesStatusTypes status, RestaurantEntity restaurant, ClientEntity client, String name) {
         this.id_reserve = id_reserve;
         this.date_reserve = date_reserve;
         this.status = status;

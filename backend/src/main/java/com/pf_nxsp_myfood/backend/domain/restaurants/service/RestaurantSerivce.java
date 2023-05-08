@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface RestaurantSerivce {
+    RestaurantDto getRestaurantByEmployee(String idEmployee);
     List<RestaurantDto> getRestaurants();
     List<RestaurantDto> getRestaurantsByCity(String city);
     Map<String, Object> getRestaurantById(String id);

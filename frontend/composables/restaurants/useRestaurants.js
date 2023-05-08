@@ -23,6 +23,17 @@ export const useGetRestaurantsById = async (id) => {
   return restaurants
 }
 
+export const useGetRestaurantByEmployee = async () => {
+  const restaurant = ref({})
+  try {
+    const data = await RestaurantService.getRestaurantByEmployee()
+    restaurant.value = data
+  } catch (error) {
+    console.log(error)
+  }
+  return restaurant
+}
+
 export const useGetRestaurantsInfo = async () => {
   const restaurants = ref([])
   try {

@@ -3,7 +3,7 @@ import secret from "../secret";
 export default {
     async getProfile() {
         const token = useCookie('token_client')
-    
+
         try {
             const response = await fetch(`${secret.DEFAULT_URL}/client/profile`, {
                 headers: {
@@ -18,10 +18,51 @@ export default {
         }
     },
     async updateProfile (newProfile) {
+        const json = JSON.stringify(newProfile)
+        const token = useCookie('token_client')
+
         try {
             const response = await fetch(`${secret.DEFAULT_URL}/client/profile`, {
                 method: 'PUT',
-                body: JSON.parse(newProfile)
+                headers: {
+                    'Authorization': `Bearer ${token.value}`,
+                    'Content-Type': 'application/json'
+                },
+                body: json
+            })
+
+            return await response.json()
+        } catch (error) {
+            console.log(error);
+            return null
+        }
+    },
+    async getClientReserves() {
+        try {
+            const response = await fetch(`${secret.DEFAULT_URL}/client/reserves`, {
+                headers: {
+                    'Authorization': `Bearer ${useCookie('token_client').value}`,
+                    'Content-Type': 'application/json'
+                },
+                method: 'GET'
+            })
+
+            return await response.json()
+        } catch (error) {
+            console.log(error);
+            return null
+        }
+    },
+    async updateReserve(reserve) {
+        const json = JSON.stringify(reserve)
+        try {
+            const response = await fetch(`${secret.DEFAULT_URL}/client/reserve`, {
+                headers: {
+                    'Authorization': `Bearer ${useCookie('token_client').value}`,
+                    'Content-Type': 'application/json'
+                },
+                method: 'PUT',
+                body: json
             })
 
             return await response.json()

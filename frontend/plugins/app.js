@@ -9,6 +9,7 @@ export default function ({ app }) {
     async function initializeUser() {
         if (useCookie('token_admin').value) {
             actChangeUser((await useGetEmployee()).value)
+            useRouter().push('/admin')
             return
         }
 

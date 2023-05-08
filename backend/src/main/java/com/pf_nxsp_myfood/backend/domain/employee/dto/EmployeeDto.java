@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -51,6 +52,11 @@ public class EmployeeDto extends BaseUtils {
     @NotNull
     @NotBlank
     private EmployeesTypes type;
+
+    @NotBlank
+    @NotNull
+    @NotEmpty
+    private String id_restaurant;
 
     @Getter
     @Setter

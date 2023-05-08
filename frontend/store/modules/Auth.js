@@ -21,6 +21,10 @@ export const useAuth = () => {
         user.value = userInfo
     }
 
+    const mutChangeIsAdmin = (value) => {
+        isAdmin.value = value
+    }
+
     // Actions
     const actCheckIsAdmin = () => {
         if (clientCookie.value) {
@@ -47,6 +51,10 @@ export const useAuth = () => {
         mutChangeHasUser(payload)
     }
 
+    const actChangeIsAdmin = (payload) => {
+        mutChangeIsAdmin(payload)
+    }
+
     const actChangeUser = (user) => {
         mutChangeUser(user)
     }
@@ -58,9 +66,11 @@ export const useAuth = () => {
         mutChangeHasUser,
         mutCheckIsAdmin,
         mutChangeUser,
+        mutChangeIsAdmin,
         actChangeHasUser,
         actCheckHasUser,
         actCheckIsAdmin,
-        actChangeUser
+        actChangeUser,
+        actChangeIsAdmin
     }
 }

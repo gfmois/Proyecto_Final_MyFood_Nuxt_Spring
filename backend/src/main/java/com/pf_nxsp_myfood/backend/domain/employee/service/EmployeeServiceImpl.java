@@ -1,8 +1,12 @@
 package com.pf_nxsp_myfood.backend.domain.employee.service;
 
 import java.util.Base64;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +47,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .avatar(entity.getAvatar())
                 .password(entity.getPassword())
                 .type(entity.getType())
+                .id_restaurant(entity.getEmployee_restaurant().getId_restaurant())
                 .build();
     }
 
@@ -59,7 +64,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     // Creates new employee with the type (ADMIN, WAITER, MANAGER).
     @Override
     public JWTResponse registration(EmployeeSignUpRequest data) {
-        eRepository.findByNameOrEmail(data.getName(), data.getEmail())
+        eRepository.findByEmail(data.getEmail())
                 .stream()
                 .findAny()
                 .ifPresent(entity -> {
@@ -89,8 +94,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional(readOnly = true)
     public JWTResponse login(LoginRequest credentials) {
-        System.out.println(credentials.toString());
-
         EmployeeEntity eEntity = eRepository.findByEmail(credentials.getEmail())
                 .filter(employee -> pEncoder.matches(credentials.getPassword(), employee.getPassword()))
                 .orElseThrow(() -> new AppException(Error.LOGIN_INFO_INVALID));
@@ -121,4 +124,31 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         return null;
     }
+
+    @Override
+    public Boolean isEmployee(String id_restaurant, String id_employee) {
+        return eRepository.findById(id_employee).get()
+                .getEmployee_restaurant()
+                .getId_restaurant()
+                .equals(id_restaurant);
+    }
+
+    @Override
+    public List<EmployeeDto> getRestaurantEmployees(String id_restaurant) {
+        return eRepository.findAll().stream()
+                .filter(e -> e.getEmployee_restaurant().getId_restaurant().equals(id_restaurant))
+                .map(this::convertEntityToDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public ResponseEntity<?> deleteEmployee(String id_employee) {
+        EmployeeEntity employee = eRepository.findById(id_employee).get();
+        if (employee != null) {
+            eRepository.delete(employee);
+            return ResponseEntity.ok().body(Map.of("status", 200, "message", String.format("Employe #%s deleted", employee.getId_employee())));
+        }
+
+        return ResponseEntity.badRequest().body(Map.of("status", 400, "message", "Error trying to delete employee"));
+    }
+
 }

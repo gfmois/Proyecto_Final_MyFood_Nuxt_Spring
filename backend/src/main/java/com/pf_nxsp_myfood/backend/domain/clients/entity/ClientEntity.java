@@ -26,7 +26,6 @@ import javax.persistence.*;
 @Table(
     name = "clients",
     uniqueConstraints = {
-            @UniqueConstraint(columnNames = "name"),
             @UniqueConstraint(columnNames = "email")
 })
 @NamedEntityGraph(name = "fetch-clients")

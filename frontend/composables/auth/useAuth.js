@@ -4,7 +4,7 @@ import { useAuth } from "~~/store";
 const clientCookie = useCookie('token_client')
 const adminCookie = useCookie('token_admin')
 
-const { actChangeHasUser } = useAuth()
+const { actChangeHasUser, actChangeIsAdmin } = useAuth()
 
 export const useLogin = async (credentials) => {
     const loginData = ref({})
@@ -14,10 +14,12 @@ export const useLogin = async (credentials) => {
         loginData.value = data
 
         if (data.status != 500) {
+            console.log(data);
             if (data.user_type == "NONE") {
                 clientCookie.value = data.token
             } else {
                 adminCookie.value = data.token
+                actChangeIsAdmin(data.user_type != 'NONE')
             }
 
             actChangeHasUser(true)

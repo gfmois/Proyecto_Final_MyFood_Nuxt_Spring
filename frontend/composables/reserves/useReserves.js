@@ -12,6 +12,30 @@ export const useGetBannedDays = async (restaurantInfo) => {
     return bannedDays
 }
 
+export const useGetRestaurantReserves = async () => {
+    const reserves = ref([])
+    try {
+        const data = await ReserveService.getRestaurantReserves()
+        reserves.value = data
+    } catch (error) {
+        console.log(error);
+    }
+
+    return reserves
+}
+
+export const useUpdateReserve = async (reserve) => {
+    const reserveUpdated = ref([])
+    try {
+        const data = await ReserveService.updateReserve(reserve)
+        reserveUpdated.value = data
+    } catch (error) {
+        console.log(error);
+    }
+
+    return reserveUpdated
+}
+
 export const useCreateReserve = async (reserveInfo) => {
     const createResponse = ref({})
     try {

@@ -22,6 +22,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 // import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,6 +47,7 @@ import com.pf_nxsp_myfood.backend.domain.products.service.ProductService;
 import com.pf_nxsp_myfood.backend.domain.restaurants.dto.RestaurantDto;
 import com.pf_nxsp_myfood.backend.domain.restaurants.service.RestaurantSerivce;
 import com.pf_nxsp_myfood.backend.plugins.IdGenerator;
+import com.pf_nxsp_myfood.backend.security.AuthClientDetails;
 
 @RestController
 @RequestMapping("/restaurants")
@@ -150,6 +152,16 @@ public class RestaurantController {
         rSize.put("orders", oService.getOrders().size());
 
         return rSize;
+    }
+
+    @GetMapping("/employee")
+    public ResponseEntity<?> getRestaurantByEmployee(@AuthenticationPrincipal AuthClientDetails aDetails) {
+        RestaurantDto result = rService.getRestaurantByEmployee(aDetails.getId_employee());
+        if (result != null) {
+            return ResponseEntity.ok().body(result);
+        }
+
+        return ResponseEntity.badRequest().body("No Employee find");
     }
 
     @GetMapping(value = "/{id_restaurant}/image", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)

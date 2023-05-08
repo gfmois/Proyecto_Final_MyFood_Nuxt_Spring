@@ -10,15 +10,26 @@ export default {
                 phone: 'Teléfono',
                 direction: 'Dirección',
                 reserve: 'Empezar Reserva',
+                save: 'Guardar',
                 not_found: 'No se encontró',
                 make_order: 'Realizar un Pedido',
                 make_event: 'Realizar un Evento',
                 close: 'Cerrar',
+                reserves: 'Reservas',
+                orders: 'Pedidos',
                 price: 'Precio',
                 open_cart: 'Ir al carrito',
                 auth: {
                     login: 'Iniciar Sesión',
                     register: 'Registrarse'
+                },
+                inputs: {
+                    name: 'Nombre',
+                    phone: 'Teléfono',
+                    password: 'Contraseña',
+                    repassword: 'Repita la Contraseña',
+                    email: "Correo Electrónico",
+                    info: "Información de Contacto"
                 }
             },
             en: {
@@ -28,7 +39,10 @@ export default {
                 phone: 'Phone',
                 direction: 'Direction',
                 reserve: 'Start Reserve',
+                save: 'Save',
                 not_found: 'Not found',
+                reserves: 'Reserves',
+                orders: 'Orders',
                 make_order: 'Make an Order',
                 make_event: 'Make an Event',
                 close: 'Close',
@@ -37,6 +51,14 @@ export default {
                 auth: {
                     login: 'Sing In',
                     register: 'Sign Up'
+                },
+                inputs: {
+                    name: 'Name',
+                    phone: 'Phone',
+                    password: 'Password',
+                    repassword: 'Repeat Password',
+                    email: "Email",
+                    info: "Contact Information"
                 }
             }
         }

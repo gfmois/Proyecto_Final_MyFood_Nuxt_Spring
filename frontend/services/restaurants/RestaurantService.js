@@ -21,6 +21,20 @@ export default {
     }
   },
 
+  async getRestaurantByEmployee() {
+    try {
+      const response = await fetch(`${s.DEFAULT_URL}/restaurants/employee`, {
+        headers: {
+          'Authorization': `Bearer ${useCookie('token_admin').value}`
+        }
+      })
+      return await response.json()
+    } catch (error) {
+      console.log(error)
+      return null
+    }
+  },
+
   async getRestaurantById(id) {
     try {
       const response = await fetch(`${s.DEFAULT_URL}/restaurants/${id}`)

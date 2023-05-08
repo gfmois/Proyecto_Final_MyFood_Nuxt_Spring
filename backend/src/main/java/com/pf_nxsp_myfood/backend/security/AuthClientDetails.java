@@ -22,14 +22,13 @@ public class AuthClientDetails extends BaseUtils implements UserDetails {
     private final String email;
     private final EmployeesTypes type;
 
-    // FIXME: Type is always null
     public AuthClientDetails(String id_employee, String id_client, String email, EmployeesTypes type) {
         if (type == EmployeesTypes.NONE || type == null) {
             this.id_client = id_client;
         } else {
             this.id_employee = id_employee;
         }
-        
+
         this.email = email;
         this.type = type;
     }
@@ -37,11 +36,11 @@ public class AuthClientDetails extends BaseUtils implements UserDetails {
     public AuthClientDetails(String id_employee, String email, EmployeesTypes type) {
         this(id_employee, null, email, type);
     }
-    
+
     public AuthClientDetails(String id_client, String email) {
         this(null, id_client, email, EmployeesTypes.NONE);
     }
-    
+
     @Builder
     public static AuthClientDetails build(String id_employee, String id_client, String email, EmployeesTypes type) {
         return new AuthClientDetails(id_employee, id_client, email, type);
