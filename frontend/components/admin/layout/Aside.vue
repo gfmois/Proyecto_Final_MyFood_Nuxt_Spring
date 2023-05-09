@@ -27,13 +27,6 @@ const logout = () => {
 
 <template>
     <div class="bg-gray-800 h-screen w-1/6 absolute left-0 p-2 flex flex-col gap-2 jrs-side-panel">
-        <div class="jrs-close-button">
-            <div class="jrs-button-container">
-                <label for="close_asside">X</label>
-                <input type="checkbox" id="close_asside"/>
-            </div>
-        </div>
-    
         <!-- Nombre Empresa -->
         <div class="p-2 font-medium border-b text-white flex items-center gap-3">
             <img :src="image" alt="" class="w-16 h-16">
@@ -52,41 +45,3 @@ const logout = () => {
         </div>
     </div>
 </template>
-
-<style scoped>
-.jrs-close-button {
-    width:100%;
-    height: 100vh;
-    position: absolute;
-    background-color:transparent;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-}
-.jrs-close-button .jrs-button-container{
-    position: absolute;
-    right:-5px;
-    z-index: 2;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    background-color: blue;
-    border-radius: 50%;
-}
-
-.jrs-close-button .jrs-button-container input {
-    display: none;
-}
-
-.jrs-side-panel {
-    min-width: 150px;
-    
-}
-
-@media (max-width: 960px) {
-
-}
-</style>

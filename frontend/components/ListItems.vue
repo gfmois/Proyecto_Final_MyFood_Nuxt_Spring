@@ -114,7 +114,7 @@ onMounted(() => {
 
 <template>
   <div class="jrs-table-scroller">
-  <table class="divide-y divide-gray-200 jrs-table">
+  <table class="divide-y divide-gray-200 jrs-table w-full">
     <thead class="bg-gray-50 text-center">
       <tr>
         <th scope="col" class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-center"
@@ -135,7 +135,7 @@ onMounted(() => {
           <p class="text-blue-500 cursor-pointer" v-if="keys.value[index] == keyBanned"
             @click="() => { isBannedModal = true; selectedItems = item; load() }">{{ keyPreffered }}</p>
         </td>
-        <th scope="col" class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900"
+        <td scope="col" class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900"
           v-if="hasActionButtons">
           <div class="flex gap-x-3 items-center justify-center w-full h-full">
             <p class="cursor-pointer w-fit h-fit text-blue-500"
@@ -143,7 +143,7 @@ onMounted(() => {
             <p v-if="onlyAdmin" class="cursor-pointer w-fit h-fit text-red-500" @click="() => $emit('cancel', copy)">{{ actionsKeys[1] }}
             </p>
           </div>
-        </th>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -189,11 +189,11 @@ onMounted(() => {
               </label>
               <input v-if="!keys.value[index].includes('date')"
                 :class="`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline disabled:bg-white/70 ${checkIfVisible(index) ? 'cursor-not-allowed' : 'cursor-text'}`"
-                :id="v" type="text" :placeholder="copySelected[index]" v-model="copySelected[index]"
+                :id="v" type="text" :placeholder="selectedItems[index]" v-model="selectedItems[index]"
                 :disabled="checkIfVisible(index)">
               <input v-if="keys.value[index].includes('date')"
                 :class="`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline disabled:bg-white/70 ${checkIfVisible(index) ? 'cursor-not-allowed' : 'cursor-text'}`"
-                :id="v" type="text" :placeholder="copySelected[index]" v-model="copySelected[index]"
+                :id="v" type="text" :placeholder="selectedItems[index]" v-model="selectedItems[index]"
                 :disabled="checkIfVisible(index)" ref="flatpickrInput">
             </div>
           </div>
@@ -209,7 +209,6 @@ onMounted(() => {
 
 <style scoped>
   .jrs-table-scroller {
-    background-color: red;
     width: 100%;
     overflow-x: scroll;
     box-sizing: border-box;

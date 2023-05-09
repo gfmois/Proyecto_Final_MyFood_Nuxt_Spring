@@ -52,5 +52,24 @@ export default {
             console.log(error);
             return null
         }
+    },
+    async updateEmployee(employee) {
+        const token = useCookie('token_admin').value
+
+        try {
+            const res = await fetch(`${secret.DEFAULT_URL}/employees`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': "application/json"
+                },
+                body: JSON.stringify(employee)
+            })
+
+            return await res.json()
+        } catch (error) {
+            console.log(error)
+            return null
+        }
     }
 }

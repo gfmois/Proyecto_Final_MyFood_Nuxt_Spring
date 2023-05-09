@@ -15,8 +15,8 @@ import com.pf_nxsp_myfood.backend.domain.employee.dto.EmployeeDto;
 import com.pf_nxsp_myfood.backend.domain.employee.entity.EmployeeEntity;
 import com.pf_nxsp_myfood.backend.domain.employee.repository.EmployeeRepository;
 import com.pf_nxsp_myfood.backend.domain.payload.request.auth.EmployeeSignUpRequest;
+import com.pf_nxsp_myfood.backend.domain.payload.request.auth.EmployeeUpdateRequest;
 import com.pf_nxsp_myfood.backend.domain.payload.request.auth.LoginRequest;
-import com.pf_nxsp_myfood.backend.domain.payload.request.auth.UpdateRequest;
 import com.pf_nxsp_myfood.backend.domain.payload.response.auth.JWTResponse;
 import com.pf_nxsp_myfood.backend.domain.restaurants.entity.RestaurantEntity;
 import com.pf_nxsp_myfood.backend.exceptions.AppException;
@@ -110,9 +110,38 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDto update(UpdateRequest newData, AuthClientDetails clientDetails) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    public ResponseEntity<?> updateEmployee(EmployeeUpdateRequest newData) {
+        EmployeeEntity entity = eRepository.findById(newData.getId_employee()).get();
+
+
+        if (newData.getAvatar() != null) {
+            entity.setAvatar(newData.getAvatar());
+        } else {
+            entity.setAvatar(String.format("https://api.multiavatar.com/%s.png",
+            new String(Base64.getEncoder().encode(newData.getName().getBytes()))));
+        }
+
+        if (!newData.getName().isEmpty()) {
+            entity.setName(newData.getName());
+        }
+
+        if (newData.getType() != null) {
+            entity.setType(newData.getType());
+        }
+
+        if (!newData.getEmail().isEmpty()) {
+            entity.setEmail(newData.getEmail());
+        }
+
+        if (!newData.getPhone().isEmpty()) {
+            entity.setPhone(newData.getPhone());
+        }
+
+        if (eRepository.save(entity) != null) {
+            return ResponseEntity.ok().body(Map.of("status", 200, "employee", convertEntityToDTO(entity)));
+        }
+
+        return ResponseEntity.badRequest().body(Map.of("status", 400, "message", "Error while trying to update the employee"));
     }
 
     @Override

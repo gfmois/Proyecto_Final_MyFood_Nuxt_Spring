@@ -36,3 +36,15 @@ export const useDeleteEmployee = async (id_employee) => {
 
     return response
 }
+
+export const useUpdateEmployee = async (employee) => {
+    const response = ref({})
+    try {
+        const data = await EmployeeService.updateEmployee(employee)
+        response.value = data
+    } catch (e) {
+        console.log(e);
+    }
+
+    return response
+}
