@@ -1,5 +1,5 @@
 import secret from "../secret";
-import { useAuth } from "~~/store"; 
+import { useAuth } from "~~/store";
 
 
 export default {
@@ -15,7 +15,7 @@ export default {
             })
 
             const user = await response.json();
-            
+
             if (user.status != 500) {
                 actChangeUser(user)
             }
@@ -29,6 +29,8 @@ export default {
 
     async register(credentials) {
         const { actChangeUser } = useAuth()
+
+        console.log(credentials);
 
         try {
             const res = await fetch(`${secret.DEFAULT_URL}/auth/register`, {

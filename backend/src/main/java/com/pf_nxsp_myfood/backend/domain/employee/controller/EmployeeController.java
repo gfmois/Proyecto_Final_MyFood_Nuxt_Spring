@@ -18,6 +18,7 @@ import com.pf_nxsp_myfood.backend.domain.common.constants.EmployeesTypes;
 import com.pf_nxsp_myfood.backend.domain.employee.dto.EmployeeDto;
 import com.pf_nxsp_myfood.backend.domain.employee.service.EmployeeService;
 import com.pf_nxsp_myfood.backend.domain.payload.request.auth.EmployeeUpdateRequest;
+import com.pf_nxsp_myfood.backend.domain.payload.request.employee.DeleteEmployeeRequest;
 import com.pf_nxsp_myfood.backend.security.AuthClientDetails;
 
 import lombok.RequiredArgsConstructor;
@@ -57,7 +58,7 @@ public class EmployeeController {
 
     @DeleteMapping
     public ResponseEntity<?> deleteEmployee(@AuthenticationPrincipal AuthClientDetails aDetails,
-            @RequestBody Map<String, Object> body) {
+            @RequestBody DeleteEmployeeRequest body) {
         if (aDetails == null || aDetails.getId_employee() == null) {
             return ResponseEntity.badRequest().body(Map.of("status", 400, "message", "No ID Found"));
         }
@@ -67,7 +68,7 @@ public class EmployeeController {
         if (!admin.getType().equals(EmployeesTypes.ADMIN)) {
             return ResponseEntity.badRequest().body(Map.of("status", 400, "message", "Sin permisos suficientes"));
         } else {
-            return eService.deleteEmployee((String) body.get("id_employee"));
+            return eService.deleteEmployee(body.getId_employee());
         }
     }
 

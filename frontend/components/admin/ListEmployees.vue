@@ -7,6 +7,7 @@ const { user } = useAuth()
 const { employees } = (await useGetRestaurantEmployees(user.value.id_restaurant)).value
 
 const employeeToUpdate = ref({})
+const indexItem = ref()
 
 employees.map((e) => {
     delete e.id_restaurant;
@@ -14,15 +15,17 @@ employees.map((e) => {
 })
 
 const deleteUser = async (user) => {
-    // FIXME: User devuelve todos los usuarios de la tabla, mirar como envia el padre (este) al hijo la información
-    console.log(user);
-    const res = await useDeleteEmployee(user.id_employee)
+    const res = await useDeleteEmployee(user[indexItem.value].id_employee)
     if (res.value.status == 400) {
         useToast().error(res.value.message)
         return
     }
 
     useToast().success(res.value.message)
+    // FIXME: resEmployees doesn't update
+    employees = computed(() => employees.filter(
+        (e) => e.id_employee !== user[indexItem.value].id_employee
+    )).value;
     return
 }
 
@@ -44,15 +47,23 @@ watch(employeeToUpdate, async (v, pv) => {
     }
 
     useToast().success('Employee Updated')
-    employees[employees.findIndex((e) => e.id_employee == res.value.employee.id_employee)] = res.value.employee
+    let index = employees.findIndex((e) => e.id_employee == res.value.employee.id_employee)
+    employees[index] = res.value.employee
 })
 
 </script>
 
 <template>
     <div class="flex items-center justify-center p-2 w-full h-full flex-col gap-2">
-        <ListItems :object="employees" :onlyIsAdmin="true" :hasActionButtons="true"
-            :toSee="['name', 'email', 'phone', 'avatar', 'type']" :actionsKeys="['Editar', 'Eliminar']"
-            @cancel="$e => deleteUser($e)" @update="$e => employeeToUpdate = $e" />
+        <ListItems
+            :object="employees"
+            :onlyIsAdmin="true"
+            :hasActionButtons="true"
+            :toSee="['name', 'email', 'phone', 'avatar', 'type']"
+            :actionsKeys="['Editar', 'Eliminar']"
+            @indexCancel="$e => indexItem = $e"
+            @cancel="$e => deleteUser($e)"
+            @update="$e => employeeToUpdate = $e"
+            />
     </div>
 </template>

@@ -83,6 +83,7 @@ export default {
 
         const createItem = async () => {
             let res = undefined
+            objToCreate.value.id_restaurant = user.value.id_restaurant
             objModel.value.forEach((e, index) => {
                 objToCreate.value[keys[selected.value][index]] = e
             })
@@ -92,7 +93,6 @@ export default {
             }
 
             if (selected.value == 1) {
-                objToCreate.value.id_restaurant = user.value.id_restaurant
                 res = await useCreateProduct(objToCreate.value)
             }
 

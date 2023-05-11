@@ -37,9 +37,19 @@ export const useRegister = async (credentials) => {
     const loginData = ref({})
 
     try {
+        const user = {
+            email: credentials.email,
+            password: credentials.contraseña || credentials.password,
+            phone: credentials["teléfono"] || credentials.phone,
+            name: credentials.nombre || credentials.name
+        }
 
-        console.log(credentials);
-        const data = await AuthService.register({ email: credentials.email, password: credentials.contraseña, phone: credentials["teléfono"], name: credentials.nombre })
+        if (credentials.id_restaurant && credentials.type) {
+            user.id_restaurant = credentials.id_restaurant
+            user.type = credentials.type
+        }
+
+        const data = await AuthService.register(user)
         loginData.value = data
         clientCookie.value = data.token
         actChangeHasUser(true)

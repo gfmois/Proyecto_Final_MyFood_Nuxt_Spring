@@ -71,7 +71,8 @@ const pages = ref([
     defineAsyncComponent(() => import('~/components/admin/Dashboard.vue')),
     defineAsyncComponent(() => import('~/components/admin/ListOrders.vue')),
     defineAsyncComponent(() => import('~/components/admin/ListReserves.vue')),
-    defineAsyncComponent(() => import('~/components/admin/ListEmployees.vue'))
+    defineAsyncComponent(() => import('~/components/admin/ListEmployees.vue')),
+    defineAsyncComponent(() => import('~/components/admin/ListProducts.vue'))
 ])
 
 const todaysDate = new Date();

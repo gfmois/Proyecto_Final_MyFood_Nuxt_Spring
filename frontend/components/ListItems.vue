@@ -128,20 +128,19 @@ onMounted(() => {
       </tr>
     </thead>
     <tbody class="bg-white divide-y divide-gray-200 text-center">
-      <tr v-for="value in values.value">
-        <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900"
-          v-for="(item, index) in value">
+      <tr v-for="value, indexValue in values.value">
+        <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900" v-for="(item, index) in value">
           <p v-if="keys.value[index] != keyBanned && keys.value[index] != 'description'">{{ item }}</p>
           <p class="text-blue-500 cursor-pointer" v-if="keys.value[index] == keyBanned"
             @click="() => { isBannedModal = true; selectedItems = item; load() }">{{ keyPreffered }}</p>
         </td>
         <td scope="col" class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900"
-          v-if="hasActionButtons">
-          <div class="flex gap-x-3 items-center justify-center w-full h-full">
-            <p class="cursor-pointer w-fit h-fit text-blue-500"
-              @click="() => { openEditModal = true; selectedItems = value }">{{ actionsKeys[0] }}</p>
-            <p v-if="onlyAdmin" class="cursor-pointer w-fit h-fit text-red-500" @click="() => $emit('cancel', copy)">{{ actionsKeys[1] }}
-            </p>
+        v-if="hasActionButtons">
+        <div class="flex gap-x-3 items-center justify-center w-full h-full">
+          <p class="cursor-pointer w-fit h-fit text-blue-500"
+          @click="() => { openEditModal = true; selectedItems = value }">{{ actionsKeys[0] }}</p>
+          <p v-if="onlyAdmin" class="cursor-pointer w-fit h-fit text-red-500" @click="() => { $emit('indexCancel', indexValue); $emit('cancel', copy) }">{{ actionsKeys[1] }}
+          </p>
           </div>
         </td>
       </tr>

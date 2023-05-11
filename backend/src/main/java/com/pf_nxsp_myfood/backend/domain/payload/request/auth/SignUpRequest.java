@@ -8,8 +8,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.pf_nxsp_myfood.backend.domain.common.constants.EmployeesTypes;
+import com.pf_nxsp_myfood.backend.domain.common.utils.BaseUtils;
 
-public class SignUpRequest {
+public class SignUpRequest extends BaseUtils {
     @NotBlank
     @Size(max = 50)
     @Email

@@ -36,13 +36,14 @@ export default {
     async deleteEmployee(id_employee) {
         const token = useCookie('token_admin').value
 
-        console.log(id_employee);
+        console.log( JSON.stringify({ id_employee }));
 
         try {
             const res = await fetch(`${secret.DEFAULT_URL}/employees`, {
                 method: 'DELETE',
                 headers: {
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': "application/json"
                 },
                 body: JSON.stringify({ id_employee })
             })
