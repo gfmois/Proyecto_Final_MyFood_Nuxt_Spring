@@ -10,3 +10,25 @@ export const useCreateProduct = async (product) => {
 
     return response
 }
+
+export const useGetProductsByRestaurant = async (id_restaurant) => {
+    const res = ref([])
+    try {
+        res.value = await ProductService.getProductsByRestaurant(id_restaurant)
+    } catch (error) {
+        console.log(error);
+    }
+
+    return res;
+}
+
+export const useUpdateProduct = async (product) => {
+    const productUpdated = ref({})
+    try {
+        productUpdated.value = await ProductService.updateProduct(product)
+    } catch (error) {
+        console.log(error);
+    }
+
+    return productUpdated
+}

@@ -31,10 +31,7 @@ export default {
           }
         });
 
-
-        console.log(formData);
-
-        const response = await fetch('http://localhost:8080/api/products', {
+        const response = await fetch(`${s.DEFAULT_URL}/products`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${useCookie('token_admin').value}`
@@ -46,6 +43,50 @@ export default {
       } catch (error) {
         console.log(error);
         return { status: 400, message: "Error creating the product" }
+      }
+    },
+    async getProductsByRestaurant(id_restaurant) {
+      try {
+        const result = await fetch(`${s.DEFAULT_URL}/products/restaurant?id_restaurant=${id_restaurant}`, {
+          headers: {
+            Authorization: `Bearer ${useCookie('token_admin').value}`,
+            'Content-Type': "application/json"
+          }
+        })
+        return await result.json()
+      } catch (error) {
+        console.log(error);
+        return { status: 400, message: "Error getting the products" }
+      }
+    },
+    async updateProduct(product) {
+      console.log(product);
+      try {
+        const body = new FormData()
+        Object.keys(product).forEach((e) => {
+          if (product[e] instanceof File) {
+            body.append(e, product[e], product[e].name);
+          } else {
+            body.append(e, product[e]);
+          }
+        });
+
+
+        const response = await fetch(`${s.DEFAULT_URL}/products`, {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${useCookie('token_admin').value}`,
+          },
+          body
+        })
+
+        return await response.json()
+      } catch (error) {
+        console.log(error);
+        return {
+          status: 400,
+          message: "Error Updating the product"
+        }
       }
     }
 }

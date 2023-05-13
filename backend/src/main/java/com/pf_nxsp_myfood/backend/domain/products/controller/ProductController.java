@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +23,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.pf_nxsp_myfood.backend.domain.common.constants.EmployeesTypes;
 import com.pf_nxsp_myfood.backend.domain.common.utils.FileUpload;
+import com.pf_nxsp_myfood.backend.domain.employee.dto.EmployeeDto;
+import com.pf_nxsp_myfood.backend.domain.employee.service.EmployeeService;
 import com.pf_nxsp_myfood.backend.domain.payload.response.MessageResponse;
 import com.pf_nxsp_myfood.backend.domain.products.dto.ProductDto;
 import com.pf_nxsp_myfood.backend.domain.products.service.ProductService;
 import com.pf_nxsp_myfood.backend.plugins.IdGenerator;
+import com.pf_nxsp_myfood.backend.security.AuthClientDetails;
 
 @RestController
 @RequestMapping("/products")
@@ -32,6 +39,9 @@ import com.pf_nxsp_myfood.backend.plugins.IdGenerator;
 public class ProductController {
 	@Autowired
 	private ProductService pService;
+
+	@Autowired
+	private EmployeeService eService;
 
 	@Value("${file.upload-dir}")
 	private String uploadDir;
@@ -137,6 +147,16 @@ public class ProductController {
 			return new MessageResponse("Error trying to update the product", "400");
 		}
 	}
+
+	@GetMapping("/restaurant")
+	public ResponseEntity<?> getProductsByRestaurant(@AuthenticationPrincipal AuthClientDetails aDetails, @RequestParam String id_restaurant) {
+		if (aDetails.getId_employee() == null || aDetails == null) {
+			return ResponseEntity.badRequest().body(Map.of("status", 400, "message", "No ID Provided"));
+		}
+
+		return ResponseEntity.ok().body(Map.of("status", 200, "products", pService.getProductByRestaurantId(id_restaurant)));
+	}
+
 
 	@CacheEvict(value = "products", allEntries = true)
 	@DeleteMapping("/{id_product}")
