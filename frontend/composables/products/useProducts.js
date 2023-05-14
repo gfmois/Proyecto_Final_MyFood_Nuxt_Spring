@@ -32,3 +32,14 @@ export const useUpdateProduct = async (product) => {
 
     return productUpdated
 }
+
+export const useDeleteProduct = async (id_product) => {
+    const result = ref({})
+    try {
+        result.value  = await ProductService.deleteProduct(id_product)
+    } catch (error) {
+        console.log(error);
+    }
+
+    return result
+}

@@ -60,7 +60,6 @@ export default {
       }
     },
     async updateProduct(product) {
-      console.log(product);
       try {
         const body = new FormData()
         Object.keys(product).forEach((e) => {
@@ -87,6 +86,21 @@ export default {
           status: 400,
           message: "Error Updating the product"
         }
+      }
+    },
+    async deleteProduct(id_product) {
+      try {
+        const response = await fetch(`${s.DEFAULT_URL}/products/${id_product}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${useCookie('token_admin').value}`
+          }
+        })
+
+        return await response.json()
+      } catch (error) {
+        console.log(error);
+        return null
       }
     }
 }

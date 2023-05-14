@@ -68,5 +68,20 @@ export default {
             console.log(error);
             return null
         }
+    },
+    async getReserveById(id_reserve) {
+        try {
+            const res = await fetch(`${secret.DEFAULT_URL}/reserves?id_reserve=${id_reserve}`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${useCookie('token_client').value}`
+                }
+            })
+
+            return await res.json()
+        } catch (error) {
+            console.log(error);
+            return null
+        }
     }
 }

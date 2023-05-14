@@ -2,12 +2,12 @@ package com.pf_nxsp_myfood.backend.domain.products.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -109,7 +109,7 @@ public class ProductController {
 	@PutMapping(consumes = { "multipart/form-data" })
 	public MessageResponse updateProduct(
 			@RequestParam("id_product") String id_product,
-			@RequestParam("file") MultipartFile file,
+			@RequestParam("file") Optional<MultipartFile> file,
 			@RequestParam("name") String name,
 			@RequestParam("desciption") String desciption,
 			@RequestParam("price") String price) {
@@ -118,17 +118,23 @@ public class ProductController {
 			ProductDto pDto = new ProductDto();
 
 			// Saves the new image and gets the full path of the file to update it into DB
-			Map<String, Object> filePathObj = fileUpload.saveFile("products", file);
+			if (file.isPresent()) {
+				Map<String, Object> filePathObj = fileUpload.saveFile("products", file.get());
 
-			// Checks for an error
-			if ((Integer) filePathObj.get("statusCode") == 400) {
-				return new MessageResponse("Error trying to uploading the image",
-						String.valueOf((Integer) filePathObj.get("status")));
-			}
+				// Checks for an error
+				if ((Integer) filePathObj.get("statusCode") == 400) {
+					return new MessageResponse("Error trying to uploading the image",
+							String.valueOf((Integer) filePathObj.get("status")));
+				}
 
-			// Checks if price is greater than 0
-			if (Integer.valueOf(price) <= 0) {
-				return new MessageResponse("Price myst be grater than 0", "400");
+				// Checks if price is greater than 0
+				if (Integer.valueOf(price) <= 0) {
+					return new MessageResponse("Price myst be grater than 0", "400");
+				}
+
+				pDto.setImage((String) filePathObj.get("path").toString());
+			} else {
+				pDto.setImage(pService.getProductById(id_product).getImage());
 			}
 
 			// Transform FormData to ProductDto
@@ -136,7 +142,6 @@ public class ProductController {
 			pDto.setName(name);
 			pDto.setSlug(name.toLowerCase().replaceAll(" ", "_"));
 			pDto.setDescription(desciption);
-			pDto.setImage((String) filePathObj.get("path").toString());
 			pDto.setPrice(price);
 
 			// Updates Product
@@ -159,8 +164,22 @@ public class ProductController {
 
 
 	@CacheEvict(value = "products", allEntries = true)
+
 	@DeleteMapping("/{id_product}")
-	public MessageResponse deleteProduct(@PathVariable String id_product) {
-		return pService.deleteProduct(id_product);
+	public ResponseEntity<?> deleteProduct(@AuthenticationPrincipal AuthClientDetails aDetails, @PathVariable String id_product) {
+		if (aDetails == null || aDetails.getId_employee() == null) {
+			return ResponseEntity.badRequest().body(Map.of("status", 400, "message", "No ID Provided"));
+		}
+
+		EmployeeDto employee = eService.currentUser(aDetails);
+
+		if (employee.getType() == EmployeesTypes.ADMIN) {
+			return ResponseEntity.ok().body(Map.of("status", 200, "message", pService.deleteProduct(id_product)));
+		}
+
+		return ResponseEntity.badRequest().body(Map.of("status", 400, "message", "Error while trying to delete"));
 	}
 }
+
+
+

@@ -1,7 +1,6 @@
 <script setup>
 import { useToast } from 'vue-toast-notification';
-import { useGetRestaurantByEmployee } from '~/composables/restaurants/useRestaurants';
-import { useGetProductsByRestaurant, useUpdateProduct } from "~/composables/products/useProducts"
+import { useGetProductsByRestaurant, useUpdateProduct, useDeleteProduct } from "~/composables/products/useProducts"
 import { useAuth } from "~/store"
 
 const { user } = useAuth()
@@ -17,12 +16,19 @@ restaurant.value.products.map((e) => {
     delete e.restaurant
 })
 
-const deleteProduct = (product) => {
-    console.log(product[indexItem.value]);
+const deleteProduct = async (product) => {
+    const res = await useDeleteProduct(product[indexItem.value].id_product)
+    if (res.value.status == 200) {
+        useToast().success(res.value.message.message)
+        return
+    }
+
+    useToast().error(res.value.message.message)
+    const filteredProducts = restaurant.value.products.filter((e) => e.id_product != product[indexItem.value].id_product)
+    restaurant.value = computed(() => ({ ...restaurant.value, products: filteredProducts })).value
 }
 
 const updateProduct = async (product) => {
-    console.log(product);
     const objToUpdate = {
         id_product: product[0],
         name: product[1],
@@ -33,10 +39,13 @@ const updateProduct = async (product) => {
         id_restaurant: user.value.id_restaurant
     }
 
-    console.log(objToUpdate);
-
     const res = await useUpdateProduct(objToUpdate)
-    console.log(res.value);
+    if (res.value.status == 200) {
+        useToast().success(res.value.message)
+        return
+    }
+
+    useToast().error(res.value.message)
 }
 
 </script>
@@ -44,11 +53,12 @@ const updateProduct = async (product) => {
 <template>
     <div class="flex items-center justify-center p-2 w-full h-full">
         <ListItems
+            :key="restaurant.products"
             :object="restaurant.products"
             :hasActionButtons="true"
             :onlyIsAdmin="true"
             :toSee="['image', 'price', 'name']"
-            :actionsKeys="['Editar', 'Eliminar']"
+            :actionsKeys="user.type == 'ADMIN' ? ['Editar', 'Eliminar'] : ['Ver', '']"
             @indexCancel="$e => indexItem = $e"
             @cancel="$e => deleteProduct($e)"
             @update="$e => updateProduct($e)"

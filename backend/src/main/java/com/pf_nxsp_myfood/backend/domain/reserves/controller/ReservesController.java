@@ -23,6 +23,8 @@ import com.pf_nxsp_myfood.backend.domain.payload.request.reserve.ReserveRequest;
 import com.pf_nxsp_myfood.backend.domain.payload.request.reserve.UpdateReserveRequest;
 import com.pf_nxsp_myfood.backend.domain.reserves.dto.ReserveDto;
 import com.pf_nxsp_myfood.backend.domain.reserves.service.ReserveService;
+import com.pf_nxsp_myfood.backend.domain.restaurants.dto.RestaurantDto;
+import com.pf_nxsp_myfood.backend.domain.restaurants.service.RestaurantSerivce;
 import com.pf_nxsp_myfood.backend.plugins.IdGenerator;
 import com.pf_nxsp_myfood.backend.security.AuthClientDetails;
 
@@ -35,6 +37,9 @@ public class ReservesController {
 
     @Autowired
     private EmployeeService eService;
+
+    @Autowired
+    private RestaurantSerivce resService;
 
     @GetMapping("/available")
     public ResponseEntity<?> getAvailableRestaurants(@RequestParam String diners, @RequestParam String types,
@@ -88,9 +93,6 @@ public class ReservesController {
     @PutMapping
     public ResponseEntity<?> updateReserve(@AuthenticationPrincipal AuthClientDetails aDetails,
             @RequestBody UpdateReserveRequest request) {
-
-                System.out.println(request.toString());
-
         if (aDetails == null || aDetails.getId_employee() == null) {
             Map<String, Object> err = new HashMap<String, Object>();
 
@@ -115,5 +117,34 @@ public class ReservesController {
         }
 
         return ResponseEntity.badRequest().body(Map.of("Status", 200, "message", "Error trying to update the Reserve"));
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getReserve(@AuthenticationPrincipal AuthClientDetails aDetails, @RequestParam String id_reserve) {
+        if (aDetails == null || aDetails.getId_client() == null) {
+            Map<String, Object> err = new HashMap<String, Object>();
+
+            err.put("status", 400);
+            err.put("message", "No ID Found");
+
+            return ResponseEntity.badRequest().body(err);
+        }
+
+        ReserveDto reserve = rService.getReserve(id_reserve);
+
+        if (reserve.getId_client().equals(aDetails.getId_client())) {
+            Map<String, Object> result = new HashMap<String, Object>();
+            RestaurantDto restaurant = (RestaurantDto) resService.getRestaurantById(reserve.getId_restaurant()).get("restaurant");
+
+            result.put("diners", reserve.getDiners());
+            result.put("name", reserve.getName());
+            result.put("type", reserve.getTypes());
+            result.put("restaurant", restaurant.getName());
+            result.put("date", reserve.getDate_reserve());
+
+            return ResponseEntity.ok().body(Map.of("status", 200, "reserve", result));
+        }
+
+        return ResponseEntity.badRequest().body(Map.of("status", 400, "message", "Error while trying to get the reserve"));
     }
 }

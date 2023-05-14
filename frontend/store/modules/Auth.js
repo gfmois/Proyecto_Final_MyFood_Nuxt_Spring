@@ -2,7 +2,6 @@ import AuthService from "~~/services/auth/AuthService"
 
 export const useAuth = () => {
     const clientCookie = useCookie('token_client')
-    const adminCookie = useCookie('token_admin')
 
     // State
     const user = useState('user', () => {})

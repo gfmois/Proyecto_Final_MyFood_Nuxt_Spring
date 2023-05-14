@@ -46,3 +46,14 @@ export const useCreateReserve = async (reserveInfo) => {
 
     return createResponse
 }
+
+export const useGetReserveById = async (id_resere) => {
+    const reserve = ref({})
+    try {
+        reserve.value = await ReserveService.getReserveById(id_resere)
+    } catch (error) {
+        console.log(error);
+    }
+
+    return reserve
+}

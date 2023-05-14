@@ -60,12 +60,16 @@ const handleFileInputChange = (index, event) => {
 
 const checkIfVisible = (index) => {
   try {
-    if (!toSee.includes(keys.value[index])) {
-      loadDatepicker()
-      return true
+    if (user.value.type == 'ADMIN') {
+      if (!toSee.includes(keys.value[index])) {
+        loadDatepicker()
+        return true
+      }
+
+      return false
     }
 
-    return false
+    return true
   } catch (error) {
     return false
   }
@@ -146,8 +150,7 @@ onMounted(() => {
             <div class="flex gap-x-3 items-center justify-center w-full h-full">
               <p class="cursor-pointer w-fit h-fit text-blue-500"
                 @click="() => { openEditModal = true; selectedItems = value }">{{ actionsKeys[0] }}</p>
-              <p v-if="onlyAdmin" class="cursor-pointer w-fit h-fit text-red-500"
-                @click="() => { $emit('indexCancel', indexValue); $emit('cancel', copy) }">{{ actionsKeys[1] }}
+              <p v-if="onlyAdmin" class="cursor-pointer w-fit h-fit text-red-500" @click="() => { $emit('indexCancel', indexValue); $emit('cancel', copy) }">{{ actionsKeys[1] }}
               </p>
             </div>
           </td>
@@ -211,7 +214,7 @@ onMounted(() => {
         </div>
       </div>
       <div class="h-fit py-4 px-8 flex items-center justify-end">
-        <LayoutButton title="Actualizar" buttonType="green"
+        <LayoutButton title="Actualizar" buttonType="green" v-if="user.type == 'ADMIN'"
           @click="() => { $emit('update', selectedItems); values.value[0] = copySelected; openEditModal = false }" />
       </div>
     </div>
