@@ -1,17 +1,21 @@
 <script setup lang="ts">
-const seeDropdown: Ref<Boolean> = ref(false)
-const { filterName } = defineProps({
+const props = defineProps({
     filterName: String,
-    filterOptions: Array<String>
+    filterOptions: Array<String>,
+    parentCloses: Boolean
 })
-</script>
 
-<!-- FIXME: Acabar filtros, onclick en filtro cambiar el nombre del dropdown al del filtro seleccionado y boton resetear -->
+const parentClosesRef = toRef(props, 'parentCloses');
+const seeDropdown: Ref<Boolean> = ref(parentClosesRef.value ?? false)
+
+watch(parentClosesRef, (newParentCloses) => {
+    seeDropdown.value = newParentCloses;
+});
+</script>
 
 <template>
     <div class="relative inline-block text-left">
-        <button type="button"
-            v-on:click="() => seeDropdown = !seeDropdown"
+        <button type="button" v-on:click="() => { seeDropdown = !seeDropdown; $emit('closeOthers', true) }"
             class="inline-flex items-center justify-center w-full px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors duration-300 ease-in-out"
             id="filter-menu" aria-haspopup="true" aria-expanded="false">
             {{ filterName }}
@@ -23,14 +27,11 @@ const { filterName } = defineProps({
         </button>
 
         <div class="absolute left-0 mt-2 w-56 bg-white border border-gray-300 rounded-lg shadow-md divide-y divide-gray-100 z-50"
-            v-if="seeDropdown"
-            aria-labelledby="filter-menu" role="menu">
+            v-if="seeDropdown" aria-labelledby="filter-menu" role="menu">
             <div class="py-1" role="none">
-                <div
-                    v-for="option in filterOptions"
+                <div v-for="option in filterOptions"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
-                    v-on:click="$emit('value', option)"
-                    role="menuitem">{{ option }}</div>
+                    v-on:click="$emit('value', option)" role="menuitem">{{ option }}</div>
             </div>
         </div>
     </div>

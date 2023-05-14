@@ -206,7 +206,7 @@ const submit_register = async () => {
 		</main>
 		<div class="h-full flex items-center justify-center p-2">
 			<div class="flex gap-1">Eres empleado o gerente?
-				<p @click="() => $router.replace('/auth/employee')" class="font-medium text-blue-500 cursor-pointer">Accede a la	sección de empleados</p>
+				<p @click="() => $router.replace('/auth/employee')" class="font-medium text-blue-500 cursor-pointer">Accede a la sección de empleados</p>
 			</div>
 		</div>
 	</div>

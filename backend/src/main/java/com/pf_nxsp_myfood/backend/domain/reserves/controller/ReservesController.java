@@ -4,7 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.hibernate.engine.jdbc.StreamUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,6 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pf_nxsp_myfood.backend.domain.common.constants.ReservesStatusTypes;
@@ -27,6 +33,8 @@ import com.pf_nxsp_myfood.backend.domain.restaurants.dto.RestaurantDto;
 import com.pf_nxsp_myfood.backend.domain.restaurants.service.RestaurantSerivce;
 import com.pf_nxsp_myfood.backend.plugins.IdGenerator;
 import com.pf_nxsp_myfood.backend.security.AuthClientDetails;
+
+import io.jsonwebtoken.io.IOException;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -146,5 +154,13 @@ public class ReservesController {
         }
 
         return ResponseEntity.badRequest().body(Map.of("status", 400, "message", "Error while trying to get the reserve"));
+    }
+
+    @GetMapping(value = "/image/pdf", produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody void getImage(HttpServletResponse response) throws IOException, java.io.IOException {
+        var image = new ClassPathResource("images/background.jpg");
+
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        StreamUtils.copy(image.getInputStream(), response.getOutputStream());
     }
 }

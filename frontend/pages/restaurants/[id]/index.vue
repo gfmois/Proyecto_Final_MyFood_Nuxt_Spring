@@ -28,13 +28,13 @@ const totalToPay = reactive(computed(() => {
 }))
 
 // FIXME: This make an petition and delays the page
-// const locationRes = await $fetch("https://trueway-geocoding.p.rapidapi.com/ReverseGeocode", {
-//     query: { location: `${data.value.restaurant.lat},${data.value.restaurant.lng}`, lenguage: 'en' },
-//     headers: {
-//         'X-RapidAPI-Key': import.meta.env.VITE_RAPID_API_KEY,
-//         'X-RapidAPI-Host': import.meta.env.VITE_RAPID_API_HOST
-//     }
-// })
+const locationRes = await $fetch("https://trueway-geocoding.p.rapidapi.com/ReverseGeocode", {
+    query: { location: `${data.value.restaurant.lat},${data.value.restaurant.lng}`, lenguage: 'en' },
+    headers: {
+        'X-RapidAPI-Key': import.meta.env.VITE_RAPID_API_KEY,
+        'X-RapidAPI-Host': import.meta.env.VITE_RAPID_API_HOST
+    }
+})
 </script>
 
 <template>
@@ -51,7 +51,7 @@ const totalToPay = reactive(computed(() => {
                 <h2 class="text-3xl font-bold mb-4">{{ data.restaurant.name }}</h2>
                 <div class="mb-4 flex flex-row gap-1">
                     <p class="font-bold">{{ $t('direction') }}:</p>
-                    <p>Not Found</p><!-- locationRes.results[0].address.split(',')[0] || -->
+                    <p>{{ locationRes.results[0].address.split(',')[0] || "Not Found" }}</p><!-- locationRes.results[0].address.split(',')[0] || -->
                 </div>
                 <div class="mb-4 flex flex-row gap-1">
                     <p class="font-bold">{{ $t('phone') }}: </p>

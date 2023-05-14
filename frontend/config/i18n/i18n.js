@@ -21,7 +21,16 @@ export default {
                 open_cart: 'Ir al carrito',
                 auth: {
                     login: 'Iniciar Sesión',
-                    register: 'Registrarse'
+                    register: 'Registrarse',
+                    singin: "Inicia Sesión con tu cuenta",
+                    noaccount: "¿Sin cuenta todavía?",
+                    createit: "Haz click y createla",
+                    create_restaurant: "Crea un nuevo local en nustra aplicación",
+                    goLogin: 'Inicia Sesión ahora',
+                    haveAccount: "¿Ya tienes cuenta?",
+                    restaurant: {
+                        name: "Nombre del Restaurante"
+                    }
                 },
                 inputs: {
                     name: 'Nombre',
@@ -59,7 +68,14 @@ export default {
                 open_cart: 'Open Shopping Cart',
                 auth: {
                     login: 'Sing In',
-                    register: 'Sign Up'
+                    register: 'Sign Up',
+                    singin: "Sign in to your account",
+                    noaccount: "Don’t have an account yet?",
+                    createit: "Just Create it",
+                    create_restaurant: "Create New Restaurant",
+                    restaurant: {
+                        name: "Name of the Restaurant"
+                    }
                 },
                 inputs: {
                     name: 'Name',

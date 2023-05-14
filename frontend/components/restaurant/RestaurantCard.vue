@@ -20,17 +20,18 @@ const { restaurant } = defineProps({
             <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Restaurante</div>
             <p class="block mt-1 text-lg leading-tight font-medium text-black">{{ restaurant.name }}</p>
             <p class="mt-2 text-gray-500">{{ restaurant.category }}</p>
+            <p class="mt-2 text-gray-500">{{ restaurant.city }}</p>
             <div class="flex mt-2 items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" v-for="_ in 3" viewBox="0 0 20 20"
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" v-for="_ in 3" viewBox="0 0 20 20"
                     fill="currentColor">
                     <path
                         d="M10 12.585L3.951 16.4l1.599-7.425L.594 6.6l7.219-.622L10 0l2.187 5.978 7.219.622-4.957 2.375 1.599 7.425L10 12.585z" />
-                </svg> <!-- average comments -->
+                </svg>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" viewBox="0 0 20 20" fill="none"
-                    stroke="currentColor" v-for="_ in 2"> <!-- Rest of average comments -->
+                    stroke="currentColor" v-for="_ in 2">
                     <path
                         d="M10 12.585L3.951 16.4l1.599-7.425L.594 6.6l7.219-.622L10 0l2.187 5.978 7.219.622-4.957 2.375 1.599 7.425L10 12.585z" />
-                </svg>
+                </svg> -->
 
             </div>
         </div>
