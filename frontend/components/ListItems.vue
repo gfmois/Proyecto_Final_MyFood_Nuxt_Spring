@@ -6,7 +6,7 @@ import { useAuth } from '~~/store';
 import 'flatpickr/dist/flatpickr.min.css'
 
 const { user } = useAuth()
-const { object, keyBanned, keyPreffered, hasActionButtons, idObj, toSee, actionsKeys, onlyIsAdmin } = defineProps({
+const { object, keyBanned, keyPreffered, hasActionButtons, idObj, toSee, actionsKeys, onlyIsAdmin, showDescription } = defineProps({
   object: Array,
   keyBanned: String,
   keyPreffered: String,
@@ -14,6 +14,10 @@ const { object, keyBanned, keyPreffered, hasActionButtons, idObj, toSee, actions
   idObj: "",
   toSee: [],
   onlyIsAdmin: Boolean,
+  showDescription: {
+    type: Boolean,
+    default: () => false
+  },
   actionsKeys: {
     type: Array,
     default: () => ['Ver', 'Cancelar']
@@ -130,6 +134,7 @@ onMounted(() => {
           <th scope="col" class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-center"
             v-for="key in keys.value">
             <p v-if="key != 'description'">{{ key }}</p>
+            <p v-if="showDescription && key == 'description'">{{ key }}</p>
           </th>
           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             v-if="hasActionButtons">
@@ -142,6 +147,7 @@ onMounted(() => {
           <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900"
             v-for="(item, index) in value">
             <p v-if="keys.value[index] != keyBanned && keys.value[index] != 'description'">{{ item }}</p>
+            <p v-if="showDescription && keys.value[index] == 'description'">{{ item }}</p>
             <p class="text-blue-500 cursor-pointer" v-if="keys.value[index] == keyBanned"
               @click="() => { isBannedModal = true; selectedItems = item; load() }">{{ keyPreffered }}</p>
           </td>

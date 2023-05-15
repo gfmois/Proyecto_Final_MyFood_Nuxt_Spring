@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 import com.pf_nxsp_myfood.backend.domain.common.utils.BaseUtils;
 import com.pf_nxsp_myfood.backend.domain.employee.entity.EmployeeEntity;
-import com.pf_nxsp_myfood.backend.domain.hollidays.entity.HollidayEntity;
+import com.pf_nxsp_myfood.backend.domain.holidays.entity.HolidayEntity;
 import com.pf_nxsp_myfood.backend.domain.orders.entity.OrderEntity;
 import com.pf_nxsp_myfood.backend.domain.products.entity.ProductEntity;
 import com.pf_nxsp_myfood.backend.domain.reserves.entity.ReserveEntity;
@@ -66,8 +66,8 @@ public class RestaurantEntity extends BaseUtils {
     @OneToMany(mappedBy = "employee_restaurant")
     private List<EmployeeEntity> employees;
 
-    @OneToMany(mappedBy = "restaurant_hollidays")
-    private List<HollidayEntity> hollidays;
+    @OneToMany(mappedBy = "restaurant_holidays")
+    private List<HolidayEntity> holidays;
 
     @OneToMany(mappedBy = "restaurant_reserves")
     private List<ReserveEntity> reserves;
@@ -90,7 +90,7 @@ public class RestaurantEntity extends BaseUtils {
         this.slug = slug;
         this.products = new ArrayList<>();
         this.employees = new ArrayList<>();
-        this.hollidays = new ArrayList<>();
+        this.holidays = new ArrayList<>();
         this.reserves = new ArrayList<>();
         this.orders = new ArrayList<>();
     }

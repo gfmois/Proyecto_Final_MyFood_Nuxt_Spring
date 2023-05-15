@@ -62,6 +62,7 @@ const asideItems = [
     { title: "Reservas", icon: "ic:twotone-table-bar", redirect: "/admin/reserves" },
     { title: "Empleados", icon: "clarity:employee-solid", redirect: "/admin/employees" },
     { title: "Productos", icon: "streamline:food-drum-stick-1-cook-animal-drumsticks-products-chicken-cooking-nutrition-food", redirect: "/admin/employees" },
+    { title: "Vacaciones", icon: "mdi:palm-tree", redirect: "/hollidays" },
 ]
 
 const user = (await useGetEmployee()).value
@@ -72,7 +73,8 @@ const pages = ref([
     defineAsyncComponent(() => import('~/components/admin/ListOrders.vue')),
     defineAsyncComponent(() => import('~/components/admin/ListReserves.vue')),
     defineAsyncComponent(() => import('~/components/admin/ListEmployees.vue')),
-    defineAsyncComponent(() => import('~/components/admin/ListProducts.vue'))
+    defineAsyncComponent(() => import('~/components/admin/ListProducts.vue')),
+    defineAsyncComponent(() => import('~/components/admin/ListHolidays.vue'))
 ])
 
 const todaysDate = new Date();

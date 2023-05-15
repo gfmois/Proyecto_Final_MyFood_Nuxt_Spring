@@ -63,7 +63,7 @@ const closeOthers = (index) => {
                 @closeOthers="$e => closeOthers(0)"
                 @value="$e => filters.value.city = $e" :parentCloses="filtersCloses.value[0]" />
             <!-- Will Come from DB -->
-            <LayoutFilterBean filterName="Categoria" :filterOptions="info.categories"
+            <LayoutFilterBean filterName="Categoria" :filterOptions="info.categories "
                 @closeOthers="$e => closeOthers(1)"
                 @value="$e => filters.value.category = $e" :parentCloses="filtersCloses.value[1]" />
             <!-- FIXME: Change this to line -->

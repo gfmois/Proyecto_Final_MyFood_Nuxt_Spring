@@ -1,4 +1,4 @@
-package com.pf_nxsp_myfood.backend.domain.hollidays.entity;
+package com.pf_nxsp_myfood.backend.domain.holidays.entity;
 
 import java.sql.Date;
 
@@ -20,19 +20,19 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "hollidays")
-@NamedEntityGraph(name = "fetch-hollidays")
-public class HollidayEntity {
+@Table(name = "holidays")
+@NamedEntityGraph(name = "fetch-holidays")
+public class HolidayEntity {
     @Id
-    private String id_holliday;
+    private String id_holiday;
 
-    @Column(name = "holliday_date")
-    private Date holliday_date;
+    @Column(name = "holiday_date")
+    private Date holiday_date;
 
     @Column(name = "description")
     private String description;
 
     @ManyToOne
     @JoinColumn(name = "id_restaurant", nullable = false)
-    private RestaurantEntity restaurant_hollidays;
+    private RestaurantEntity restaurant_holidays;
 }
