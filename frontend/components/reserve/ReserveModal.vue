@@ -16,7 +16,7 @@
         })
     }
 
-    const formSteps = reactive([
+const formSteps = reactive([
     {
         title: "Información del Cliente",
         name: "information",
@@ -92,7 +92,7 @@
                 <div class="bg-neutral-300 flex items-center justify-end p-1">
                     <Icon name="ci:close-big" size="1.5rem" class="cursor-pointer" @click="$emit('isVisible', false)" />
                 </div>
-                
+
                 <FormStepper :steps="formSteps" @closeModal="$e => resetFormSteps()" />
             </div>
         </div>

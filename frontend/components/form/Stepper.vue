@@ -154,7 +154,7 @@ export default {
         <div class="w-full h-full flex items-center justify-center p-4 relative">
             <div class="p-8 w-full mx-auto flex items-center justify-center absolute top-0">
                 <ol
-                    class="flex items-center justify-center space-x-4 w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base ml-[19%]">
+                    class="flex items-center justify-center space-x-4 w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400">
                     <FormStepperEntry :inputs="step.inputs" :done="step.done" :title="step.title"
                         :isLast="typeof steps[index + 1] == 'undefined'" v-for="(step, index) in steps" :key="index" />
                 </ol>
@@ -166,7 +166,7 @@ export default {
                         <div
                             class="p-4 1/3 w-full flex items-center text-black uppercase font-bold justify-center text-3xl">
                             {{ step.title }}</div>
-                        <div class="rounded-lg w-full h-full flex items-center justify-center p-4 xs:flex-col xl:flex-row xl:gap-5">
+                        <div class="rounded-lg w-full h-full flex items-center justify-center p-4 xs:flex-col xs:gap-5">
                             <div v-for="input in step.fields" v-if="step.title != 'Confirmación'">
                                 <div v-if="input.type != 'select'">
                                     <div v-if="input.type != 'date'">

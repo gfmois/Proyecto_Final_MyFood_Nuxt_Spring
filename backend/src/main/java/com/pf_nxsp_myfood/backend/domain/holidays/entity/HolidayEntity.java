@@ -10,8 +10,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.Table;
 
+import com.pf_nxsp_myfood.backend.domain.common.utils.BaseUtils;
 import com.pf_nxsp_myfood.backend.domain.restaurants.entity.RestaurantEntity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +25,9 @@ import lombok.Setter;
 @Entity
 @Table(name = "holidays")
 @NamedEntityGraph(name = "fetch-holidays")
-public class HolidayEntity {
+@AllArgsConstructor
+@Builder
+public class HolidayEntity extends BaseUtils {
     @Id
     private String id_holiday;
 

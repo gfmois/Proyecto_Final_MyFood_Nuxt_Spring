@@ -6,7 +6,7 @@
     <div>
         <AdminLayoutAside @clickedOption="$e => pageClicked = $e" :aside-items="asideItems" :title="restaurant.name" :image="restaurant.logo" />
 
-        <AdminLayoutCreateModal :employeeJson="employeeJson" :productsJson="products" v-if="createModal" @close="$e => createModal = false" />
+        <AdminLayoutCreateModal :holidayJson="holiday" :employeeJson="employeeJson" :productsJson="products" v-if="createModal" @close="$e => createModal = false" />
 
         <div class="w-full h-[10%] px-6 py-3 flex gap-2 justify-between items-center bg-[#1d242d] text-white">
             <div class="flex items-center justify-center w-1/2 flex-col h-full">
@@ -45,6 +45,7 @@
 <script setup>
 import employeeJson from "~/static/employee.json"
 import products from "~/static/products_.json"
+import holiday from "~/static/holiday.json"
 import 'vue3-lottie/dist/style.css'
 
 import { useGetEmployee } from "~/composables/employee/useEmployee"

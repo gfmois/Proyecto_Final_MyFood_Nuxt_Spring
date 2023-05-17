@@ -79,3 +79,15 @@ export const useGetFilteredRestaunrats = async (filters) => {
 
   return restaurants
 }
+
+export const useRegisterRestaurant = async (restaurant) => {
+  const result = ref({})
+  try {
+    const data = await RestaurantService.createRestaurant(restaurant)
+    result.value = data
+  } catch (error) {
+    console.log(error);
+  }
+
+  return result
+}

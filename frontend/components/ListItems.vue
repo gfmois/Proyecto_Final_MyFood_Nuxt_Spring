@@ -111,7 +111,6 @@ const loadDatepicker = () => {
 const onlyAdmin = ref(true)
 
 onMounted(() => {
-  console.log(onlyIsAdmin);
   if (onlyIsAdmin) {
     if (user.value.type === 'ADMIN') {
       onlyAdmin.value = true;

@@ -184,7 +184,7 @@ public class RestaurantController {
 
     @CacheEvict(value = "restaurants", allEntries = true)
     @PostMapping(consumes = { "multipart/form-data" })
-    public MessageResponse addRestaurant(
+    public ResponseEntity<?> addRestaurant(
             @RequestParam("file") MultipartFile file,
             @RequestParam("name") String name,
             @RequestParam("logo") MultipartFile logo,
@@ -199,7 +199,7 @@ public class RestaurantController {
 
             // Check for Capacity
             if (capacity <= 0) {
-                return new MessageResponse("Capacity must be greater than 0", "400");
+                return ResponseEntity.badRequest().body(Map.of("message", "Capacity must be greater than 0", "status", 400));
             }
 
             // Saves the image and gets the full path of the file to save it into DB
@@ -207,8 +207,7 @@ public class RestaurantController {
             Map<String, Object> logoObj = fileUpload.saveFile("restaurants/logos", logo);
 
             if ((Integer) logoObj.get("statusCode") == 400) {
-                return new MessageResponse("Error trying to uploading the image",
-                        String.valueOf((Integer) logoObj.get("status")));
+                return ResponseEntity.badRequest().body(Map.of("message", "Error trying to uploading the image", "status", 400));
             }
 
             // Transform Form-Data to RestaurantDto
@@ -225,9 +224,10 @@ public class RestaurantController {
                     String.format("%s-%s", name.toLowerCase().replaceAll(" ", "-"), IdGenerator.generateWithLength(8)));
 
             // Saves the new Restaurant
-            return rService.saveRestaurant(rDto);
+            rService.saveRestaurant(rDto);
+            return ResponseEntity.ok().body(Map.of("status", 200, "message", "Restaurant Created Correctly", "id_restaurant", rDto.getId_restaurant()));
         } catch (Exception e) {
-            return new MessageResponse(String.format("Error: %s", e.getMessage()), "400");
+            return ResponseEntity.badRequest().body(Map.of("message", String.format("Error: %s", e.getMessage()), "status", 400));
         }
     }
 

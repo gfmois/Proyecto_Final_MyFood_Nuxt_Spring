@@ -29,7 +29,10 @@ export default {
                     goLogin: 'Inicia Sesión ahora',
                     haveAccount: "¿Ya tienes cuenta?",
                     restaurant: {
-                        name: "Nombre del Restaurante"
+                        name: "Nombre del Restaurante",
+                        direction: "Dirección del Restaurante",
+                        capacity: "Capacidad",
+                        category: "Tipo Restaurante"
                     }
                 },
                 inputs: {
@@ -73,8 +76,13 @@ export default {
                     noaccount: "Don’t have an account yet?",
                     createit: "Just Create it",
                     create_restaurant: "Create New Restaurant",
+                    goLogin: '',
+                    haveAccount: "You have an account yet?",
                     restaurant: {
-                        name: "Name of the Restaurant"
+                        name: "Name of the Restaurant",
+                        direction: "Direction of the Restaurant",
+                        capacity: "Capacity",
+                        category: "Restaurant Type"
                     }
                 },
                 inputs: {

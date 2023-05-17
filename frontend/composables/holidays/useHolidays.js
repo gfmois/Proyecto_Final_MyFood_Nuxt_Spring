@@ -21,3 +21,25 @@ export const useDeleteHoliday = async (id_holiday) => {
 
     return result
 }
+
+export const useUpdateHoliday = async (holiday) => {
+    const result = ref({})
+    try {
+        result.value = await HolidaysService.updateHoliday(holiday)
+    } catch (error) {
+        console.log(error);
+    }
+
+    return result
+}
+
+export const useCreateHoliday = async (holiday) => {
+    const result = ref({})
+    try {
+        result.value = await HolidaysService.createHoliday(holiday)
+    } catch (error) {
+        console.log(error);
+    }
+
+    return result
+}

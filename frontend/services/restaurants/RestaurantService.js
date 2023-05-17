@@ -87,5 +87,29 @@ export default {
       console.log(error);
       return null
     }
+  },
+
+  async createRestaurant(resturant) {
+    try {
+      let body = new FormData()
+
+      Object.keys(resturant).forEach((e) => {
+        if (resturant[e] instanceof File) {
+          body.append(e, resturant[e], resturant[e].name)
+        } else {
+          body.append(e, resturant[e])
+        }
+      })
+
+      const response = await fetch(`${s.DEFAULT_URL}/restaurants`, {
+        method: 'POST',
+        body
+      })
+
+      return await response.json()
+    } catch (error) {
+      console.log(error);
+      return null
+    }
   }
 }

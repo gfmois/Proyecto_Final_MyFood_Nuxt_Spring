@@ -50,8 +50,15 @@ export const useRegister = async (credentials) => {
         }
 
         const data = await AuthService.register(user)
-        loginData.value = data
-        clientCookie.value = data.token
+
+        if (data.type != "NONE") {
+            loginData.value = data
+            adminCookie.value = data.token
+        } else {
+            loginData.value = data
+            clientCookie.value = data.token
+        }
+
         actChangeHasUser(true)
 
         // TODO: Admin Token
