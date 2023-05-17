@@ -66,12 +66,11 @@ services:
     networks:
       - pf_nsl_network
     volumes:
-      - ./backend/spring:/app
-      - ./conf/spring:/app/src/main/resources
+      - ./backend:/app
     command: "mvn spring-boot:run"
     depends_on:
       - database
-      
+
   # dragonfly:
   #   image: 'docker.dragonflydb.io/dragonflydb/dragonfly'
   #   container_name: dragonfly_container
