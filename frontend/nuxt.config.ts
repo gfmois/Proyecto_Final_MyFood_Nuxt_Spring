@@ -19,7 +19,7 @@ export default defineNuxtConfig({
     modules: [
         "@nuxtjs/tailwindcss",
         '@nuxtjs/i18n',
-        '@nuxt/devtools',
+        // '@nuxt/devtools',
         "nuxt-icon",
     ]
 })

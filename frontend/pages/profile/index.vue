@@ -1,7 +1,7 @@
 <script setup>
 import { useAuth } from "~/store"
 import { useUpdateProfile } from "~/composables/client/useClient"
-import { useToast } from 'vue-toast-notification'
+import { useToast } from 'vue-toast-notification';
 
 const { user, actChangeUser } = useAuth()
 

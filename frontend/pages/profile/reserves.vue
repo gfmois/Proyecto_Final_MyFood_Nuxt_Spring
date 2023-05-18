@@ -1,5 +1,5 @@
 <script setup>
-import { useToast } from "vue-toast-notification"
+import { useToast } from 'vue-toast-notification';
 import { useGetClientReserves, useCancelReserve } from "~/composables/client/useClient"
 
 const values = ref(await useGetClientReserves())

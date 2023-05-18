@@ -77,7 +77,7 @@
 </template>
 
 <script setup>
-import { useToast } from 'vue-toast-notification'
+import { useToast } from 'vue-toast-notification';
 import flatpickr from 'flatpickr'
 import { useRegister } from '~/composables/auth/useAuth'
 import { useCreateProduct } from "~/composables/products/useProducts"

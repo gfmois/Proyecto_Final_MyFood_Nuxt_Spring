@@ -2,6 +2,7 @@
 import { useToast } from 'vue-toast-notification';
 import { useDeleteEmployee, useGetRestaurantEmployees, useUpdateEmployee } from '~~/composables/employee/useEmployee';
 import { useAuth } from '~~/store';
+
 const { user } = useAuth()
 
 const { employees } = (await useGetRestaurantEmployees(user.value.id_restaurant)).value

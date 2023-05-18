@@ -1,7 +1,6 @@
 <script setup>
-import { useToast } from "vue-toast-notification"
+import { useToast } from 'vue-toast-notification';
 import { useLogin, useRegister } from '~~/composables/auth/useAuth';
-
 const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
 const emailRegex = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');

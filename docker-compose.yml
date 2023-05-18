@@ -40,36 +40,41 @@ services:
       - database
     volumes:
       - ./conf/redis/cache:/data
+    networks:
+      - pf_nsl_network
 
-  # spring:
-  #   image: openjdk:17.0.2-jdk-oraclelinux8
-  #   container_name: spring_container
-  #   restart: always
-  #   working_dir: /app
-  #   ports:
-  #     - 82:8080
-  #   networks:
-  #     - pf_nsl_network
-  #   volumes:
-  #     - ./backend/spring/target/spring-0.0.1-SNAPSHOT.jar:/app/server.jar
-  #   command: "java -jar server.jar"
-  #   depends_on:
-  #     - database
-
-  spring_dev:
-    container_name: spring_dev_container
-    build: backend/spring
+  backend:
+    container_name: backend_container
+    build: backend/.
     restart: always
     working_dir: /app
+    command: "mvn spring-boot:run"
     ports:
       - 8080:8080
     networks:
       - pf_nsl_network
     volumes:
       - ./backend:/app
-    command: "mvn spring-boot:run"
     depends_on:
       - database
+
+  frontend:
+    container_name: frontend_container
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: always
+    working_dir: /app
+    ports:
+      - 80:3000
+      - 3000:3001
+    volumes:
+      - ./frontend:/usr/src/app
+    command: sh -c "sleep 60 && npm run dev"
+    depends_on:
+      - backend
+
+
 
   # dragonfly:
   #   image: 'docker.dragonflydb.io/dragonflydb/dragonfly'

@@ -248,4 +248,10 @@ public class RestaurantController {
     public Map<String, List<String>> getRestaurantsInfo() {
         return rService.getRestaurantsInfo();
     }
+
+    @GetMapping("/ping")
+    public String pong() {
+        return "pong";
+    }
 }
+

@@ -18,5 +18,25 @@
     "name": "pf_nxsp_myfood.auth.token.valid-time",
     "type": "java.lang.String",
     "description": "Valid Time for the JWT Token'"
+  },
+  {
+    "name": "stripe.api.secretKey",
+    "type": "java.lang.String",
+    "description": "A description for 'stripe.api.secretKey'"
+  },
+  {
+    "name": "stripe.api.publicKey",
+    "type": "java.lang.String",
+    "description": "A description for 'stripe.api.publicKey'"
+  },
+{
+    "name": "paypal.client-secret",
+    "type": "java.lang.String",
+    "description": "A description for 'paypal.client-secret'"
+  },
+  {
+    "name": "paypal.client-id",
+    "type": "java.lang.String",
+    "description": "A description for 'paypal.client-id'"
   }
 ]}

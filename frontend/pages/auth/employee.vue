@@ -1,6 +1,6 @@
 <script setup>
 import { useLogin, useRegister } from "~/composables/auth/useAuth"
-import { useToast } from "vue-toast-notification"
+import { useToast } from 'vue-toast-notification';
 import { useRegisterRestaurant } from "~/composables/restaurants/useRestaurants"
 
 const toast = useToast({

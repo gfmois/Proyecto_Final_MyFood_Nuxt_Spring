@@ -17,7 +17,7 @@ public class RedisConfiguration {
     public RedisCacheManager cacheManager(RedisConnectionFactory rFactory) {
         RedisCacheConfiguration rConfiguration = RedisCacheConfiguration.defaultCacheConfig()
             .entryTtl(Duration.ofMinutes(1));
-        
+
         return RedisCacheManager.builder(rFactory)
             .cacheDefaults(rConfiguration)
             .build();
@@ -27,6 +27,8 @@ public class RedisConfiguration {
     @Bean
     JedisConnectionFactory jedisConnectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
+        configuration.setHostName("redis");
+        configuration.setPort(6379);
         configuration.setPassword("eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81");
         return new JedisConnectionFactory(configuration);
     }

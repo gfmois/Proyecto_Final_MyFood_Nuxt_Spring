@@ -42,7 +42,7 @@ const goRestaurants = () => {
                     <LayoutInput input-type="text" input-placeholder="Indio" inputLabel="Tipo de Comida" /> -->
                     <select name="city" v-model="obj.value.city" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <option disabled selected value="">Selecciona una ciudad</option>
-                        <option :value="city" v-for="city in selectInfo.cities">{{ city }}</option>
+                        <option v-if="selectInfo.cities" :value="city" v-for="city in selectInfo.cities">{{ city }}</option>
                     </select>
 
                     <select name="cateogory" v-model="obj.value.category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">

@@ -1,12 +1,11 @@
 <script setup>
-import { useToast } from "vue-toast-notification"
+import { useToast } from 'vue-toast-notification';
 import { useGetRestaurantHolidays, useDeleteHoliday, useUpdateHoliday } from "~/composables/holidays/useHolidays"
 import { useAuth } from "~/store"
 
 const { user } = useAuth()
 const holidays = await useGetRestaurantHolidays(user.value.id_restaurant)
 const indexItem = ref()
-
 
 if (!holidays.value.message) {
     holidays.value.holidays = holidays.value.holidays.map((e) => {

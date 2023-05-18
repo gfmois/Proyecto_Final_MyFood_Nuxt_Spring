@@ -6,6 +6,7 @@ import { useToast } from 'vue-toast-notification';
 import flatpickr from 'flatpickr'
 
 import 'flatpickr/dist/flatpickr.min.css'
+import secret from "~/services/secret";
 
 export default {
     components: {
@@ -79,7 +80,7 @@ export default {
 
                 if (response.value.status == 200) {
                     toast.success(response.value.message)
-                    qrValue.url = `http://localhost:3000/reserves/${response.value.id_reserve}`
+                    qrValue.url = `${secret.DEFAULT_URL}/reserves/${response.value.id_reserve}`
                     qrIsLoading.value = false
                     btnText.value = "Descargar"
                     backBtn.value = "Cerrar"
