@@ -28,6 +28,7 @@ const openModal = (item, title) => {
 </script>
 
 <template>
+<div>
     <div class="min-h-screen bg-gray-200">
         <main>
             <div class="py-12">
@@ -44,7 +45,7 @@ const openModal = (item, title) => {
                                                         <table class="w-full">
                                                             <thead class="bg-white border-b sticky top-0">
                                                                 <tr>
-                                                                    <th scope="col" v-for="key in keys"
+                                                                    <th scope="col" v-bind:key="key" v-for="key in keys"
                                                                         class="text-md font-medium text-gray-900 px-6 py-4 text-left">
                                                                         <p v-if="!checkStartsWith(key)">
                                                                             {{ key }}
@@ -57,9 +58,11 @@ const openModal = (item, title) => {
                                                             </thead>
                                                             <tbody class="h-96 overflow-y-auto">
                                                                 <tr v-for="item in valuesArr"
+                                                                    v-bind:key="item"
                                                                     class="bg-white border-b
                                                                     transition duration-300 ease-in-out hover:bg-gray-100">
                                                                     <td v-for="(value, index) in item"
+                                                                    v-bind:key="value"
                                                                         :class="`text-sm text-gray-900  px-6 py-4 whitespace-nowrap ${index == 0 ? 'font-bold' : ''}`">
                                                                         <p v-if="!checkStartsWith(index)"
                                                                             :class="`${typeof index == 'string' ? toModal.includes(index) ? 'text-blue-500 cursor-pointer w-fit h-fit' : null : null}`"
@@ -103,7 +106,7 @@ const openModal = (item, title) => {
                 </div>
             </div>
             <div class="w-full h-[80%] flex items-center flex-col p-4 gap-4 overflow-y-auto justify-between">
-                <div v-for="item in modalItems[`_${modalTitle}`]" class="w-full h-full">
+                <div v-for="item in modalItems[`_${modalTitle}`]" class="w-full h-full" v-bind:key="item">
                     <div class="flex gap-4 w-full h-full">
                         <ProductCard :product="Object.values(item)[0]" :has-action-modal="false">
                             <p class="font-bold">Cantidad: {{ item.quantity }}</p>
@@ -119,6 +122,7 @@ const openModal = (item, title) => {
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <style>

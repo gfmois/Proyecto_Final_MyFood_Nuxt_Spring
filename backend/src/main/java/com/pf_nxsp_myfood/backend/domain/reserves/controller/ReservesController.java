@@ -114,7 +114,7 @@ public class ReservesController {
                 aDetails.getId_employee())) {
             ReserveDto reserve = ReserveDto.builder()
                     .id_reserve(request
-                    .getId_reserve())
+                            .getId_reserve())
                     .diners(request.getDiners())
                     .status(request.getStatus())
                     .types(request.getTypes())
@@ -128,21 +128,13 @@ public class ReservesController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getReserve(@AuthenticationPrincipal AuthClientDetails aDetails, @RequestParam String id_reserve) {
-        if (aDetails == null || aDetails.getId_client() == null) {
-            Map<String, Object> err = new HashMap<String, Object>();
+    public ResponseEntity<?> getReserve(@RequestParam String id_reserve) {
+        try {
+            ReserveDto reserve = rService.getReserve(id_reserve);
 
-            err.put("status", 400);
-            err.put("message", "No ID Found");
-
-            return ResponseEntity.badRequest().body(err);
-        }
-
-        ReserveDto reserve = rService.getReserve(id_reserve);
-
-        if (reserve.getId_client().equals(aDetails.getId_client())) {
             Map<String, Object> result = new HashMap<String, Object>();
-            RestaurantDto restaurant = (RestaurantDto) resService.getRestaurantById(reserve.getId_restaurant()).get("restaurant");
+            RestaurantDto restaurant = (RestaurantDto) resService.getRestaurantById(reserve.getId_restaurant())
+                    .get("restaurant");
 
             result.put("diners", reserve.getDiners());
             result.put("name", reserve.getName());
@@ -151,9 +143,11 @@ public class ReservesController {
             result.put("date", reserve.getDate_reserve());
 
             return ResponseEntity.ok().body(Map.of("status", 200, "reserve", result));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("status", 400, "message", "Error while trying to get the reserve"));
         }
 
-        return ResponseEntity.badRequest().body(Map.of("status", 400, "message", "Error while trying to get the reserve"));
     }
 
     @GetMapping(value = "/image/pdf", produces = MediaType.IMAGE_JPEG_VALUE)
