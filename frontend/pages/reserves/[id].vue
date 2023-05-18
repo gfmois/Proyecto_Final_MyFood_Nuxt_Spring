@@ -34,8 +34,6 @@ export default {
             image.src = url;
         }
 
-        console.log(reserve);
-
         const generatePDF = () => {
             toDataUrl(`${secret.DEFAULT_URL}/reserves/image/pdf`, (image) => {
                 doc.addImage(image, "baseURL", 0, 0)

@@ -3,25 +3,31 @@ import { useToast } from 'vue-toast-notification';
 import { useGetClientOrders, useCancelOrder } from '~~/composables/orders/useOrder';
 
 const values = ref(await useGetClientOrders())
+
 const obj = reactive({ value: [] })
+const isEmpty = ref(false)
 
-values.value = values.value.orders.forEach((e) => {
-    e.total_quantity = 0
-    delete e.id_client
+isEmpty.value = values.value.orders.length > 0 ? false : true
 
-    e.products.forEach((p) => {
-        e.total_quantity += p.quantity
+if (!isEmpty.value) {
+    values.value = values.value.orders.forEach((e) => {
+        e.total_quantity = 0
+        delete e.id_client
+
+        e.products.forEach((p) => {
+            e.total_quantity += p.quantity
+        })
+
+        obj.value.push({
+            "Order No": e.id_order,
+            "Restaurant": e.restaurant,
+            "Status": e.status,
+            "Date": e.order_date,
+            "Products": "Ver",
+            "_Products": e.products
+        })
     })
-
-    obj.value.push({
-        "Order No": e.id_order,
-        "Restaurant": e.restaurant,
-        "Status": e.status,
-        "Date": e.order_date,
-        "Products": "Ver",
-        "_Products": e.products
-    })
-})
+}
 
 const cancelOrder = async (item) => {
     const objToUpdate = {
@@ -32,7 +38,6 @@ const cancelOrder = async (item) => {
     }
 
     const res = await useCancelOrder(objToUpdate)
-    console.log(res.value);
     if (res.value.status != 200) {
         useToast().error(res.value.message)
         return
@@ -44,8 +49,18 @@ const cancelOrder = async (item) => {
 </script>
 
 <template>
-    <Header>
-        <Title>Mis Pedidos</Title>
-    </Header>
-    <LayoutTable :items="obj" @cancel="$e => cancelOrder($e)" :hasCancel="true" :toModal="['Products']" />
+    <div>
+        <Header>
+            <Title>Mis Pedidos</Title>
+        </Header>
+        <div>
+            <LayoutTable :items="obj" @cancel="$e => cancelOrder($e)" :hasCancel="true" :toModal="['Products']"
+                v-if="!isEmpty" />
+            <h1 v-if="isEmpty" class="w-screen h-screen">
+                <div class="min-w-full flex items-center justify-center min-h-full font-medium text-xl">
+                    Sin items todavía
+                </div>
+            </h1>
+        </div>
+    </div>
 </template>

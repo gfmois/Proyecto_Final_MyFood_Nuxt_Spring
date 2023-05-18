@@ -5,26 +5,32 @@ import { useGetClientReserves, useCancelReserve } from "~/composables/client/use
 const values = ref(await useGetClientReserves())
 const obj = reactive({ value: [] })
 
-values.value = values.value.reserves.forEach((e) => {
-    const type = {
-        MID_MORNING_SNACK: 'Almuerzo',
-        LUNCH: 'Comida',
-        DINNER: 'Cena'
-    }
+const isEmpty = ref(false)
 
-    delete e.id_client;
-    e.types = type[e.types]
+isEmpty.value = values.value.reserves.length > 0 ? false : true
 
-    obj.value.push({
-        "Reserve No": e.id_reserve,
-        "Restaurant": e.restaurant,
-        "Bill To Name": e.name,
-        "Type": e.types,
-        "Date": e.date_reserve,
-        "Diners": e.diners,
-        "Status": e.status
+if (!isEmpty.value) {
+    values.value = values.value.reserves.forEach((e) => {
+        const type = {
+            MID_MORNING_SNACK: 'Almuerzo',
+            LUNCH: 'Comida',
+            DINNER: 'Cena'
+        }
+
+        delete e.id_client;
+        e.types = type[e.types]
+
+        obj.value.push({
+            "Reserve No": e.id_reserve,
+            "Restaurant": e.restaurant,
+            "Bill To Name": e.name,
+            "Type": e.types,
+            "Date": e.date_reserve,
+            "Diners": e.diners,
+            "Status": e.status
+        })
     })
-})
+}
 
 const cancelReserve = async (item) => {
     const objToUpdate = {
@@ -50,8 +56,15 @@ const cancelReserve = async (item) => {
 
 
 <template>
-    <Header>
-        <Title>Mis Reservas</Title>
-    </Header>
-    <LayoutTable :items="obj" @cancel="$e => cancelReserve($e)" :hasCancel="true" :toModal="[]" />
+    <div>
+        <Header>
+            <Title>Mis Reservas</Title>
+        </Header>
+        <LayoutTable :items="obj" @cancel="$e => cancelReserve($e)" :hasCancel="true" :toModal="[]" v-if="!isEmpty" />
+        <h1 v-if="isEmpty" class="w-screen h-screen">
+            <div class="min-w-full flex items-center justify-center min-h-full font-medium text-xl">
+                Sin items todavía
+            </div>
+        </h1>
+    </div>
 </template>
