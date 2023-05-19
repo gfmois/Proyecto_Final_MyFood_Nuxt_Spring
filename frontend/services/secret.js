@@ -1,4 +1,4 @@
 export default {
-    DEFAULT_URL: "http://20.19.179.36:8080/api",
-    CLIENT_URL: "http://20.19.179.36"
+    DEFAULT_URL: "http://myfood.francecentral.cloudapp.azure.com:8080/api",
+    CLIENT_URL: "http://myfood.francecentral.cloudapp.azure.com"
 }
