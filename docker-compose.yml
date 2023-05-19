@@ -9,7 +9,7 @@ services:
       - ./conf/db/init.sql:/data/application/init.sql
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - DB_NAME = MyFood_PF
+      - DB_NAME=MyFood_PF
     ports:
       - 3307:3306
     networks:
@@ -43,36 +43,39 @@ services:
     networks:
       - pf_nsl_network
 
-  backend:
-    container_name: backend_container
-    build: backend/.
-    restart: always
-    working_dir: /app
-    command: "mvn spring-boot:run"
-    ports:
-      - 8080:8080
-    networks:
-      - pf_nsl_network
-    volumes:
-      - ./backend:/app
-    depends_on:
-      - database
+networks:
+  pf_nsl_network:
 
-  frontend:
-    container_name: frontend_container
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    restart: always
-    working_dir: /app
-    ports:
-      - 80:3000
-      - 3000:3001
-    volumes:
-      - ./frontend:/usr/src/app
-    command: sh -c "sleep 60 && npm run dev"
-    depends_on:
-      - backend
+  # backend:
+  #   container_name: backend_container
+  #   build: backend/.
+  #   restart: always
+  #   working_dir: /app
+  #   command: "mvn spring-boot:run"
+  #   ports:
+  #     - 8080:8080
+  #   networks:
+  #     - pf_nsl_network
+  #   volumes:
+  #     - ./backend:/app
+  #   depends_on:
+  #     - database
+
+  # frontend:
+  #   container_name: frontend_container
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   restart: always
+  #   working_dir: /app
+  #   ports:
+  #     - 80:3000
+  #     - 3000:3001
+  #   volumes:
+  #     - ./frontend:/usr/src/app
+  #   command: sh -c "sleep 60 && npm run dev"
+  #   depends_on:
+  #     - backend
 
 
 
@@ -93,6 +96,3 @@ services:
   #     - pf_nsl_network
   #   volumes:
   #     - ./conf/dragonfly/cache:/data
-
-networks:
-  pf_nsl_network:

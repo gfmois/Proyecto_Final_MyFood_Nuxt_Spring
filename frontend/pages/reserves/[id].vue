@@ -78,10 +78,6 @@ export default {
             </div>
             <div class="flex flex-col gap-4 p-8 font-thin">
                 <p>{{ $t('pdf.part1') }}</p>
-                <p>{{ $t('pdf.part2') }}</p>
-                <p>{{ $t('pdf.part3') }}</p>
-                <p>{{ $t('pdf.part4') }}</p>
-                <p>{{ $t('pdf.part5') }}</p>
             </div>
             <div>
                 <LayoutButton :action="() => generatePDF()" :title="$t('pdf.download')" />
