@@ -1,42 +1,44 @@
 <template>
-    <Header>
-        <Title>Dashboard</Title>
-    </Header>
-
     <div>
-        <AdminLayoutAside @clickedOption="$e => pageClicked = $e" :aside-items="asideItems" :title="restaurant.name" :image="restaurant.logo" />
+        <Header>
+            <Title>Dashboard</Title>
+        </Header>
 
-        <AdminLayoutCreateModal :holidayJson="holiday" :employeeJson="employeeJson" :productsJson="products" v-if="createModal" @close="$e => createModal = false" />
+        <div>
+            <AdminLayoutAside @clickedOption="$e => pageClicked = $e" :aside-items="asideItems" :title="restaurant.name" :image="restaurant.logo" />
 
-        <div class="w-full h-[10%] px-6 py-3 flex gap-2 justify-between items-center bg-[#1d242d] text-white">
-            <div class="flex items-center justify-center w-1/2 flex-col h-full">
-                <div>
-                    <div class="font-medium">Dashboard</div>
-                    <p class="text-xs font-light">{{ formattedDate }}</p>
-                </div>
-            </div>
+            <AdminLayoutCreateModal :holidayJson="holiday" :employeeJson="employeeJson" :productsJson="products" v-if="createModal" @close="$e => createModal = false" />
 
-            <div class="flex gap-0 w-2/6 h-full items-center justify-around">
-                <div class="p-4 h-full flex justify-end items-center">
-                    <div class="flex items-center justify-center rounded-full w-fit h-fit p-1 border-2 border-gray-200 cursor-pointer" @click="() => createModal = true">
-                        <Icon name="material-symbols:notifications-rounded" size="1.5rem" class="text-white" />
+            <div class="w-full h-[10%] px-6 py-3 flex gap-2 justify-between items-center bg-[#1d242d] text-white">
+                <div class="flex items-center justify-center w-1/2 flex-col h-full">
+                    <div>
+                        <div class="font-medium">Dashboard</div>
+                        <p class="text-xs font-light">{{ formattedDate }}</p>
                     </div>
                 </div>
-                <div class="flex-1 p-2 w-full h-full flex gap-2">
-                    <img :src="user.avatar" alt="Users Avatar" class="w-12 h-12">
-                    <div class="flex flex-col gap-0">
-                        <h3 class="font-medium">{{ user.name }}</h3>
-                        <p class="font-light">{{ user.email }}</p>
+
+                <div class="flex gap-0 w-2/6 h-full items-center justify-around">
+                    <div class="p-4 h-full flex justify-end items-center">
+                        <div class="flex items-center justify-center rounded-full w-fit h-fit p-1 border-2 border-gray-200 cursor-pointer" @click="() => createModal = true">
+                            <Icon name="material-symbols:add-box-outline" size="1.5rem" class="text-white" />
+                        </div>
+                    </div>
+                    <div class="flex-1 p-2 w-full h-full flex gap-2">
+                        <img :src="user.avatar" alt="Users Avatar" class="w-12 h-12">
+                        <div class="flex flex-col gap-0">
+                            <h3 class="font-medium">{{ user.name }}</h3>
+                            <p class="font-light">{{ user.email }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="px-6 py-4 w-full h-full flex items-center justify-end">
-            <div class="bg-[#1f2937] rounded-lg w-5/6 h-full px-6 py-4 text-white">
-                <!-- Routing -->
-                <ClientOnly placeholder="Loading...">
-                    <component :is="pages[pageClicked]" />
-                </ClientOnly>
+            <div class="px-6 py-4 w-full h-full flex items-center justify-end">
+                <div class="bg-[#1f2937] rounded-lg w-5/6 h-full px-6 py-4 text-white">
+                    <!-- Routing -->
+                    <ClientOnly placeholder="Loading...">
+                        <component :is="pages[pageClicked]" />
+                    </ClientOnly>
+                </div>
             </div>
         </div>
     </div>

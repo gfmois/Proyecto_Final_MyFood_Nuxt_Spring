@@ -154,6 +154,7 @@ const submit_register = async () => {
 </script>
 
 <template>
+<div>
 	<Header>
 		<Title>{{ isLogin ? $t('auth.login') : $t('auth.register') }}</Title>
 	</Header>
@@ -209,6 +210,7 @@ const submit_register = async () => {
 			</div>
 		</div>
 	</div>
+</div>
 </template>
 
 <style scoped>

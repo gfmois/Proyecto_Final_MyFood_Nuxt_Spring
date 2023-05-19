@@ -35,7 +35,7 @@ const logout = () => {
 
         <!-- Items -->
         <div class="w-full h-5/6 p-4 flex flex-col gap-1">
-            <AdminLayoutAsideItem @click="() => $emit('clickedOption', index)" :icon="item.icon" :text="item.title" v-for="(item, index) in asideItems" />
+            <AdminLayoutAsideItem @click="() => $emit('clickedOption', index)" v-bind:key="item"  :icon="item.icon" :text="item.title" v-for="(item, index) in asideItems" />
         </div>
         <div class="w-full h-1/6 p-4 flex flex-col gap-1 justify-end">
             <div class="hover:bg-red-800 p-2 flex items-center justify-start gap-2 text-white rounded-lg cursor-pointer" @click="() => logout()">

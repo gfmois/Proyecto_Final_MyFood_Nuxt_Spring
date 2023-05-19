@@ -80,7 +80,7 @@ export default {
 
                 if (response.value.status == 200) {
                     toast.success(response.value.message)
-                    qrValue.url = `${secret.DEFAULT_URL}/reserves/${response.value.id_reserve}`
+                    qrValue.url = `${secret.CLIENT_URL}/reserves/${response.value.id_reserve}`
                     qrIsLoading.value = false
                     btnText.value = "Descargar"
                     backBtn.value = "Cerrar"
@@ -161,14 +161,14 @@ export default {
                 </ol>
             </div>
 
-            <div class="p-8 h-full top-0 absolute" v-for="step in steps">
+            <div  v-bind:key="step" class="p-8 h-full top-0 absolute" v-for="step in steps">
                 <div v-if="step.visible" class="p-6 flex items-center justify-center z-[110]">
                     <div class="w-full h-full z-50 rounded-lg flex items-center justify-center p-6 flex-col">
                         <div
                             class="p-4 1/3 w-full flex items-center text-black uppercase font-bold justify-center text-3xl">
                             {{ step.title }}</div>
                         <div class="rounded-lg w-full h-full flex items-center justify-center p-4 xs:flex-col xs:gap-5">
-                            <div v-for="input in step.fields" v-if="step.title != 'Confirmación'">
+                            <div  v-bind:key="input" v-for="input in step.fields" v-if="step.title != 'Confirmación'">
                                 <div v-if="input.type != 'select'">
                                     <div v-if="input.type != 'date'">
                                         <label class="block text-gray-700 text-sm font-bold mb-2" :for="input.title">
@@ -196,7 +196,7 @@ export default {
                                     <select v-model="input.value"
                                         :class="`block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors[input.title] ? 'border-red-500' : ''}`">
                                         <option disabled value="">Selecciona una opción</option>
-                                        <option v-for="option, index in input.options" :value="input.optionsValue[index]">
+                                        <option v-bind:key="option" v-for="option, index in input.options" :value="input.optionsValue[index]">
                                             {{ option }}
                                         </option>
                                     </select>

@@ -54,7 +54,7 @@ const loadObject = async () => {
 
         isLoading.value = false
         emit('closeModal', true)
-        useRouter().replace('/orders')
+        useRouter().replace('/profile/orders')
     } catch (error) {
         console.log(error);
     }

@@ -2,7 +2,7 @@
 import { useAuth } from "~~/store"
 
 const { locale } = useI18n()
-const { actCheckHasUser, mutCheckIsAdmin, isAdmin, user: storeUser, actChangeUser, hasUser } = useAuth()
+const { actCheckHasUser, mutCheckIsAdmin, user: storeUser, actChangeUser } = useAuth()
 
 const router = useRouter()
 
@@ -53,10 +53,6 @@ const logout = () => {
                                 class="cursor-pointer" />
                         </NuxtLink>
                     </li>
-                    <!-- <li>
-                        <Icon name="ri:article-fill" size="2rem" style="color: rgb(228 228 231 / 1);"
-                            class="cursor-pointer" />
-                    </li> -->
                     <li>
                         <NuxtLink to="/auth" v-if="!user">
                             <Icon name="ri:account-box-fill" size="2rem" style="color: rgb(228 228 231 / 1);"
@@ -68,7 +64,7 @@ const logout = () => {
                             <div class="relative w-full h-full right-0 inline-block text-left z-50" v-if="dropdownVisible">
                                 <div class="absolute right-0 w-48 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                                   <div class="py-1" role="none">
-                                    <NuxtLink :to="item.src" @click="item.action" v-for="item in dropdown" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                                    <NuxtLink v-bind:key="item" :to="item.src" @click="item.action" v-for="item in dropdown" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                                         {{ item.name }}
                                     </NuxtLink>
                                   </div>
@@ -76,7 +72,7 @@ const logout = () => {
                               </div>
                         </div>
                     </li>
-                    <li>
+                    <li >
                         <select v-model="locale">
                             <option value="es">
                                 Español

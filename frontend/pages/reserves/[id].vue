@@ -34,7 +34,6 @@ export default {
             image.src = url;
         }
 
-
         const generatePDF = () => {
             toDataUrl(`${secret.DEFAULT_URL}/reserves/image/pdf`, (image) => {
                 doc.addImage(image, "baseURL", 0, 0)
@@ -47,6 +46,7 @@ export default {
                 doc.setTextColor(0, 0, 0);
                 // doc.setFont("dancing", "italic");
                 doc.text(95, 35, "MyFood");
+
 
                 Object.keys(reserve).map((e, index) => {
                     doc.setTextColor(0, 0, 0);
@@ -67,22 +67,27 @@ export default {
 </script>
 
 <template>
-    <Header>
-        <Title>{{ $t('pdf.info') }}</Title>
-    </Header>
+    <div>
+        <Header>
+            <Title>{{ $t('pdf.info') }}</Title>
+        </Header>
 
-    <div class="flex items-center justify-center w-full h-screen">
-        <div class="bg-white rounded-lg shadow-2xl w-1/2 h-1/2 flex flex-col p-4">
-            <div class="flex items-center justify-center uppercase font-medium">
-                <h1>{{ $t('pdf.info') }}</h1>
-            </div>
-            <div class="flex flex-col gap-4 p-8 font-thin">
-                <p>{{ $t('pdf.part1') }}</p>
-            </div>
-            <div>
-                <LayoutButton :action="() => generatePDF()" :title="$t('pdf.download')" />
+        <div class="flex items-center justify-center w-full h-screen">
+            <div class="bg-white rounded-lg shadow-2xl xs:w-5/6 lg:w-1/2 lg:h-1/2 flex flex-col p-4">
+                <div class="flex items-center justify-center uppercase font-medium">
+                    <h1>{{ $t('pdf.info') }}</h1>
+                </div>
+                <div class="flex flex-col gap-4 p-8 font-thin">
+                    <p>{{ $t('pdf.part1') }}</p>
+                    <!-- <p>{{ $t('pdf.part2') }}</p>
+                    <p>{{ $t('pdf.part3') }}</p>
+                    <p>{{ $t('pdf.part4') }}</p>
+                    <p>{{ $t('pdf.part5') }}</p> -->
+                </div>
+                <div>
+                    <LayoutButton :action="() => generatePDF()" :title="$t('pdf.download')" />
+                </div>
             </div>
         </div>
     </div>
-    <pre>{{ reserve }}</pre>
 </template>

@@ -1,0 +1,1 @@
+Vue3Lottie da conflitctos no se porque con otras dependencias, hacer npm install --force
