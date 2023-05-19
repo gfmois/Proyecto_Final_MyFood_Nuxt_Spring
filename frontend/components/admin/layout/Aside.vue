@@ -20,7 +20,7 @@ const logout = () => {
     mutCheckIsAdmin(false)
     actChangeUser(false)
 
-    router.replace("/")
+    router.replace("/auth")
 }
 
 </script>
